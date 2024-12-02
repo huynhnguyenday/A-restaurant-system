@@ -10,48 +10,11 @@ export const getAccounts = async (req, res) => {
   }
 };
 
-export const getAccountById = async (req, res) => {
-  const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Invalid Account ID" });
-  }
-
-  try {
-    const existingAccount = await Account.findOne({ id });
-    console.log("Existing account:", existingAccount);
-
-    if (existingAccount) {
-      return res.status(400).json({
-        success: false,
-        message: `Account with ID ${id} already exists`,
-      });
-    }
-
-    const newAccount = new Account({
-      id,
-      username,
-      password,
-      gmail,
-      numbers,
-      role,
-    });
-    const savedAccount = await newAccount.save();
-    console.log("Saved account:", savedAccount);
-
-    res.status(201).json({ success: true, data: savedAccount });
-  } catch (error) {
-    console.error("Error fetching account: ", error.message);
-    res.status(500).json({ success: false, message: "Server Error" });
-  }
-};
-
 export const createAccount = async (req, res) => {
-  const { id, username, password, numbers, gmail, role } = req.body;
+  const { username, password, numbers, gmail, role } = req.body;
 
   // Kiểm tra các trường dữ liệu bắt buộc
-  if (!id || !username || !password || !numbers || !role || !gmail) {
+  if (!username || !password || !numbers || !role || !gmail) {
     return res
       .status(400)
       .json({ success: false, message: "Please provide all fields" });
@@ -67,18 +30,8 @@ export const createAccount = async (req, res) => {
   }
 
   try {
-    // Kiểm tra xem ID đã tồn tại chưa
-    const existingAccount = await Account.findOne({ id });
-    if (existingAccount) {
-      return res.status(400).json({
-        success: false,
-        message: `Account with ID ${id} already exists`,
-      });
-    }
-
     // Tạo tài khoản mới
     const newAccount = new Account({
-      id,
       username,
       password,
       gmail,

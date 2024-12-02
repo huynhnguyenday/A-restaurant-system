@@ -25,7 +25,6 @@ export const createProduct = async (req, res) => {
   const product = req.body;
 
   if (
-    !product.id ||
     !product.name ||
     !product.image ||
     !product.sell_price ||

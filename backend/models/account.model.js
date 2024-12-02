@@ -4,11 +4,6 @@ import bcrypt from "bcrypt";
 
 const accountSchema = new mongoose.Schema(
   {
-    id: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
     username: {
       type: String,
       required: true,
