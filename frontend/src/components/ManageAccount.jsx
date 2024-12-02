@@ -1,20 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faPen, faToggleOn, faToggleOff } from "@fortawesome/free-solid-svg-icons";
 import AddAccount from "./AddAccount"; // Đảm bảo file AddAccount.js được import chính xác
-
-const initialAccounts = [
-  { id: 1, username: "admin01", password: "adminpass", gmail: "admin01@gmail.com", number: "0123456789", createAT: "30-11-2024", updateAt: "30-11-2024", isActive: true, role: "admin" },
-  { id: 2, username: "staff01", password: "staffpass", gmail: "staff01@gmail.com", number: "0987654321", createAT: "30-11-2024", updateAt: "30-11-2024", isActive: false, role: "staff" },
-  { id: 3, username: "customer01", password: "customerpass", gmail: "customer01@gmail.com", number: "1234567890", createAT: "30-11-2024", updateAt: "30-11-2024", isActive: true, role: "customer" },
-  { id: 4, username: "staff02", password: "staffpass", gmail: "staff02@gmail.com", number: "9876543210", createAT: "30-11-2024", updateAt: "30-11-2024", isActive: true, role: "staff" },
-  { id: 5, username: "customer02", password: "customerpass", gmail: "customer02@gmail.com", number: "4567890123", createAT: "30-11-2024", updateAt: "30-11-2024", isActive: false, role: "customer" },
-];
+import axios from "axios";
 
 const ManageAccount = () => {
-  const [accounts, setAccounts] = useState(initialAccounts);
+  const [accounts, setAccounts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddFormVisible, setAddFormVisible] = useState(false);
+
+  useEffect(() => {
+    // Lấy danh sách tài khoản từ API
+    axios.get("http://localhost:5000/api/accounts")
+      .then((response) => {
+        setAccounts(response.data.data); // Assumed the response is in `data` key
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the accounts:", error);
+      });
+  }, []);  // Chạy khi component mount
 
   const filteredAccounts = accounts.filter((account) =>
     account.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -25,22 +29,29 @@ const ManageAccount = () => {
   const toggleActiveStatus = (id) => {
     setAccounts((prevAccounts) =>
       prevAccounts.map((account) =>
-        account.id === id ? { ...account, isActive: !account.isActive } : account
+        account._id === id ? { ...account, isActive: !account.isActive } : account
       )
     );
+
+    // Cập nhật trạng thái active của tài khoản trong cơ sở dữ liệu
+    axios.put(`http://localhost:5000/api/accounts/${id}`, { isActive: !account.isActive })
+      .catch((error) => console.error("Error updating active status:", error));
   };
 
   const handleAddAccount = (newAccount) => {
-    setAccounts([...accounts, newAccount]);
+    // Thêm tài khoản mới vào cơ sở dữ liệu và UI
+    axios.post("http://localhost:5000/api/accounts", newAccount)
+      .then((response) => {
+        setAccounts([...accounts, response.data.data]);
+      })
+      .catch((error) => console.error("Error adding account:", error));
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen p-6 bg-gray-50">
       <div className="w-full max-w-7xl bg-white p-6 rounded-lg shadow-lg">
-        {/* Header Section */}
         <div className="text-2xl font-bold mb-4 text-center">Account Management</div>
 
-        {/* Search and Add Account */}
         <div className="flex justify-between items-center mb-4">
           <input
             type="text"
@@ -64,7 +75,6 @@ const ManageAccount = () => {
           </div>
         </div>
 
-        {/* Account Table */}
         <div className="overflow-x-auto shadow-md rounded-lg">
           <table className="min-w-full table-auto">
             <thead>
@@ -81,18 +91,18 @@ const ManageAccount = () => {
             </thead>
             <tbody>
               {filteredAccounts.map((account) => (
-                <tr key={account.id} className="border-b">
+                <tr key={account._id} className="border-b">
                   <td className="py-6 px-4 font-bold">{account.username}</td>
-                  <td className="py-6 px-4 text-center">{account.number}</td>
+                  <td className="py-6 px-4 text-center">{account.numbers}</td>
                   <td className="py-6 px-4">{account.gmail}</td>
                   <td className="py-6 px-4 text-center capitalize">{account.role}</td>
-                  <td className="py-6 px-4 text-center">{account.createAT}</td>
-                  <td className="py-6 px-4 text-center">{account.updateAt}</td>
+                  <td className="py-6 px-4 text-center">{new Date(account.createdAt).toLocaleDateString()}</td>
+                  <td className="py-6 px-4 text-center">{new Date(account.updatedAt).toLocaleDateString()}</td>
                   <td className="py-6 px-4 text-center">
                     <FontAwesomeIcon
                       icon={account.isActive ? faToggleOn : faToggleOff}
                       className={account.isActive ? "text-green-500 text-2xl cursor-pointer" : "text-gray-400 text-2xl cursor-pointer"}
-                      onClick={() => toggleActiveStatus(account.id)}
+                      onClick={() => toggleActiveStatus(account._id)}
                     />
                   </td>
                   <td className="py-2 px-4 text-center">
@@ -106,7 +116,6 @@ const ManageAccount = () => {
           </table>
         </div>
 
-        {/* Add Account Form */}
         {isAddFormVisible && (
           <AddAccount
             onAddAccount={handleAddAccount}
