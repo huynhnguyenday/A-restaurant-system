@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import Account from "../models/account.model.js";
-
 export const getAccounts = async (req, res) => {
   try {
     const accounts = await Account.find();
@@ -30,7 +29,14 @@ export const getAccountById = async (req, res) => {
       });
     }
 
-    const newAccount = new Account({ id, username, password, numbers, role });
+    const newAccount = new Account({
+      id,
+      username,
+      password,
+      gmail,
+      numbers,
+      role,
+    });
     const savedAccount = await newAccount.save();
     console.log("Saved account:", savedAccount);
 
@@ -42,10 +48,10 @@ export const getAccountById = async (req, res) => {
 };
 
 export const createAccount = async (req, res) => {
-  const { id, username, password, numbers, role } = req.body;
+  const { id, username, password, numbers, gmail, role } = req.body;
 
   // Kiểm tra các trường dữ liệu bắt buộc
-  if (!id || !username || !password || !numbers || !role) {
+  if (!id || !username || !password || !numbers || !role || !gmail) {
     return res
       .status(400)
       .json({ success: false, message: "Please provide all fields" });
@@ -71,7 +77,14 @@ export const createAccount = async (req, res) => {
     }
 
     // Tạo tài khoản mới
-    const newAccount = new Account({ id, username, password, numbers, role });
+    const newAccount = new Account({
+      id,
+      username,
+      password,
+      gmail,
+      numbers,
+      role,
+    });
     const savedAccount = await newAccount.save();
 
     // Trả về kết quả

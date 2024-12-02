@@ -2,6 +2,7 @@ import express from "express";
 import { connectDB } from "./config/db.js";
 import productRoutes from "./routes/product.route.js";
 import accountRoutes from "./routes/account.route.js";
+import loginFormRoutes from "./routes/loginForm.route.js";
 import cors from "cors";
 import path from "path";
 
@@ -11,6 +12,7 @@ app.use(express.json()); //allow accept json req.body
 
 app.use("/assets", express.static(path.join(path.resolve(), "backend/assets")));
 
+app.use("/api/users", loginFormRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/accounts", accountRoutes);
 
