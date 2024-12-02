@@ -1,0 +1,85 @@
+/* Chi tiết bài viết */
+.detail-blog {
+    background-color: white;
+  }
+
+  .detail-blog h1 {
+    font-size: 15px;
+    font-family: 'Josefin sans', sans-serif;
+    font-weight: 600;
+    text-align: center;
+    color: #334862;
+    margin-bottom: 5px;
+    margin-top: 2rem;
+  }
+  
+  .detail-blog h2 {
+    font-size: 36px;
+    font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+    text-align: center;
+    color: #663c02;
+    margin-bottom: 10px;
+  }
+  
+  .detail-blog .divider {
+    width: 50px;
+    height: 4px;
+    background-color: #ddd;
+    margin: 10px auto;
+  }
+  
+  .detail-blog .author-date {
+    font-size: 14px;
+    font-family: 'Josefin sans', sans-serif;
+    text-align: justify;
+    text-align: center;
+  }
+  
+  .detail-blog img {
+    width: 100%;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+
+  .content-blog{
+    margin-bottom: 2rem;
+  }
+  
+  /* Gợi ý bài viết khác */
+  .related-blogs {
+    margin-top: 3rem;
+    border-left: 1px solid #d5d4d4;
+    padding: 0 20px 20px 40px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .related-blogs h3 {
+    font-size: 36px;
+    font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+    color: #663c02;
+    margin-bottom: 15px;
+  }
+  
+  .related-blogs ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .related-blogs li {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .related-blogs a {
+    color: gray;
+    text-decoration: none;
+  }
+  
+  .related-blogs a:hover {
+    color: #663c02;
+    font-weight: 600;
+  }
+  

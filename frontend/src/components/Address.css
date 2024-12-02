@@ -1,0 +1,132 @@
+.card {
+    width: 400px;
+    height: 150px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: none !important;
+}
+
+.title-map{
+    text-align: Center;
+    font-family: "Oswald", sans-serif;
+    font-size: 34px;
+    font-weight: bold;
+    color: #633C02;
+    margin-top: 2.5rem;
+}
+
+.title-map::after {
+    content: '';
+    display: block;
+    width: 4%;
+    height: 4px;
+    background-color: #633c02;
+    margin: 10px auto;
+    margin-top: 1.5rem;
+}
+
+.card-left {
+    flex: 0 0 100px;
+    height: 100%; 
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-img {
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+}
+
+.map-img{
+    padding: 7px 0 7px 0;
+}
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-body h5 {
+    font-family: "Oswald", sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    color: saddlebrown;
+    margin: 0;
+    font-size: 1.2em;
+    width: 250px;
+}
+
+.card-body p {
+    font-family: "Josefin Sans", sans-serif;
+    margin: 0;
+    color: #666;
+    width: 250px;
+    padding-top: 10px;
+}
+
+.card-list {
+    max-height: 550px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-bottom: 6rem;
+}
+
+.title-findstore{
+    font-size: 18px;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 24px;
+    cursor: pointer;
+    height: 100%; 
+    padding-bottom: none !important;
+}
+
+.icon-map{
+    font-size: 18px;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 32px;
+    cursor: pointer;
+    height: 100%;
+    padding-bottom: none !important;
+    padding-left: 17px;
+}
+
+.form-select{
+    width: 175px !important;
+    margin-left: 17px;
+    border: 1px solid #888;
+}
+
+.card-list::-webkit-scrollbar {
+    width: 6px; 
+}
+
+.card-list::-webkit-scrollbar-thumb {
+    background-color: #888;  
+    border-radius: 10px;  
+}
+
+.card-list::-webkit-scrollbar-thumb:hover {
+    background-color: #555;  
+}
+
+.card-list::-webkit-scrollbar-track {
+    background-color: #f1f1f1;  
+    border-radius: 10px;  
+}
+
+/* Additional styles for filter */
+select.form-select {
+    width: 200px;
+}
+
+button.btn {
+    background-color: #ff5733;
+    color: white;
+}

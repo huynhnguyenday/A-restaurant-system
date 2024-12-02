@@ -1,0 +1,196 @@
+/* Slider Container */
+.product-slider {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 5rem;
+  overflow: visible;
+}
+
+
+.slider-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #633c02;
+}
+
+/* Divider Styling */
+.divider {
+  width: 50px;
+  height: 2px;
+  background-color: #ff4d4f;
+  margin: 0 auto;
+  margin-bottom: 5rem;
+}
+
+/* Card Styling */
+.product-card {
+  background-color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 350px;
+  border-left: 1px solid rgb(235, 235, 235);
+  border-right: 1px solid rgb(235, 235, 235);
+}
+
+.product-card:hover {
+  border: 2px solid #ddd9d9;
+}
+
+/* Product Image */
+.product-image img {
+  width: 154px;
+  height: 223px;
+  margin-left: 29px;
+  margin-right: 29px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+
+.product-card:hover .product-image img {
+  transform: scale(1.08); 
+}
+
+
+/* Styling for favorite heart */
+.favorite {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 30px;
+  color: black;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+/* Styling when the heart is active (filled with color) */
+.favorite-active {
+  color: red;
+}
+
+.product-bubble {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4d4f;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.slider-title::after {
+  content: '';
+  display: block;
+  width: 4%;
+  height: 4px;
+  background-color: #633c02;
+  margin: 10px auto;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Product Info */
+.product-info {
+  margin-top: 15px;
+  margin-bottom: 3rem;
+}
+
+.product-name {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.product-price {
+  font-size: 14px;
+  color: #9d6817;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.price-old {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 12px;
+  margin-left: 8px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* nút thêm vào giỏ hàng */
+.red-button {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-card:hover .red-button {
+  opacity: 1;
+}
+
+.red-button button {
+  width: 100%;
+  padding: 12px 0;
+  background-color: #d88453;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.red-button button:hover {
+  background-color: #633c02;
+}
+
+/* Hiding Navigation Arrows */
+.swiper-button-next{
+  background-color: rgba(78, 78, 78, 0.5);
+  color: #fff;
+  width: 40px;
+  height: 70px;
+  margin-right: 10px;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: none;
+  z-index: 10;
+
+}
+.swiper-button-prev {
+  background-color: rgba(78, 78, 78, 0.5);
+  color: #fff;
+  width: 40px;
+  height: 70px;
+  margin-left: 10px;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: none;
+  z-index: 10;
+}
+
+/* Show navigation arrows on hover */
+.product-slider:hover .swiper-button-next,
+.product-slider:hover .swiper-button-prev {
+  display: block;
+}
+

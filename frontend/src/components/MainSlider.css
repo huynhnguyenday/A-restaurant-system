@@ -1,0 +1,58 @@
+.main-slider {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 50px;
+    position: relative;
+    gap: 20px;
+  }
+  
+  .content {
+    flex: 1;
+    max-width: 40%;
+    padding-left: 10rem; 
+  }
+  
+  .content h4 {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .content h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+
+  .animated-title{
+    font-weight: bold;
+    font-family: "Oswald", sans-serif;
+    color: #633c02;
+  }
+  
+  .btn-buy {
+    background-color: #d88453;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .btn-buy:hover {
+    background-color: #633c02;
+  }
+  
+  .image-container {
+    flex: 1;
+    text-align: right;
+  }
+  
+  .background-image {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
