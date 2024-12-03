@@ -24,17 +24,32 @@ export const getProduct = async (req, res) => {
 export const createProduct = async (req, res) => {
   const product = req.body;
 
-  if (
-    !product.name ||
-    !product.image ||
-    !product.sell_price ||
-    !product.price
-  ) {
+  if (!product.name)
     return res
       .status(400)
-      .json({ success: false, message: "Please provide all field" });
-  }
+      .json({ success: false, message: "Name is required" });
+  if (!product.image)
+    return res
+      .status(400)
+      .json({ success: false, message: "Image is required" });
+  if (!product.sell_price)
+    return res
+      .status(400)
+      .json({ success: false, message: "Sell price is required" });
+  if (!product.price)
+    return res
+      .status(400)
+      .json({ success: false, message: "Price is required" });
+  if (!product.category)
+    return res
+      .status(400)
+      .json({ success: false, message: "Category is required" });
 
+  if (product.sell_price > product.price) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Sell price should not exceed price" });
+  }
   const newProduct = new Product(product);
 
   try {

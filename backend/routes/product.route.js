@@ -5,7 +5,7 @@ import {
   getProduct,
   updateProduct,
 } from "../controllers/product.controller.js";
-import multer from "multer"
+import multer from "multer";
 
 // Cấu hình multer (đã trình bày ở trên)
 const storage = multer.diskStorage({
