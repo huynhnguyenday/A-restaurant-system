@@ -1,0 +1,177 @@
+import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlus,
+  faPen,
+  faToggleOn,
+  faToggleOff,
+} from "@fortawesome/free-solid-svg-icons";
+import AddAccount from "./AddAccount";
+import UpdateAccount from "./UpdateAccount"; // Import UpdateAccount component
+import axios from "axios";
+
+const ManageAccount = () => {
+  const [accounts, setAccounts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isAddFormVisible, setAddFormVisible] = useState(false);
+  const [isUpdateFormVisible, setUpdateFormVisible] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/accounts")
+      .then((response) => {
+        setAccounts(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching accounts:", error);
+      });
+  }, []);
+
+  const filteredAccounts = accounts.filter(
+    (account) =>
+      account.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      account.gmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      account.role.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const toggleActiveStatus = (id) => {
+    setAccounts((prevAccounts) =>
+      prevAccounts.map((account) =>
+        account._id === id
+          ? { ...account, isActive: !account.isActive }
+          : account,
+      ),
+    );
+
+    axios
+      .put(`http://localhost:5000/api/accounts/${id}`, {
+        isActive: !accounts.isActive,
+      })
+      .catch((error) => console.error("Error updating active status:", error));
+  };
+
+  const handleAddAccount = (newAccount) => {
+    axios
+      .post("http://localhost:5000/api/accounts", newAccount)
+      .then((response) => {
+        setAccounts([...accounts, response.data.data]);
+      })
+      .catch((error) => console.error("Error adding account:", error));
+  };
+
+  const handleUpdateAccount = (updatedAccount) => {
+    setAccounts((prevAccounts) =>
+      prevAccounts.map((account) =>
+        account._id === updatedAccount._id ? updatedAccount : account,
+      ),
+    );
+  };
+
+  const openUpdateForm = (account) => {
+    setSelectedAccount(account);
+    setUpdateFormVisible(true);
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
+      <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
+        <div className="mb-4 text-center text-2xl font-bold">
+          Account Management
+        </div>
+
+        <div className="mb-4 flex items-center justify-between">
+          <input
+            type="text"
+            placeholder="Search by Username, Role or Gmail"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-72 rounded-md border border-gray-300 p-2"
+          />
+          <button
+            onClick={() => setAddFormVisible(true)}
+            className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          >
+            <FontAwesomeIcon icon={faPlus} />
+          </button>
+        </div>
+
+        <div className="overflow-x-auto rounded-lg shadow-md">
+          <table className="min-w-full table-auto">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="px-4 py-2 text-left">Username</th>
+                <th className="px-4 py-2 text-center">Number</th>
+                <th className="px-4 py-2 text-left">Gmail</th>
+                <th className="px-4 py-2 text-center">Role</th>
+                <th className="px-4 py-2 text-center">Date Create</th>
+                <th className="px-4 py-2 text-center">Date Update</th>
+                <th className="px-4 py-2 text-center">Active</th>
+                <th className="px-4 py-2 text-center">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredAccounts.map((account) => (
+                <tr key={account._id} className="border-b">
+                  <td className="px-4 py-6 font-bold">{account.username}</td>
+                  <td className="px-4 py-6 text-center">{account.numbers}</td>
+                  <td className="px-4 py-6">{account.gmail}</td>
+                  <td className="px-4 py-6 text-center">{account.role}</td>
+                  <td className="px-4 py-6 text-center">
+                    {new Date(account.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-6 text-center">
+                    {new Date(account.updatedAt).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-6 text-center">
+                    <button
+                      onClick={() => toggleActiveStatus(account._id)}
+                      className="text-2xl"
+                    >
+                      {account.isActive ? (
+                        <FontAwesomeIcon
+                          icon={faToggleOn}
+                          className="text-green-500"
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faToggleOff}
+                          className="text-gray-400"
+                        />
+                      )}
+                    </button>
+                  </td>
+                  <td className="px-4 py-6 text-center text-xl">
+                    <button
+                      onClick={() => openUpdateForm(account)}
+                      className="text-gray-400  hover:text-blue-600"
+                    >
+                      <FontAwesomeIcon icon={faPen} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {isAddFormVisible && (
+        <AddAccount
+          onClose={() => setAddFormVisible(false)}
+          onAddAccount={handleAddAccount}
+        />
+      )}
+
+      {isUpdateFormVisible && (
+        <UpdateAccount
+          account={selectedAccount}
+          onClose={() => setUpdateFormVisible(false)}
+          onUpdateAccount={handleUpdateAccount}
+        />
+      )}
+    </div>
+  );
+};
+
+export default ManageAccount;

@@ -13,11 +13,20 @@ export const getAccounts = async (req, res) => {
 export const createAccount = async (req, res) => {
   const { username, password, numbers, gmail, role } = req.body;
 
+  const missingFields = [];
   // Kiểm tra các trường dữ liệu bắt buộc
-  if (!username || !password || !numbers || !role || !gmail) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Please provide all fields" });
+  if (!username) missingFields.push("username");
+  if (!password) missingFields.push("password");
+  if (!numbers) missingFields.push("numbers");
+  if (!gmail) missingFields.push("gmail");
+  if (!role) missingFields.push("role");
+
+  // Nếu có trường bị thiếu, trả về danh sách các trường đó
+  if (missingFields.length > 0) {
+    return res.status(400).json({
+      success: false,
+      message: `Missing fields: ${missingFields.join(", ")}`,
+    });
   }
 
   // Kiểm tra role hợp lệ

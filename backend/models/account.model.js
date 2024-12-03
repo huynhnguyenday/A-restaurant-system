@@ -14,7 +14,7 @@ const accountSchema = new mongoose.Schema(
       required: true,
     },
     numbers: {
-      type: Number,
+      type: String,
       required: true,
     },
     gmail: {

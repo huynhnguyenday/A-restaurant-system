@@ -11,7 +11,7 @@ import DetailBlog from "./components/DetailBlog";
 import BlogMain from "./components/BlogMain";
 import News from "./components/News";
 import PaymentPage from "./components/PaymentPage";
-import Admin from "./components/Admin";
+import Admin from "./components/admin/Admin";
 import "./app.css";
 
 // Layout chung có Navbar và Footer

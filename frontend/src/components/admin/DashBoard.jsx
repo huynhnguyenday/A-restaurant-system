@@ -12,19 +12,21 @@ import ManageProduct from "./ManageProduct";
 import ManageBlog from "./ManageBlog";
 import ManageAccount from "./ManageAccount";
 import { Link } from "react-router-dom";
-import imgpersonportal from "../assets/imgpersonportal.png";
+import imgpersonportal from "../../assets/imgpersonportal.png";
 
 const SidebarItem = ({ icon, label, isSidebarExpanded, onClick, isActive }) => (
   <li
-    className={`flex items-center px-4 py-6 cursor-pointer ${
+    className={`flex cursor-pointer items-center px-4 py-6 ${
       isActive
-        ? "bg-black rounded-2xl text-white flex items-center justify-center ml-2 mr-2"
+        ? "ml-2 mr-2 flex items-center justify-center rounded-2xl bg-black text-white"
         : "hover:bg-gray-100"
     }`}
     onClick={onClick}
   >
     <FontAwesomeIcon icon={icon} className="text-2xl" />
-    <span className={`ml-4 ${!isSidebarExpanded && "hidden group-hover:block"}`}>
+    <span
+      className={`ml-4 ${!isSidebarExpanded && "hidden group-hover:block"}`}
+    >
       {label}
     </span>
   </li>
@@ -68,7 +70,7 @@ const DashBoard = () => {
       <div
         className={`group bg-white text-gray-800 ${
           isSidebarExpanded ? "w-64" : "w-16"
-        } hover:w-64 transition-all duration-300 fixed h-screen`}
+        } fixed h-screen transition-all duration-300 hover:w-64`}
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between px-4 py-4">
@@ -81,7 +83,7 @@ const DashBoard = () => {
           </span>
           <button
             onClick={toggleSidebar}
-            className="text-gray-400 px-1 hover:text-black focus:outline-none"
+            className="px-1 text-gray-400 hover:text-black focus:outline-none"
           >
             <FontAwesomeIcon icon={faBars} className="text-2xl" />
           </button>
@@ -122,12 +124,12 @@ const DashBoard = () => {
 
       {/* Main Content */}
       <div
-        className={`flex-1 flex flex-col ${
+        className={`flex flex-1 flex-col ${
           isSidebarExpanded ? "ml-64" : "ml-16"
         } transition-all duration-300`}
       >
         {/* Navbar */}
-        <div className="bg-white shadow-md p-4 flex justify-between">
+        <div className="flex justify-between bg-white p-4 shadow-md">
           <h1 className="text-2xl font-bold">Dashboard</h1>
           {/* Nút với trạng thái hover */}
           <div
@@ -140,19 +142,17 @@ const DashBoard = () => {
                 <img
                   src={imgpersonportal}
                   alt="Person Portal"
-                  className="w-8 h-8 cursor-pointer"
+                  className="h-8 w-8 cursor-pointer"
                 />
               ) : (
                 <FontAwesomeIcon
                   icon={faRightToBracket}
-                  className="text-3xl cursor-pointer"
+                  className="cursor-pointer text-3xl"
                 />
               )}
             </Link>
             {isHovered && (
-              <span
-                className="absolute -left-4 transform -translate-x-1/2 mt-2 bg-gray-800 text-white text-sm rounded-md px-4 py-2 shadow-lg whitespace-nowrap"
-              >
+              <span className="absolute -left-4 mt-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-4 py-2 text-sm text-white shadow-lg">
                 Go To HomePage
               </span>
             )}
@@ -160,7 +160,7 @@ const DashBoard = () => {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+        <div className="flex-1 overflow-y-auto bg-gray-50 p-6">
           {renderContent()}
         </div>
       </div>

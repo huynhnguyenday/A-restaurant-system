@@ -9,13 +9,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 // Giả sử bạn đã có các hình ảnh sản phẩm
-import imgfood1 from "../assets/imgfood1.png";
-import imgfood2 from "../assets/imgfood2.png";
-import imgfood3 from "../assets/imgfood3.png";
-import imgfood4 from "../assets/imgfood4.png";
-import imgfood5 from "../assets/imgfood5.png";
-import imgfood6 from "../assets/imgfood6.png";
-import imgfood7 from "../assets/imgfood7.png";
+import imgfood1 from "../../assets/imgfood1.png";
+import imgfood2 from "../../assets/imgfood2.png";
+import imgfood3 from "../../assets/imgfood3.png";
+import imgfood4 from "../../assets/imgfood4.png";
+import imgfood5 from "../../assets/imgfood5.png";
+import imgfood6 from "../../assets/imgfood6.png";
+import imgfood7 from "../../assets/imgfood7.png";
 
 // Dữ liệu sản phẩm ban đầu
 const initialProducts = [
@@ -230,8 +230,8 @@ const ManageProduct = () => {
                       />
                     </button>
                   </td>
-                  <td className="px-4 py-2 text-center">
-                    <button className="rounded-md px-3 py-1 text-center text-blue-700 hover:rounded-full hover:bg-slate-300">
+                  <td className="px-4 py-2 text-center text-xl">
+                    <button className="rounded-md px-3 py-1 text-center text-blue-400 hover:rounded-full hover:bg-slate-300 hover:text-blue-600">
                       <FontAwesomeIcon icon={faPen} />
                     </button>
                   </td>

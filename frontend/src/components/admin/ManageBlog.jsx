@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-import imgblog1 from "../assets/imgblog1.png";
-import imgblog2 from "../assets/imgblog2.png";
-import imgblog3 from "../assets/imgblog3.png";
+import imgblog1 from "../../assets/imgblog1.png";
+import imgblog2 from "../../assets/imgblog2.png";
+import imgblog3 from "../../assets/imgblog3.png";
 
 // Dữ liệu blog ban đầu
 const blogs = [
