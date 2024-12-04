@@ -1,10 +1,10 @@
 import Product from "../models/product.model.js";
 import mongoose from "mongoose";
-
+import Category from "../models/category.model.js";
 export const getProduct = async (req, res) => {
   try {
     // Lấy tất cả sản phẩm từ database
-    const products = await Product.find({});
+    const products = await Product.find({}).populate("category", "name");
 
     // Thêm đường dẫn đầy đủ cho ảnh
     const productsWithFullImagePath = products.map((product) => {
@@ -54,8 +54,21 @@ export const createProduct = async (req, res) => {
   const newProduct = new Product(product);
 
   try {
+    const categoryExists = await Category.findById(product.category);
+    if (!categoryExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    const newProduct = new Product(product);
     await newProduct.save();
-    res.status(200).json({ success: true, data: newProduct });
+    const populatedProduct = await Product.findById(newProduct._id).populate(
+      "category",
+      "name"
+    );
+    res.status(200).json({ success: true, data: populatedProduct });
   } catch (error) {
     console.log("Error in creating product", error.message);
     res.status(500).json({ success: false, message: "Server Error" });
@@ -64,7 +77,6 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-
   const product = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -74,9 +86,18 @@ export const updateProduct = async (req, res) => {
   }
 
   try {
+    if (product.category) {
+      const categoryExists = await Category.findById(product.category);
+      if (!categoryExists) {
+        return res.status(404).json({
+          success: false,
+          message: "Category not found",
+        });
+      }
+    }
     const updatedProduct = await Product.findByIdAndUpdate(id, product, {
       new: true,
-    });
+    }).populate("category", "name");
     res.status(200).json({ success: true, data: updatedProduct });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
