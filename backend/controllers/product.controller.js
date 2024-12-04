@@ -21,6 +21,7 @@ export const getProduct = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
 export const createProduct = async (req, res) => {
   const product = req.body;
 

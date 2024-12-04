@@ -21,11 +21,7 @@ const accountSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    isActive: {
-      type: Boolean,
-      default: true, // Mặc định là active
-      required: true,
-    },
+    isActive: { type: Number, default: 1 }, 
     role: {
       type: String,
       enum: ["admin", "staff", "customer"], // Liệt kê các giá trị có thể

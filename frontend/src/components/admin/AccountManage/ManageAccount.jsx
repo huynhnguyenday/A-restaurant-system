@@ -7,7 +7,7 @@ import {
   faToggleOff,
 } from "@fortawesome/free-solid-svg-icons";
 import AddAccount from "./AddAccount";
-import UpdateAccount from "./UpdateAccount"; // Import UpdateAccount component
+import UpdateAccount from "./UpdateAccount";
 import axios from "axios";
 
 const ManageAccount = () => {
@@ -35,20 +35,22 @@ const ManageAccount = () => {
       account.role.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const toggleActiveStatus = (id) => {
-    setAccounts((prevAccounts) =>
-      prevAccounts.map((account) =>
+  const toggleIsActive = async (id) => {
+    try {
+      const updatedAccounts = accounts.map((account) =>
         account._id === id
-          ? { ...account, isActive: !account.isActive }
+          ? { ...account, isActive: account.isActive === 1 ? 2 : 1 }
           : account,
-      ),
-    );
+      );
+      setAccounts(updatedAccounts);
 
-    axios
-      .put(`http://localhost:5000/api/accounts/${id}`, {
-        isActive: !accounts.isActive,
-      })
-      .catch((error) => console.error("Error updating active status:", error));
+      // Gửi yêu cầu cập nhật API
+      await axios.put(`http://localhost:5000/api/accounts/${id}`, {
+        isActive: updatedAccounts.find((p) => p._id === id).isActive,
+      });
+    } catch (error) {
+      console.error("Error updating display type:", error);
+    }
   };
 
   const handleAddAccount = (newAccount) => {
@@ -123,28 +125,21 @@ const ManageAccount = () => {
                   <td className="px-4 py-6 text-center">
                     {new Date(account.updatedAt).toLocaleDateString()}
                   </td>
-                  <td className="px-4 py-6 text-center">
-                    <button
-                      onClick={() => toggleActiveStatus(account._id)}
-                      className="text-2xl"
-                    >
-                      {account.isActive ? (
-                        <FontAwesomeIcon
-                          icon={faToggleOn}
-                          className="text-green-500"
-                        />
-                      ) : (
-                        <FontAwesomeIcon
-                          icon={faToggleOff}
-                          className="text-gray-400"
-                        />
-                      )}
-                    </button>
+                  <td className="px-4 py-6 text-2xl text-center">
+                    <FontAwesomeIcon
+                      icon={account.isActive === 1 ? faToggleOn : faToggleOff}
+                      className={
+                        account.isActive === 1
+                          ? "cursor-pointer text-green-500"
+                          : "cursor-pointer text-gray-400"
+                      }
+                      onClick={() => toggleIsActive(account._id)}
+                    />
                   </td>
                   <td className="px-4 py-6 text-center text-xl">
                     <button
                       onClick={() => openUpdateForm(account)}
-                      className="text-gray-400  hover:text-blue-600"
+                      className="text-gray-400 hover:text-blue-600"
                     >
                       <FontAwesomeIcon icon={faPen} />
                     </button>

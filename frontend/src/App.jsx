@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
@@ -36,18 +41,88 @@ const App = () => {
     <Router>
       <Routes>
         {/* Route cho các trang chung có Navbar và Footer */}
-        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
-        <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
-        <Route path="/menu" element={<MainLayout><Menu /></MainLayout>} />
-        <Route path="/news" element={<MainLayout><News /></MainLayout>} />
-        <Route path="/address" element={<MainLayout><Address /></MainLayout>} />
-        <Route path="/detailfood/:id" element={<MainLayout><DetailFood /></MainLayout>} />
-        <Route path="/blogs" element={<MainLayout><BlogMain /></MainLayout>} />
-        <Route path="/blogs/:id" element={<MainLayout><DetailBlog /></MainLayout>} />
-        <Route path="/payment" element={<MainLayout><PaymentPage /></MainLayout>} />
+        <Route
+          path="/"
+          element={
+            <MainLayout>
+              <Home />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/home"
+          element={
+            <MainLayout>
+              <Home />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/menu"
+          element={
+            <MainLayout>
+              <Menu />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/news"
+          element={
+            <MainLayout>
+              <News />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/address"
+          element={
+            <MainLayout>
+              <Address />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/detailfood/:id"
+          element={
+            <MainLayout>
+              <DetailFood />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/blogs"
+          element={
+            <MainLayout>
+              <BlogMain />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/blogs/:id"
+          element={
+            <MainLayout>
+              <DetailBlog />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/payment"
+          element={
+            <MainLayout>
+              <PaymentPage />
+            </MainLayout>
+          }
+        />
 
         {/* Route cho Admin, không có Navbar và Footer */}
-        <Route path="/admin" element={<AdminLayout><Admin /></AdminLayout>} />
+        <Route
+          path="/admin"
+          element={
+            <AdminLayout>
+              <Admin />
+            </AdminLayout>
+          }
+        />
 
         {/* Route cho các trang khác */}
         <Route path="*" element={<Navigate to="/" />} />

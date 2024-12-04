@@ -8,9 +8,9 @@ import {
   faNewspaper,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import ManageProduct from "./ManageProduct";
+import ManageProduct from "./ProductManage/ManageProduct";
 import ManageBlog from "./ManageBlog";
-import ManageAccount from "./ManageAccount";
+import ManageAccount from "./AccountManage/ManageAccount";
 import { Link } from "react-router-dom";
 import imgpersonportal from "../../assets/imgpersonportal.png";
 
