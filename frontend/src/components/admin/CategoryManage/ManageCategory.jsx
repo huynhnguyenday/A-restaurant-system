@@ -1,0 +1,146 @@
+import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlus,
+  faPen,
+  faToggleOn,
+  faToggleOff,
+} from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+
+const ManageCategory = () => {
+  const [categories, setCategories] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isAddFormVisible, setAddFormVisible] = useState(false);
+  const [isUpdateFormVisible, setUpdateFormVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    // Fetch categories from API
+    axios
+      .get("http://localhost:5000/api/categories")
+      .then((response) => {
+        setCategories(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
+
+  const filteredCategories = categories.filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const toggleIsActive = async (id) => {
+    try {
+      const updatedCategories = categories.map((category) =>
+        category._id === id
+          ? { ...category, isActive: category.isActive === 1 ? 0 : 1 }
+          : category
+      );
+      setCategories(updatedCategories);
+
+      await axios.put(`http://localhost:5000/api/categories/${id}`, {
+        isActive: updatedCategories.find((p) => p._id === id).isActive,
+      });
+    } catch (error) {
+      console.error("Error updating isActive:", error);
+    }
+  };
+
+  const handleAddCategory = (newCategory) => {
+    axios
+      .post("http://localhost:5000/api/categories", newCategory)
+      .then((response) => {
+        setCategories([...categories, response.data.data]);
+      })
+      .catch((error) => console.error("Error adding category:", error));
+  };
+
+  const handleUpdateCategory = (updatedCategory) => {
+    setCategories((prevCategories) =>
+      prevCategories.map((category) =>
+        category._id === updatedCategory._id ? updatedCategory : category
+      )
+    );
+  };
+
+  const openUpdateForm = (category) => {
+    setSelectedCategory(category);
+    setUpdateFormVisible(true);
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
+      <div className="w-full max-w-5xl rounded-lg bg-white p-6 shadow-lg">
+        <div className="mb-4 text-center text-2xl font-bold">
+          Category Management
+        </div>
+
+        <div className="mb-4 flex items-center justify-between">
+          <input
+            type="text"
+            placeholder="Search by Name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-72 rounded-md border border-gray-300 p-2"
+          />
+          <button
+            onClick={() => setAddFormVisible(true)}
+            className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          >
+            <FontAwesomeIcon icon={faPlus} />
+          </button>
+        </div>
+
+        <div className="overflow-x-auto rounded-lg shadow-md">
+          <table className="min-w-full table-auto">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="px-4 py-2 text-left">Name</th>
+                <th className="px-4 py-2 text-center">Created At</th>
+                <th className="px-4 py-2 text-center">Updated At</th>
+                <th className="px-4 py-2 text-center">Active</th>
+                <th className="px-4 py-2 text-center">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredCategories.map((category) => (
+                <tr key={category._id} className="border-b">
+                  <td className="px-4 py-6 font-bold">{category.name}</td>
+                  <td className="px-4 py-6 text-center">
+                    {new Date(category.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-6 text-center">
+                    {new Date(category.updatedAt).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-6 text-2xl text-center">
+                    <FontAwesomeIcon
+                      icon={category.isActive === 1 ? faToggleOn : faToggleOff}
+                      className={
+                        category.isActive === 1
+                          ? "cursor-pointer text-green-500"
+                          : "cursor-pointer text-gray-400"
+                      }
+                      onClick={() => toggleIsActive(category._id)}
+                    />
+                  </td>
+                  <td className="px-4 py-6 text-center text-xl">
+                    <button
+                      onClick={() => openUpdateForm(category)}
+                      className="text-gray-400 hover:text-blue-600"
+                    >
+                      <FontAwesomeIcon icon={faPen} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ManageCategory;

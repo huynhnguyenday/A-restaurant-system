@@ -11,6 +11,7 @@ import {
 import ManageProduct from "./ProductManage/ManageProduct";
 import ManageBlog from "./ManageBlog";
 import ManageAccount from "./AccountManage/ManageAccount";
+import ManageCategory from "./CategoryManage/ManageCategory";
 import { Link } from "react-router-dom";
 import imgpersonportal from "../../assets/imgpersonportal.png";
 
@@ -45,6 +46,8 @@ const DashBoard = () => {
         return <ManageAccount />;
       case "Product":
         return <ManageProduct />;
+      case "Category":
+        return <ManageCategory />
       case "Blog":
         return <ManageBlog />;
       case "Settings":
@@ -104,6 +107,13 @@ const DashBoard = () => {
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => setActiveComponent("Product")}
             isActive={activeComponent === "Product"}
+          />
+          <SidebarItem
+            icon={faBars} // Thay bằng icon phù hợp
+            label="Category"
+            isSidebarExpanded={isSidebarExpanded}
+            onClick={() => setActiveComponent("Category")}
+            isActive={activeComponent === "Category"}
           />
           <SidebarItem
             icon={faNewspaper}
