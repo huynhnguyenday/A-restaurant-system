@@ -119,7 +119,7 @@ const ManageProduct = () => {
                     />
                   </td>
                   <td className="px-4 py-2 font-bold">{product.name}</td>
-                  <td className="px-4 py-2 text-center">{product.category}</td>
+                  <td className="px-4 py-2 text-center">{product.category?.name || "No Category"}</td>
                   <td className="px-4 py-2 text-center">
                     {product.price.toLocaleString()}
                   </td>
