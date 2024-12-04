@@ -6,6 +6,8 @@ import {
   faToggleOn,
   faToggleOff,
 } from "@fortawesome/free-solid-svg-icons";
+import AddCategory from "./AddCategory";
+import UpdateCategory from "./UpdateCategory";
 import axios from "axios";
 
 const ManageCategory = () => {
@@ -139,6 +141,20 @@ const ManageCategory = () => {
           </table>
         </div>
       </div>
+      {isAddFormVisible && (
+        <AddCategory
+          onClose={() => setAddFormVisible(false)}
+          onAddCategory={handleAddCategory}
+        />
+      )}
+
+      {isUpdateFormVisible && (
+        <UpdateCategory
+          category={selectedCategory}
+          onClose={() => setUpdateFormVisible(false)}
+          onUpdateCategory={handleUpdateCategory}
+        />
+      )}
     </div>
   );
 };
