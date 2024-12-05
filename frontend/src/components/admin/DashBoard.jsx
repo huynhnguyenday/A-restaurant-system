@@ -7,6 +7,7 @@ import {
   faMugSaucer,
   faNewspaper,
   faRightToBracket,
+  faClipboardList,
 } from "@fortawesome/free-solid-svg-icons";
 import ManageProduct from "./ProductManage/ManageProduct";
 import ManageBlog from "./ManageBlog";
@@ -109,7 +110,7 @@ const DashBoard = () => {
             isActive={activeComponent === "Product"}
           />
           <SidebarItem
-            icon={faBars} // Thay bằng icon phù hợp
+            icon={faClipboardList} 
             label="Category"
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => setActiveComponent("Category")}

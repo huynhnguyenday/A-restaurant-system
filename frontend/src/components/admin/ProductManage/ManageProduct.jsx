@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import AddProduct from "./AddProduct";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -12,6 +13,7 @@ import {
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showModal, setShowModal] = useState(false); 
 
   // Gọi API để lấy danh sách sản phẩm
   useEffect(() => {
@@ -26,6 +28,19 @@ const ManageProduct = () => {
 
     fetchProducts();
   }, []);
+
+  const handleCreateProduct = async (product) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/products",
+        product,
+      );
+      setProducts([...products, response.data.data]); // Thêm sản phẩm vào danh sách
+      setShowModal(false); // Ẩn modal sau khi thêm
+    } catch (error) {
+      console.error("Error creating product:", error.response.data.message);
+    }
+  };
 
   // Lọc sản phẩm theo từ khóa tìm kiếm
   const filteredProducts = products.filter((product) =>
@@ -86,10 +101,20 @@ const ManageProduct = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-60 rounded-md border border-gray-300 p-2"
           />
-          <button className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+          <button
+            onClick={() => setShowModal(true)} // Hiển thị modal
+            className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          >
             <FontAwesomeIcon icon={faPlus} />
           </button>
         </div>
+
+        {/* Component AddProduct */}
+        <AddProduct
+          showModal={showModal}
+          setShowModal={setShowModal}
+          onCreateProduct={handleCreateProduct}
+        />
 
         {/* Bảng sản phẩm */}
         <div className="overflow-x-auto rounded-lg shadow-md">
@@ -119,7 +144,11 @@ const ManageProduct = () => {
                     />
                   </td>
                   <td className="px-4 py-2 font-bold">{product.name}</td>
-                  <td className="px-4 py-2 text-center">{product.category?.name || "No Category"}</td>
+                  <td className="px-4 py-2 text-center">
+                    {product.category?.name
+                      ? product.category.name.toLowerCase()
+                      : "chưa có"}
+                  </td>
                   <td className="px-4 py-2 text-center">
                     {product.price.toLocaleString()}
                   </td>

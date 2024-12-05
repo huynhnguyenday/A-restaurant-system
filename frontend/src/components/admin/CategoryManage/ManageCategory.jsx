@@ -37,7 +37,7 @@ const ManageCategory = () => {
     try {
       const updatedCategories = categories.map((category) =>
         category._id === id
-          ? { ...category, isActive: category.isActive === 1 ? 0 : 1 }
+          ? { ...category, isActive: category.isActive === 1 ? 2 : 1 }
           : category
       );
       setCategories(updatedCategories);
