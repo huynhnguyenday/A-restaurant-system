@@ -3,22 +3,24 @@ import mongoose from "mongoose";
 import Category from "../models/category.model.js";
 export const getProduct = async (req, res) => {
   try {
-    // Lấy tất cả sản phẩm từ database
     const products = await Product.find({}).populate("category", "name");
 
-    // Thêm đường dẫn đầy đủ cho ảnh
-    const productsWithFullImagePath = products.map((product) => {
-      return {
-        ...product.toObject(), // Lấy tất cả thông tin sản phẩm
-        image: `http://localhost:5000/assets/${product.image}`, // Thêm đường dẫn ảnh đầy đủ
-      };
-    });
+    const productsWithFullImagePath = products.map((product) => ({
+      ...product.toObject(),
+      image: `http://localhost:5000/assets/${product.image}`,
+    }));
 
-    // Trả về danh sách sản phẩm với đường dẫn ảnh đầy đủ
-    res.status(200).json({ success: true, data: productsWithFullImagePath });
+    // Trả về danh sách sản phẩm
+    res.status(200).json({
+      success: true,
+      data: productsWithFullImagePath,
+    });
   } catch (error) {
     console.error("Error in fetching products: ", error.message);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 };
 
@@ -29,10 +31,11 @@ export const createProduct = async (req, res) => {
     return res
       .status(400)
       .json({ success: false, message: "Name is required" });
-  if (!product.image)
+  if (!req.file) {
     return res
       .status(400)
       .json({ success: false, message: "Image is required" });
+  }
   if (!product.sell_price)
     return res
       .status(400)
@@ -51,7 +54,6 @@ export const createProduct = async (req, res) => {
       .status(400)
       .json({ success: false, message: "Sell price should not exceed price" });
   }
-  const newProduct = new Product(product);
 
   try {
     const categoryExists = await Category.findById(product.category);
@@ -62,13 +64,23 @@ export const createProduct = async (req, res) => {
       });
     }
 
-    const newProduct = new Product(product);
+    const imagePath = req.file ? req.file.filename : null;
+
+    const newProduct = new Product({
+      ...product,
+      image: imagePath, // Lưu đường dẫn ảnh vào cơ sở dữ liệu
+    });
+
     await newProduct.save();
     const populatedProduct = await Product.findById(newProduct._id).populate(
       "category",
       "name"
     );
-    res.status(200).json({ success: true, data: populatedProduct });
+    const productWithFullImagePath = {
+      ...populatedProduct.toObject(),
+      image: `http://localhost:5000/assets/${populatedProduct.image}`,
+    };
+    res.status(201).json({ success: true, data: productWithFullImagePath });
   } catch (error) {
     console.log("Error in creating product", error.message);
     res.status(500).json({ success: false, message: "Server Error" });
@@ -95,10 +107,27 @@ export const updateProduct = async (req, res) => {
         });
       }
     }
-    const updatedProduct = await Product.findByIdAndUpdate(id, product, {
-      new: true,
-    }).populate("category", "name");
-    res.status(200).json({ success: true, data: updatedProduct });
+
+    // Cập nhật ảnh nếu có
+    let updatedImagePath = null;
+    if (req.file) {
+      updatedImagePath = req.file.filename;
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { ...product, image: updatedImagePath },
+      { new: true }
+    ).populate("category", "name");
+
+    const productWithFullImagePath = {
+      ...updatedProduct.toObject(),
+      image: updatedProduct.image
+        ? `http://localhost:5000/assets/${updatedProduct.image}`
+        : null,
+    };
+
+    res.status(200).json({ success: true, data: productWithFullImagePath });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
   }

@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 const AddCategory = ({ onAddCategory, onClose }) => {
   const [newCategory, setNewCategory] = useState({
     name: "",
-    description: "",
     isActive: 1, // Mặc định là 1 (Active)
   });
 

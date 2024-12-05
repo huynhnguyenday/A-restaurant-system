@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-
+import axios from "axios";
 const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
   const [newProduct, setNewProduct] = useState({
     name: "",
-    image: "",
+    image: null, // Đặt image là null thay vì chuỗi rỗng
     price: "",
     sell_price: "",
     category: "",
@@ -21,7 +21,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
 
         // Lọc danh mục có isActive = 1
         const activeCategories = data.data.filter(
-          (category) => category.isActive === 1,
+          (category) => category.isActive === 1
         );
         setCategories(activeCategories);
       } catch (error) {
@@ -32,29 +32,50 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
     fetchCategories();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onCreateProduct(newProduct);
-    setNewProduct({
-      name: "",
-      image: "",
-      price: "",
-      sell_price: "",
-      category: "",
-      displayType: 1,
-      displayHot: 1,
-    });
-    setShowModal(false); 
-  };
 
- 
+    if (!newProduct.image) {
+    alert("Please select an image for the product.");
+    return;
+  }
+
+    const formData = new FormData();
+    formData.append("name", newProduct.name);
+    formData.append("image", newProduct.image); // Gửi ảnh dạng FormData
+    formData.append("price", newProduct.price);
+    formData.append("sell_price", newProduct.sell_price);
+    formData.append("category", newProduct.category);
+    formData.append("displayType", newProduct.displayType);
+    formData.append("displayHot", newProduct.displayHot);
+
+    try {
+  const response = await axios.post("http://localhost:5000/api/products", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data", // Đảm bảo là 'multipart/form-data'
+    },
+  });
+  console.log("Product added successfully", response.data);
+} catch (error) {
+  if (error.response) {
+    console.error("Error adding product", error.response.data); // Kiểm tra error.response
+  } else if (error.request) {
+    console.error("No response received from server", error.request);
+  } else {
+    console.error("Error", error.message); // Thông báo lỗi khác
+  }
+}
+
+  setShowModal(false);
+};
+
   const handleNumericInput = (value, field) => {
     if (/^\d*$/.test(value)) {
       setNewProduct({ ...newProduct, [field]: value });
     }
   };
 
-  if (!showModal) return null; 
+  if (!showModal) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -74,14 +95,12 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium">Image URL</label>
+            <label className="block text-sm font-medium">Image</label>
             <input
-              type="text"
-              value={newProduct.image}
-              onChange={(e) =>
-                setNewProduct({ ...newProduct, image: e.target.value })
-              }
+              type="file"
+              onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })}
               required
+              accept="image/*"
               className="w-full rounded-md border border-gray-300 p-2"
             />
           </div>
