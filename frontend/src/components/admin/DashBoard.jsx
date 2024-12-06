@@ -14,7 +14,7 @@ import ManageBlog from "./ManageBlog";
 import ManageAccount from "./AccountManage/ManageAccount";
 import ManageCategory from "./CategoryManage/ManageCategory";
 import { Link } from "react-router-dom";
-import imgpersonportal from "../../assets/imgpersonportal.png";
+import imgpersonportal from "../../../../backend/assets/imgpersonportal.png";
 
 const SidebarItem = ({ icon, label, isSidebarExpanded, onClick, isActive }) => (
   <li

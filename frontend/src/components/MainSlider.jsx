@@ -1,6 +1,6 @@
 import React from "react";
 import "./MainSlider.css"; // CSS để định dạng giao diện
-import imgBackground from "../assets/img_background.png"; // Đường dẫn tới ảnh
+import imgBackground from "../../../backend/assets/img_background.png"; // Đường dẫn tới ảnh
 
 const MainSlider = () => {
   return (

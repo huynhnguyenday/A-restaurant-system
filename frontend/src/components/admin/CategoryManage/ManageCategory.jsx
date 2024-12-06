@@ -116,7 +116,7 @@ const ManageCategory = () => {
                   <td className="px-4 py-6 text-center">
                     {new Date(category.updatedAt).toLocaleDateString()}
                   </td>
-                  <td className="px-4 py-6 text-2xl text-center">
+                  <td className="px-4 py-6 text-center text-2xl">
                     <FontAwesomeIcon
                       icon={category.isActive === 1 ? faToggleOn : faToggleOff}
                       className={
@@ -130,7 +130,7 @@ const ManageCategory = () => {
                   <td className="px-4 py-6 text-center text-xl">
                     <button
                       onClick={() => openUpdateForm(category)}
-                      className="text-gray-400 hover:text-blue-600"
+                      className="rounded-md px-3 py-1 text-blue-400 hover:bg-slate-300"
                     >
                       <FontAwesomeIcon icon={faPen} />
                     </button>

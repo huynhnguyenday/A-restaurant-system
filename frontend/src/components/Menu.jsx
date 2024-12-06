@@ -4,13 +4,13 @@ import ModalProduct from "./ModalProduct"; // Import ModalProduct component
 import "./Menu.css";
 
 // Import hình ảnh
-import imgfood1 from "../assets/imgfood1.png";
-import imgfood2 from "../assets/imgfood2.png";
-import imgfood3 from "../assets/imgfood3.png";
-import imgfood4 from "../assets/imgfood4.png";
-import imgfood5 from "../assets/imgfood5.png";
-import imgfood6 from "../assets/imgfood6.png";
-import imgfood7 from "../assets/imgfood7.png";
+import imgfood1 from "../../../backend/assets/imgfood1.png";
+import imgfood2 from "../../../backend/assets/imgfood2.png";
+import imgfood3 from "../../../backend/assets/imgfood3.png";
+import imgfood4 from "../../../backend/assets/imgfood4.png";
+import imgfood5 from "../../../backend/assets/imgfood5.png";
+import imgfood6 from "../../../backend/assets/imgfood6.png";
+import imgfood7 from "../../../backend/assets/imgfood7.png";
 
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("TẤT CẢ"); // Danh mục đang chọn

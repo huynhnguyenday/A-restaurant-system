@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import AddProduct from "./AddProduct";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -9,25 +8,37 @@ import {
   faEyeSlash,
   faFire,
 } from "@fortawesome/free-solid-svg-icons";
+import AddProduct from "./AddProduct";
+import UpdateProduct from "./UpdateProduct"; // Import UpdateProduct component
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showModal, setShowModal] = useState(false); 
+  const [showAddModal, setShowAddModal] = useState(false); // Separate state for adding product modal
+  const [showUpdateModal, setShowUpdateModal] = useState(false); // Separate state for updating product modal
+  const [selectedProduct, setSelectedProduct] = useState(null); // State to track selected product for editing
 
-  // Gọi API để lấy danh sách sản phẩm
+  // Tách riêng hàm fetchProducts để tái sử dụng
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/products"); // Đường dẫn API
+      setProducts(response.data.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  // Gọi API khi component được render lần đầu
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/products"); // Đường dẫn API
-        setProducts(response.data.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
     fetchProducts();
   }, []);
+
+  // Reload khi showModal thay đổi thành false
+  useEffect(() => {
+    if (!showAddModal && !showUpdateModal) {
+      fetchProducts();
+    }
+  }, [showAddModal, showUpdateModal]);
 
   const handleCreateProduct = async (product) => {
     try {
@@ -35,8 +46,8 @@ const ManageProduct = () => {
         "http://localhost:5000/api/products",
         product,
       );
-      setProducts([...products, response.data.data]); // Thêm sản phẩm vào danh sách
-      setShowModal(false); // Ẩn modal sau khi thêm
+      setProducts([...products, response.data.data]);
+      setShowAddModal(false);
     } catch (error) {
       console.error("Error creating product:", error.response.data.message);
     }
@@ -85,6 +96,12 @@ const ManageProduct = () => {
     }
   };
 
+  // Handle the edit product action (open the update modal)
+  const handleEditProduct = (product) => {
+    setSelectedProduct(product); // Set the selected product to be edited
+    setShowUpdateModal(true); // Show the update modal
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
@@ -102,7 +119,7 @@ const ManageProduct = () => {
             className="w-60 rounded-md border border-gray-300 p-2"
           />
           <button
-            onClick={() => setShowModal(true)} // Hiển thị modal
+            onClick={() => setShowAddModal(true)} // Hiển thị modal tạo sản phẩm
             className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
           >
             <FontAwesomeIcon icon={faPlus} />
@@ -110,11 +127,30 @@ const ManageProduct = () => {
         </div>
 
         {/* Component AddProduct */}
-        <AddProduct
-          showModal={showModal}
-          setShowModal={setShowModal}
-          onCreateProduct={handleCreateProduct}
-        />
+        {showAddModal && (
+          <AddProduct
+            showModal={showAddModal}
+            setShowModal={setShowAddModal}
+            onCreateProduct={handleCreateProduct}
+          />
+        )}
+
+        {/* Component UpdateProduct */}
+        {selectedProduct && showUpdateModal && (
+          <UpdateProduct
+            showModal={showUpdateModal}
+            setShowModal={setShowUpdateModal}
+            product={selectedProduct}
+            onUpdateProduct={(updatedProduct) => {
+              setProducts((prevProducts) =>
+                prevProducts.map((p) =>
+                  p._id === updatedProduct._id ? updatedProduct : p,
+                ),
+              );
+              setShowUpdateModal(false);
+            }}
+          />
+        )}
 
         {/* Bảng sản phẩm */}
         <div className="overflow-x-auto rounded-lg shadow-md">
@@ -145,9 +181,7 @@ const ManageProduct = () => {
                   </td>
                   <td className="px-4 py-2 font-bold">{product.name}</td>
                   <td className="px-4 py-2 text-center">
-                    {product.category?.name
-                      ? product.category.name.toLowerCase()
-                      : "chưa có"}
+                    {product.category?.name || "chưa có"}
                   </td>
                   <td className="px-4 py-2 text-center">
                     {product.price.toLocaleString()}
@@ -184,7 +218,10 @@ const ManageProduct = () => {
                     />
                   </td>
                   <td className="px-4 py-2 text-center text-xl">
-                    <button className="rounded-md px-3 py-1 text-blue-400 hover:bg-slate-300">
+                    <button
+                      className="rounded-md p-2 hover:bg-blue-100"
+                      onClick={() => handleEditProduct(product)} // Edit action
+                    >
                       <FontAwesomeIcon icon={faPen} />
                     </button>
                   </td>

@@ -8,13 +8,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./ProductSlider.css";
-import imgfood1 from "../assets/imgfood1.png";
-import imgfood2 from "../assets/imgfood2.png";
-import imgfood3 from "../assets/imgfood3.png";
-import imgfood4 from "../assets/imgfood4.png";
-import imgfood5 from "../assets/imgfood5.png";
-import imgfood6 from "../assets/imgfood6.png";
-import imgfood7 from "../assets/imgfood7.png";
+import imgfood1 from "../../../backend/assets/imgfood1.png";
+import imgfood2 from "../../../backend/assets/imgfood2.png";
+import imgfood3 from "../../../backend/assets/imgfood3.png";
+import imgfood4 from "../../../backend/assets/imgfood4.png";
+import imgfood5 from "../../../backend/assets/imgfood5.png";
+import imgfood6 from "../../../backend/assets/imgfood6.png";
+import imgfood7 from "../../../backend/assets/imgfood7.png";
 
 const products = [
   { id: 1, name: "Sinh tố dâu", image: imgfood1, sell_price: 20000, price: 25000 },

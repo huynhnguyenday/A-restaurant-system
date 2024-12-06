@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import "./BlogMain.css";
+import imgblog1 from "../../../backend/assets/imgblog1.png";
+import imgblog2 from "../../../backend/assets/imgblog2.png";
+import imgblog3 from "../../../backend/assets/imgblog3.png";
 
-import imgblog1 from "../assets/imgblog1.png";
-import imgblog2 from "../assets/imgblog2.png";
-import imgblog3 from "../assets/imgblog3.png";
-
-export const blogs = [ // Export blogs
+export const blogs = [ 
   {
     id: 1,
     title: "Here are the trends I see coming this fall",

@@ -21,7 +21,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
 
         // Lọc danh mục có isActive = 1
         const activeCategories = data.data.filter(
-          (category) => category.isActive === 1
+          (category) => category.isActive === 1,
         );
         setCategories(activeCategories);
       } catch (error) {
@@ -36,13 +36,13 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
     e.preventDefault();
 
     if (!newProduct.image) {
-    alert("Please select an image for the product.");
-    return;
-  }
+      alert("Please select an image for the product.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("name", newProduct.name);
-    formData.append("image", newProduct.image); // Gửi ảnh dạng FormData
+    formData.append("image", newProduct.image); 
     formData.append("price", newProduct.price);
     formData.append("sell_price", newProduct.sell_price);
     formData.append("category", newProduct.category);
@@ -50,24 +50,27 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
     formData.append("displayHot", newProduct.displayHot);
 
     try {
-  const response = await axios.post("http://localhost:5000/api/products", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data", // Đảm bảo là 'multipart/form-data'
-    },
-  });
-  console.log("Product added successfully", response.data);
-} catch (error) {
-  if (error.response) {
-    console.error("Error adding product", error.response.data); // Kiểm tra error.response
-  } else if (error.request) {
-    console.error("No response received from server", error.request);
-  } else {
-    console.error("Error", error.message); // Thông báo lỗi khác
-  }
-}
-
-  setShowModal(false);
-};
+      const response = await axios.post(
+        "http://localhost:5000/api/products",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Đảm bảo là 'multipart/form-data'
+          },
+        },
+      );
+      console.log("Product added successfully", response.data);
+    } catch (error) {
+      if (error.response) {
+        console.error("Error adding product", error.response.data); // Kiểm tra error.response
+      } else if (error.request) {
+        console.error("No response received from server", error.request);
+      } else {
+        console.error("Error", error.message); // Thông báo lỗi khác
+      }
+    }
+    setShowModal(false);
+  };
 
   const handleNumericInput = (value, field) => {
     if (/^\d*$/.test(value)) {
@@ -98,31 +101,37 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
             <label className="block text-sm font-medium">Image</label>
             <input
               type="file"
-              onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, image: e.target.files[0] })
+              }
               required
               accept="image/*"
               className="w-full rounded-md border border-gray-300 p-2"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Price</label>
-            <input
-              type="text"
-              value={newProduct.price}
-              onChange={(e) => handleNumericInput(e.target.value, "price")}
-              required
-              className="w-full rounded-md border border-gray-300 p-2"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Sell Price</label>
-            <input
-              type="text"
-              value={newProduct.sell_price}
-              onChange={(e) => handleNumericInput(e.target.value, "sell_price")}
-              required
-              className="w-full rounded-md border border-gray-300 p-2"
-            />
+          <div className="mb-4 flex space-x-4">
+            <div className="w-1/2">
+              <label className="block text-sm font-medium">Price</label>
+              <input
+                type="text"
+                value={newProduct.price}
+                onChange={(e) => handleNumericInput(e.target.value, "price")}
+                required
+                className="w-full rounded-md border border-gray-300 p-2"
+              />
+            </div>
+            <div className="w-1/2">
+              <label className="block text-sm font-medium">Sell Price</label>
+              <input
+                type="text"
+                value={newProduct.sell_price}
+                onChange={(e) =>
+                  handleNumericInput(e.target.value, "sell_price")
+                }
+                required
+                className="w-full rounded-md border border-gray-300 p-2"
+              />
+            </div>
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium">Category</label>

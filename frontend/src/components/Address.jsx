@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapLocationDot, faPlaneDeparture } from "@fortawesome/free-solid-svg-icons";
-import address1 from "../assets/address1.png";
-import address2 from "../assets/address2.png";
-import address3 from "../assets/address3.png";
-import address4 from "../assets/address4.png";
-import address5 from "../assets/address5.png";
+import address1 from "../../../backend/assets/address1.png";
+import address2 from "../../../backend/assets/address2.png";
+import address3 from "../../../backend/assets/address3.png";
+import address4 from "../../../backend/assets/address4.png";
+import address5 from "../../../backend/assets/address5.png";
 import './Address.css';
 
 const MapWithCards = () => {

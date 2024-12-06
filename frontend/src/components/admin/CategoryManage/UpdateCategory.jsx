@@ -25,8 +25,8 @@ const UpdateCategory = ({ category, onClose, onUpdateCategory }) => {
     axios
       .put(`http://localhost:5000/api/categories/${updatedCategory._id}`, updatedCategory)
       .then((response) => {
-        onUpdateCategory(updatedCategory); // Cập nhật danh mục trong state cha
-        onClose(); // Đóng modal
+        onUpdateCategory(updatedCategory); 
+        onClose();
       })
       .catch((error) => {
         console.error("There was an error updating the category:", error);
