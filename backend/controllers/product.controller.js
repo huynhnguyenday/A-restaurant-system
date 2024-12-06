@@ -108,8 +108,15 @@ export const updateProduct = async (req, res) => {
       }
     }
 
-    // Cập nhật ảnh nếu có
-    let updatedImagePath = null;
+    const existingProduct = await Product.findById(id);
+    if (!existingProduct) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
+
+    // Kiểm tra và cập nhật ảnh nếu có
+    let updatedImagePath = existingProduct.image;
     if (req.file) {
       updatedImagePath = req.file.filename;
     }
