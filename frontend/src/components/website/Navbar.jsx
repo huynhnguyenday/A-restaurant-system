@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faShoppingCart, faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
 import "./Navbar.css";
-import imgfood1 from "../../../backend/assets/imgfood1.png";
-import imgfood2 from "../../../backend/assets/imgfood2.png";
-import imgfood3 from "../../../backend/assets/imgfood3.png";
-import imgfood4 from "../../../backend/assets/imgfood4.png";
-import imgfood5 from "../../../backend/assets/imgfood5.png";
-import imgfood6 from "../../../backend/assets/imgfood6.png";
+import imgfood1 from "../../../../backend/assets/imgfood1.png";
+import imgfood2 from "../../../../backend/assets/imgfood2.png";
+import imgfood3 from "../../../../backend/assets/imgfood3.png";
+import imgfood4 from "../../../../backend/assets/imgfood4.png";
+import imgfood5 from "../../../../backend/assets/imgfood5.png";
+import imgfood6 from "../../../../backend/assets/imgfood6.png";
+import NavbarLink from "./NavbarLink";
 
 const Navbar = () => {
   const [cartItems, setCartItems] = useState([
@@ -69,12 +70,7 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-center">
-        <ul className="navbar-links">
-          <li><a href="/home">TRANG CHỦ</a></li>
-          <li><a href="/menu">THỰC ĐƠN</a></li>
-          <li><a href="/news">TIN TỨC</a></li>
-          <li><a href="/address">ĐỊA CHỈ</a></li>
-        </ul>
+        <NavbarLink/>
       </div>
 
       <div className="navbar-right">

@@ -217,7 +217,7 @@ const handleSubmit = async (e) => {
               </select>
             </div>
           </div>
-          <div className="flex justify-end space-x-4">
+          <div className="flex justify-between">
             <button
               type="button"
               onClick={() => setShowModal(false)}
@@ -227,7 +227,7 @@ const handleSubmit = async (e) => {
             </button>
             <button
               type="submit"
-              className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
             >
               Update
             </button>

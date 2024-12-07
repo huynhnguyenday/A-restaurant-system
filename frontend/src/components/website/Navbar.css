@@ -26,13 +26,6 @@
   color: #c63402;
 }
 
-/* Liên kết trong navbar */
-.navbar-center {
-  flex-grow: 1;
-  text-align: end;
-  margin-right: 4rem;
-}
-
 .navbar-links {
   list-style-type: none;
   margin: 0;
