@@ -64,11 +64,11 @@ export const createProduct = async (req, res) => {
       });
     }
 
-    const imagePath = req.file ? req.file.filename : null;
+    const imagePath = req.file.filename;
 
     const newProduct = new Product({
       ...product,
-      image: imagePath, // Lưu đường dẫn ảnh vào cơ sở dữ liệu
+      image: imagePath,
     });
 
     await newProduct.save();

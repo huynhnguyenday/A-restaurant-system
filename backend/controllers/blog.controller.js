@@ -1,5 +1,4 @@
 import Blog from "../models/blog.model.js";
-import path from "path";
 
 export const getBlogs = async (req, res) => {
   try {
@@ -26,13 +25,21 @@ export const createBlog = async (req, res) => {
   try {
     const { title, content } = req.body;
 
+    // Kiểm tra title và content
+    if (!title || !content) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Title and content are required" });
+    }
+
+    // Kiểm tra nếu không có ảnh
     if (!req.file) {
       return res
         .status(400)
         .json({ success: false, message: "Image is required" });
     }
 
-    const imagePath = `http://localhost:5000/uploads/${req.file.filename}`; // Đường dẫn ảnh
+    const imagePath = req.file.filename;
 
     const newBlog = new Blog({
       image: imagePath,
@@ -41,20 +48,24 @@ export const createBlog = async (req, res) => {
     });
 
     await newBlog.save();
+    const blogWithImage = {
+      ...newBlog.toObject(),
+      image: `http://localhost:5000/assets/${newBlog.image}`,
+    };
 
     res.status(201).json({
       success: true,
-      data: newBlog,
-      message: "Blog created successfully",
+      data: blogWithImage,
     });
   } catch (error) {
     console.error("Error in creating blog:", error.message);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
 export const updateBlog = async (req, res) => {
   const { id } = req.params;
-  const blog = req.body;
+  const { title, content } = req.body;
 
   // Kiểm tra ID hợp lệ
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -62,7 +73,6 @@ export const updateBlog = async (req, res) => {
   }
 
   try {
-    // Kiểm tra sự tồn tại của Blog trước khi cập nhật
     const existingBlog = await Blog.findById(id);
     if (!existingBlog) {
       return res
@@ -70,15 +80,17 @@ export const updateBlog = async (req, res) => {
         .json({ success: false, message: "Blog not found" });
     }
 
-    // Kiểm tra nếu có ảnh mới, tạo đường dẫn ảnh đầy đủ
+    let updatedImagePath = existingBlog.image;
     if (req.file) {
-      blog.image = `http://localhost:5000/assets/${req.file.filename}`;
+      updatedImagePath = req.file.filename;
     }
 
-    // Cập nhật blog
-    const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true });
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      id,
+      { title, content, image: updatedImagePath },
+      { new: true }
+    );
 
-    // Trả về dữ liệu đã cập nhật, với đường dẫn ảnh đầy đủ
     res.status(200).json({
       success: true,
       data: {
