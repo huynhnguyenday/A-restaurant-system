@@ -48,8 +48,6 @@ const UpdateProduct = ({
     }
   }, [showModal, product]);
 
-
-  // Hàm xử lý thay đổi thông tin trong form
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedProduct((prevProduct) => ({
@@ -63,92 +61,90 @@ const UpdateProduct = ({
     setUpdatedProduct((prevProduct) => ({
       ...prevProduct,
       imageFile: file || null, // Chỉ lưu file mới nếu có
-      image: file ? URL.createObjectURL(file) : prevProduct.image, 
+      image: file ? URL.createObjectURL(file) : prevProduct.image,
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const formData = new FormData();
-    formData.append("name", updatedProduct.name);
-    formData.append("price", updatedProduct.price);
-    formData.append("sell_price", updatedProduct.sell_price);
-    formData.append("category", updatedProduct.category);
-    formData.append("displayType", updatedProduct.displayType);
-    formData.append("displayHot", updatedProduct.displayHot);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("name", updatedProduct.name);
+      formData.append("price", updatedProduct.price);
+      formData.append("sell_price", updatedProduct.sell_price);
+      formData.append("category", updatedProduct.category);
+      formData.append("displayType", updatedProduct.displayType);
+      formData.append("displayHot", updatedProduct.displayHot);
 
-    if (updatedProduct.imageFile) {
-      formData.append("image", updatedProduct.imageFile); // Gửi ảnh mới
-    } else if (updatedProduct.image) {
-      formData.append("image", updatedProduct.image); // Gửi ảnh cũ nếu không có ảnh mới
-    } else {
-      formData.append("image", ""); // Đặt giá trị rỗng nếu không có ảnh
-    }
+      if (updatedProduct.imageFile) {
+        formData.append("image", updatedProduct.imageFile); // Gửi ảnh mới
+      } else if (updatedProduct.image) {
+        formData.append("image", updatedProduct.image); // Gửi ảnh cũ nếu không có ảnh mới
+      } else {
+        formData.append("image", ""); // Đặt giá trị rỗng nếu không có ảnh
+      }
 
-
-    const response = await axios.put(
-      `http://localhost:5000/api/products/${updatedProduct._id}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const response = await axios.put(
+        `http://localhost:5000/api/products/${updatedProduct._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         },
-      },
-    );
+      );
 
-    onUpdateProduct(response.data.data); // Cập nhật sản phẩm sau khi thành công
-    setShowModal(false); // Đóng modal
-  } catch (error) {
-    console.error("Error updating product:", error.response?.data.message);
-  }
-};
+      onUpdateProduct(response.data.data); // Cập nhật sản phẩm sau khi thành công
+      setShowModal(false); // Đóng modal
+    } catch (error) {
+      console.error("Error updating product:", error.response?.data.message);
+    }
+  };
 
   if (!showModal) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-full max-w-lg rounded-lg bg-white p-6">
-        <h2 className="mb-4 text-lg font-bold">Update Product</h2>
+      <div className="w-full max-w-6xl rounded-lg bg-white p-6">
+        <h2 className="mb-4 flex justify-center text-4xl font-bold">
+          Update Product
+        </h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={updatedProduct.name || ""}
-              onChange={handleInputChange}
-              className="w-full rounded-md border border-gray-300 p-2"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Image</label>
-            <div className="mb-2">
-              <img
-                src={
-                  updatedProduct.image.startsWith("http") ||
-                  updatedProduct.image.startsWith("data") ||
-                  updatedProduct.image.startsWith("/uploads/")
-                    ? updatedProduct.image
-                    : `/uploads/${updatedProduct.image}` // Đảm bảo đường dẫn ảnh hợp lệ
-                }
-                alt={updatedProduct.name}
-                className="mb-2 h-40 w-40 rounded-md border object-cover"
+          <div className="mb-4 flex space-x-6">
+            {/* Phần Tên và Category */}
+            <div className="w-1/3">
+              <label className="block pb-2 text-xl font-medium">Name</label>
+              <input
+                type="text"
+                name="name"
+                value={updatedProduct.name || ""}
+                onChange={handleInputChange}
+                className="w-full rounded-md border border-gray-300 p-2"
+                required
               />
-            </div>
-            <input
-              type="file"
-              onChange={handleImageChange}
-              accept="image/*"
-              className="w-full rounded-md border border-gray-300 p-2"
-            />
-          </div>
 
-          <div className="mb-4 flex space-x-4">
+              <label className="mt-4 block pb-2 text-xl font-medium">
+                Category
+              </label>
+              <select
+                value={updatedProduct.category}
+                name="category"
+                onChange={handleInputChange}
+                className="w-full rounded-md border border-gray-300 p-2"
+                required
+              >
+                <option value="">Select Category</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Phần Giá và Các thuộc tính */}
             <div className="w-1/2">
-              <label className="block text-sm font-medium">Price</label>
+              <label className="block pb-2 text-xl font-medium">Price</label>
               <input
                 type="text"
                 name="price"
@@ -157,9 +153,10 @@ const handleSubmit = async (e) => {
                 className="w-full rounded-md border border-gray-300 p-2"
                 required
               />
-            </div>
-            <div className="w-1/2">
-              <label className="block text-sm font-medium">Sell Price</label>
+
+              <label className="mt-4 block pb-2 text-xl font-medium">
+                Sell Price
+              </label>
               <input
                 type="text"
                 name="sell_price"
@@ -168,68 +165,81 @@ const handleSubmit = async (e) => {
                 className="w-full rounded-md border border-gray-300 p-2"
                 required
               />
+
+              <div className="mt-4 flex space-x-4">
+                <div className="w-1/2">
+                  <label className="block pb-2 text-xl font-medium">
+                    Display Type
+                  </label>
+                  <select
+                    value={updatedProduct.displayType}
+                    name="displayType"
+                    onChange={handleInputChange}
+                    className="w-full rounded-md border border-gray-300 p-2"
+                    required
+                  >
+                    <option value={1}>Active</option>
+                    <option value={2}>Inactive</option>
+                  </select>
+                </div>
+
+                <div className="w-1/2">
+                  <label className="block pb-2 text-xl font-medium">
+                    Display Hot
+                  </label>
+                  <select
+                    value={updatedProduct.displayHot}
+                    name="displayHot"
+                    onChange={handleInputChange}
+                    className="w-full rounded-md border border-gray-300 p-2"
+                    required
+                  >
+                    <option value={1}>Hot</option>
+                    <option value={2}>Not Hot</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Phần Ảnh */}
+            <div className="w-2/5">
+              <label className="block pb-2 text-xl font-medium">Image</label>
+              <input
+                type="file"
+                onChange={handleImageChange}
+                accept="image/*"
+                className="w-full rounded-md border border-gray-300 p-2"
+              />
+              <div className="mb-2">
+                <img
+                  src={
+                    updatedProduct.image.startsWith("http") ||
+                    updatedProduct.image.startsWith("data") ||
+                    updatedProduct.image.startsWith("/uploads/")
+                      ? updatedProduct.image
+                      : `/uploads/${updatedProduct.image}`
+                  }
+                  alt={updatedProduct.name}
+                  className="mb-2 h-2/5 w-2/5 rounded-md border object-cover"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Category</label>
-            <select
-              value={updatedProduct.category}
-              name="category"
-              onChange={handleInputChange}
-              className="w-full rounded-md border border-gray-300 p-2"
-              required
-            >
-              <option value="">Select Category</option>
-              {categories.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4 flex space-x-4">
-            <div className="w-1/2">
-              <label className="block text-sm font-medium">Display Type</label>
-              <select
-                value={updatedProduct.displayType}
-                name="displayType"
-                onChange={handleInputChange}
-                className="w-full rounded-md border border-gray-300 p-2"
-                required
-              >
-                <option value={1}>Active</option>
-                <option value={2}>Inactive</option>
-              </select>
-            </div>
-
-            <div className="w-1/2">
-              <label className="block text-sm font-medium">Display Hot</label>
-              <select
-                value={updatedProduct.displayHot}
-                name="displayHot"
-                onChange={handleInputChange}
-                className="w-full rounded-md border border-gray-300 p-2"
-                required
-              >
-                <option value={1}>Hot</option>
-                <option value={2}>Not Hot</option>
-              </select>
-            </div>
-          </div>
-          <div className="flex justify-between">
+          {/* Nút Cancel và Update */}
+          <div className="mt-6 flex justify-center">
             <button
               type="button"
               onClick={() => setShowModal(false)}
-              className="rounded-md bg-gray-200 px-4 py-2 text-gray-600"
+              className="mr-28 w-32 rounded-md bg-gray-200 px-4 py-2 text-gray-600"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              className="w-32 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
-              Update
+              Update Product
             </button>
           </div>
         </form>

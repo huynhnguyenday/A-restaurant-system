@@ -1,16 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const PricingContentNew = () => {
+const PricingContentNew = ({ closeFlyout }) => {
   const categories = ["CAFÉ", "TRÀ", "TRÀ SỮA", "SINH TỐ", "TRÀ LẠNH"];
-  const navigate = useNavigate(); // Khởi tạo useNavigate
+  const navigate = useNavigate(); 
 
   const handleNavigate = (category) => {
+    closeFlyout();
     navigate(`/menu?category=${category}`);
   };
 
   const handleNavigateToNews = () => {
-    navigate("/news"); // Điều hướng đến trang /menu
+    closeFlyout();
+    navigate("/news"); 
   };
 
   return (
@@ -40,9 +42,7 @@ const PricingContentNew = () => {
         </button>
       </div>
 
-      <div className="flex h-1/4 w-1/4 justify-between">
-        
-      </div>
+      <div className="flex h-1/4 w-1/4 justify-between"></div>
     </div>
   );
 };

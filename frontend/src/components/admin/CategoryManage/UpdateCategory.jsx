@@ -34,31 +34,33 @@ const UpdateCategory = ({ category, onClose, onUpdateCategory }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4">Update Category</h2>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+      <div className="w-full max-w-md rounded-lg bg-white p-6">
+        <h2 className="mb-4 flex justify-center text-4xl font-bold">
+          Update Category
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block font-medium mb-1">Category Name</label>
+            <label className="mb-1 block font-medium">Category Name</label>
             <input
               type="text"
               name="name"
               value={updatedCategory.name}
               onChange={handleInputChange}
-              className="border border-gray-300 rounded-md w-full p-2"
+              className="w-full rounded-md border border-gray-300 p-2"
             />
           </div>
           <div className="flex justify-between">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400"
+              className="rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
               Update Category
             </button>

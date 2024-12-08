@@ -81,122 +81,132 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
  if (!showModal) return null;
 
  return (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-   <div className="w-full max-w-lg rounded-lg bg-white p-6">
-    <h2 className="mb-4 text-lg font-bold">Create Product</h2>
-    <form onSubmit={handleSubmit}>
-     <div className="mb-4">
-      <label className="block text-sm font-medium">Name</label>
-      <input
-       type="text"
-       value={newProduct.name}
-       onChange={(e) =>
-        setNewProduct({ ...newProduct, name: e.target.value })
-       }
-       required
-       className="w-full rounded-md border border-gray-300 p-2"
-      />
+   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+     <div className="w-full max-w-lg rounded-lg bg-white p-6">
+       <h2 className="mb-4 flex justify-center text-4xl font-bold">
+         Create Product
+       </h2>
+       <form onSubmit={handleSubmit}>
+         <div className="mb-4">
+           <label className="block pb-2 text-xl font-medium">Name</label>
+           <input
+             type="text"
+             value={newProduct.name}
+             onChange={(e) =>
+               setNewProduct({ ...newProduct, name: e.target.value })
+             }
+             required
+             className="h-12 w-full rounded-md border border-gray-300 p-2"
+           />
+         </div>
+         <div className="mb-4">
+           <label className="block pb-2 text-xl font-medium">Image</label>
+           <input
+             type="file"
+             onChange={(e) =>
+               setNewProduct({ ...newProduct, image: e.target.files[0] })
+             }
+             required
+             accept="image/*"
+             className="h-12 w-full rounded-md border border-gray-300 p-2"
+           />
+         </div>
+         <div className="mb-4 flex space-x-4">
+           <div className="w-1/2">
+             <label className="block pb-2 text-xl font-medium">Price</label>
+             <input
+               type="text"
+               value={newProduct.price}
+               onChange={(e) => handleNumericInput(e.target.value, "price")}
+               required
+               className="h-12 w-full rounded-md border border-gray-300 p-2"
+             />
+           </div>
+           <div className="w-1/2">
+             <label className="block pb-2 text-xl font-medium">
+               Sell Price
+             </label>
+             <input
+               type="text"
+               value={newProduct.sell_price}
+               onChange={(e) =>
+                 handleNumericInput(e.target.value, "sell_price")
+               }
+               required
+               className="h-12 w-full rounded-md border border-gray-300 p-2"
+             />
+           </div>
+         </div>
+         <div className="mb-4">
+           <label className="block pb-2 text-xl font-medium">Category</label>
+           <select
+             value={newProduct.category}
+             onChange={(e) =>
+               setNewProduct({ ...newProduct, category: e.target.value })
+             }
+             required
+             className="h-12 w-full rounded-md border border-gray-300 p-2"
+           >
+             <option value="">Select Category</option>
+             {categories.map((category) => (
+               <option key={category._id} value={category._id}>
+                 {category.name}
+               </option>
+             ))}
+           </select>
+         </div>
+         <div className="mb-4 flex space-x-4">
+           <div className="w-1/2">
+             <label className="block pb-2 text-xl font-medium">
+               Display Type
+             </label>
+             <select
+               value={newProduct.displayType}
+               onChange={(e) =>
+                 setNewProduct({ ...newProduct, displayType: +e.target.value })
+               }
+               required
+               className="h-12 w-full rounded-md border border-gray-300 p-2"
+             >
+               <option value={1}>Active</option>
+               <option value={2}>InActive</option>
+             </select>
+           </div>
+           <div className="w-1/2">
+             <label className="block pb-2 text-xl font-medium">
+               Display Hot
+             </label>
+             <select
+               value={newProduct.displayHot}
+               onChange={(e) =>
+                 setNewProduct({ ...newProduct, displayHot: +e.target.value })
+               }
+               required
+               className="h-12 w-full rounded-md border border-gray-300 p-2"
+             >
+               <option value={1}>Hot</option>
+               <option value={2}>Not Hot</option>
+             </select>
+           </div>
+         </div>
+         <div className="flex justify-between pt-2">
+           <button
+             type="button"
+             onClick={() => setShowModal(false)}
+             className="w-32 rounded-md bg-gray-200 px-4 py-2 text-gray-600"
+           >
+             Cancel
+           </button>
+           <button
+             type="submit"
+             className="w-32 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-800"
+           >
+             Create
+           </button>
+         </div>
+       </form>
      </div>
-     <div className="mb-4">
-      <label className="block text-sm font-medium">Image</label>
-      <input
-       type="file"
-       onChange={(e) =>
-        setNewProduct({ ...newProduct, image: e.target.files[0] })
-       }
-       required
-       accept="image/*"
-       className="w-full rounded-md border border-gray-300 p-2"
-      />
-     </div>
-     <div className="mb-4 flex space-x-4">
-      <div className="w-1/2">
-       <label className="block text-sm font-medium">Price</label>
-       <input
-        type="text"
-        value={newProduct.price}
-        onChange={(e) => handleNumericInput(e.target.value, "price")}
-        required
-        className="w-full rounded-md border border-gray-300 p-2"
-       />
-      </div>
-      <div className="w-1/2">
-       <label className="block text-sm font-medium">Sell Price</label>
-       <input
-        type="text"
-        value={newProduct.sell_price}
-        onChange={(e) =>
-         handleNumericInput(e.target.value, "sell_price")
-        }
-        required
-        className="w-full rounded-md border border-gray-300 p-2"
-       />
-      </div>
-     </div>
-     <div className="mb-4">
-      <label className="block text-sm font-medium">Category</label>
-      <select
-       value={newProduct.category}
-       onChange={(e) =>
-        setNewProduct({ ...newProduct, category: e.target.value })
-       }
-       required
-       className="w-full rounded-md border border-gray-300 p-2"
-      >
-       <option value="">Select Category</option>
-       {categories.map((category) => (
-        <option key={category._id} value={category._id}>
-         {category.name}
-        </option>
-       ))}
-      </select>
-     </div>
-     <div className="mb-4">
-      <label className="block text-sm font-medium">Display Type</label>
-      <select
-       value={newProduct.displayType}
-       onChange={(e) =>
-        setNewProduct({ ...newProduct, displayType: +e.target.value })
-       }
-       required
-       className="w-full rounded-md border border-gray-300 p-2"
-      >
-       <option value={1}>Active</option>
-       <option value={2}>InActive</option>
-      </select>
-     </div>
-     <div className="mb-4">
-      <label className="block text-sm font-medium">Display Hot</label>
-      <select
-       value={newProduct.displayHot}
-       onChange={(e) =>
-        setNewProduct({ ...newProduct, displayHot: +e.target.value })
-       }
-       required
-       className="w-full rounded-md border border-gray-300 p-2"
-      >
-       <option value={1}>Hot</option>
-       <option value={2}>Not Hot</option>
-      </select>
-     </div>
-     <div className="flex justify-between">
-      <button
-       type="button"
-       onClick={() => setShowModal(false)}
-       className="rounded-md bg-gray-200 px-4 py-2 text-gray-600"
-      >
-       Cancel
-      </button>
-      <button
-       type="submit"
-       className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-      >
-       Create
-      </button>
-     </div>
-    </form>
    </div>
-  </div>
  );
 };
 

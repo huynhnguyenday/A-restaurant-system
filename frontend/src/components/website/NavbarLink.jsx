@@ -32,6 +32,8 @@ const FlyoutLink = ({ children, href, FlyoutContent }) => {
   const [open, setOpen] = useState(false);
   const showFlyout = FlyoutContent && open;
 
+  const closeFlyout = () => setOpen(false);
+
   return (
     <div
       onMouseEnter={() => setOpen(true)}
@@ -54,15 +56,16 @@ const FlyoutLink = ({ children, href, FlyoutContent }) => {
             exit={{ opacity: 0, y: 15 }}
             style={{ translateX: "-50%" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 top-[43px] w-[1200px] rounded-lg bg-white text-black shadow-lg"
+            className="absolute left-1/2 top-[60px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
           >
-            <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 border-l-2 border-t-2 border-orange-900 bg-white" />
-            <FlyoutContent />
+            
+            <FlyoutContent closeFlyout={closeFlyout} />
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 };
+
 
 export default NavbarLink;
