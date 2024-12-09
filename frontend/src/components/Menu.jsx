@@ -1,38 +1,46 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ModalProduct from "./ModalProduct"; // Import ModalProduct component
 import "./Menu.css";
-
+import axios from "axios";
 // Import hình ảnh
-import imgfood1 from "../../../backend/assets/imgfood1.png";
-import imgfood2 from "../../../backend/assets/imgfood2.png";
-import imgfood3 from "../../../backend/assets/imgfood3.png";
-import imgfood4 from "../../../backend/assets/imgfood4.png";
-import imgfood5 from "../../../backend/assets/imgfood5.png";
-import imgfood6 from "../../../backend/assets/imgfood6.png";
-import imgfood7 from "../../../backend/assets/imgfood7.png";
-
 const Menu = () => {
-  const [activeCategory, setActiveCategory] = useState("TẤT CẢ"); // Danh mục đang chọn
-  const [favorites, setFavorites] = useState({}); // Danh sách yêu thích
-  const [selectedProduct, setSelectedProduct] = useState(null); // Sản phẩm đã chọn
-  const [quantity, setQuantity] = useState(1); // Số lượng sản phẩm trong Modal
+  const [activeCategory, setActiveCategory] = useState("TẤT CẢ");
+  const [categories, setCategories] = useState(["TẤT CẢ"]); // Lưu danh sách danh mục, mặc định có "TẤT CẢ"
+  const [products, setProducts] = useState([]); // Lưu danh sách sản phẩm
+  const [favorites, setFavorites] = useState({});
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Danh sách sản phẩm
-  const products = [
-    { id: 1, name: "Sinh tố dâu", image: imgfood1, sell_price: 20000, price: 25000, category: "SINH TỐ" },
-    { id: 2, name: "Cà phê sữa", image: imgfood2, sell_price: 30000, price: 35000, category: "CAFÉ" },
-    { id: 3, name: "Cà phê đen", image: imgfood3, sell_price: 40000, price: 45000, category: "CAFÉ" },
-    { id: 4, name: "Trà sữa trân châu đường đen", image: imgfood4, sell_price: 50000, price: 55000, category: "TRÀ SỮA" },
-    { id: 5, name: "Trà đào cam sả", image: imgfood5, sell_price: 60000, price: 65000, category: "TRÀ" },
-    { id: 6, name: "Cam tắc xí muội", image: imgfood6, sell_price: 70000, price: 75000, category: "TRÀ LẠNH" },
-    { id: 7, name: "Trà sữa ô long", image: imgfood7, sell_price: 80000, price: 85000, category: "TRÀ SỮA" },
-  ];
+   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/categories"); // Thay URL phù hợp với API backend
+        const categoryData = response.data.data.map((category) => category.name); // Chỉ lấy tên danh mục
+        setCategories(["TẤT CẢ", ...categoryData]); // Thêm "TẤT CẢ" vào đầu danh sách
+      } catch (error) {
+        console.error("Error fetching categories:", error.message);
+      }
+    };
 
-  // Danh sách danh mục
-  const categories = ["TẤT CẢ", "CAFÉ", "TRÀ", "TRÀ SỮA", "SINH TỐ", "TRÀ LẠNH"];
+    fetchCategories();
+  }, []);
+
+  // Fetch sản phẩm từ API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/products"); // Thay URL phù hợp
+        setProducts(response.data.data);
+      } catch (error) {
+        console.error("Error fetching products:", error.message);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -42,8 +50,8 @@ const Menu = () => {
 
   // Lọc sản phẩm theo danh mục
   const filterItems =
-    activeCategory === "TẤT CẢ" ? products : products.filter((item) => item.category === activeCategory);
-
+    activeCategory === "TẤT CẢ" ? products : products.filter((item) => item.category.name === activeCategory);
+  
   // Xử lý khi nhấn yêu thích
   const handleToggleFavorite = (id) => {
     setFavorites((prevFavorites) => ({
@@ -91,32 +99,32 @@ const Menu = () => {
       {/* Hiển thị danh sách sản phẩm */}
       <div className="menu-items-wrapper">
         {filterItems.map((item) => (
-          <div className="menu-item-card" key={item.id}>
+          <div className="menu-item-card" key={item._id}>
             <div className="menu-item-image">
-              <Link to={`/detailfood/${item.id}`}>
+              <Link to={`/detailfood/${item._id}`}>
                 <img src={item.image} alt={item.name} />
               </Link>
             </div>
 
             {/* Icon yêu thích */}
             <div
-              className={`favorite-icon ${favorites[item.id] ? "active" : ""}`}
-              onClick={() => handleToggleFavorite(item.id)}
+              className={`favorite-icon ${favorites[item._id] ? "active" : ""}`}
+              onClick={() => handleToggleFavorite(item._id)}
             >
-              {favorites[item.id] ? "♥" : "♡"}
+              {favorites[item._id] ? "♥" : "♡"}
             </div>
 
             {/* Thông tin sản phẩm */}
             <div className="menu-item-info">
               <h6 className="menu-item-name">
-                <Link to={`/detailfood/${item.id}`}>{item.name}</Link>
+                <Link to={`/detailfood/${item._id}`}>{item.name}</Link>
               </h6>
               <div className="menu-item-price">
                 <span>{item.sell_price.toLocaleString()} đ</span>
                 {item.price !== item.sell_price && (
                   <span className="price-old">{item.price.toLocaleString()} đ</span>
                 )}
-              </div>
+              </div>  
             </div>
 
             {/* Nút thêm vào giỏ hàng */}

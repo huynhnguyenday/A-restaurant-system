@@ -1,25 +1,9 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
-import imgfood1 from "../../../backend/assets/imgfood1.png";
-import imgfood2 from "../../../backend/assets/imgfood2.png";
-import imgfood3 from "../../../backend/assets/imgfood3.png";
-import imgfood4 from "../../../backend/assets/imgfood4.png";
-import imgfood5 from "../../../backend/assets/imgfood5.png";
-import imgfood6 from "../../../backend/assets/imgfood6.png";
-import imgfood7 from "../../../backend/assets/imgfood7.png";
 import "./DetailFood.css";
-
-const products = [
-  { id: 1, name: "Sinh tố dâu", image: imgfood1, sell_price: 20000, price: 25000, category: "SINH TỐ" },
-  { id: 2, name: "Cà phê sữa", image: imgfood2, sell_price: 30000, price: 35000, category: "CAFÉ" },
-  { id: 3, name: "Cà phê đen", image: imgfood3, sell_price: 40000, price: 45000, category: "CAFÉ" },
-  { id: 4, name: "Trà sữa trân châu đường đen", image: imgfood4, sell_price: 50000, price: 55000, category: "TRÀ SỮA" },
-  { id: 5, name: "Trà đào cam sả", image: imgfood5, sell_price: 60000, price: 65000, category: "TRÀ" },
-  { id: 6, name: "Cam tắc xí muội", image: imgfood6, sell_price: 70000, price: 75000, category: "TRÀ LẠNH" },
-  { id: 7, name: "Trà sữa ô long", image: imgfood7, sell_price: 80000, price: 85000, category: "TRÀ SỮA" },
-];
+import axios from "axios";
 
 const menuCategories = [
   "TẤT CẢ", "CAFÉ", "TRÀ", "TRÀ SỮA", "SINH TỐ", "TRÀ LẠNH"
@@ -27,10 +11,34 @@ const menuCategories = [
 
 const DetailFood = () => {
   const [quantity, setQuantity] = useState(1);
-  const { id } = useParams();
+  const [product, setProduct] = useState(null); // State lưu sản phẩm
+  const [loading, setLoading] = useState(true); // State hiển thị trạng thái tải dữ liệu
+  const { id } = useParams(); // Lấy ID từ URL
   const navigate = useNavigate();
 
-  const product = products.find((p) => p.id === parseInt(id));
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true); // Bắt đầu tải dữ liệu
+        const response = await axios.get(`http://localhost:5000/api/mainPages/${id}`);
+        if (response.data.success) {
+          setProduct(response.data.data); // Lưu sản phẩm vào state
+        } else {
+          console.error("Sản phẩm không tồn tại hoặc API lỗi.");
+        }
+      } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
+      } finally {
+        setLoading(false); // Kết thúc tải dữ liệu
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  if (loading) {
+    return <div>Đang tải dữ liệu...</div>; // Hiển thị trạng thái tải
+  }
 
   if (!product) {
     return <div>Sản phẩm không tồn tại.</div>;

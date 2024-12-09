@@ -1,32 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 import ModalProduct from "./ModalProduct";
+import axios from "axios";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./ProductSlider.css";
-import imgfood1 from "../../../backend/assets/imgfood1.png";
-import imgfood2 from "../../../backend/assets/imgfood2.png";
-import imgfood3 from "../../../backend/assets/imgfood3.png";
-import imgfood4 from "../../../backend/assets/imgfood4.png";
-import imgfood5 from "../../../backend/assets/imgfood5.png";
-import imgfood6 from "../../../backend/assets/imgfood6.png";
-import imgfood7 from "../../../backend/assets/imgfood7.png";
-
-const products = [
-  { id: 1, name: "Sinh tố dâu", image: imgfood1, sell_price: 20000, price: 25000 },
-  { id: 2, name: "Cà phê sữa", image: imgfood2, sell_price: 30000, price: 35000 },
-  { id: 3, name: "Cà phê đen", image: imgfood3, sell_price: 40000, price: 45000 },
-  { id: 4, name: "Trà sữa trân châu đường đen", image: imgfood4, sell_price: 50000, price: 55000 },
-  { id: 5, name: "Trà đào cam sả", image: imgfood5, sell_price: 60000, price: 65000 },
-  { id: 6, name: "Cam tắc xí muội", image: imgfood6, sell_price: 70000, price: 75000 },
-  { id: 7, name: "Trà sữa ô long", image: imgfood7, sell_price: 80000, price: 85000 },
-];
 
 const ProductSlider = () => {
+  const [products, setProducts] = useState([]);
   const [favorites, setFavorites] = useState({});
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -42,6 +27,23 @@ const ProductSlider = () => {
       controls.start("hidden");
     }
   }, [controls, inView]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/mainPages"); // Gọi API bằng Axios
+        if (response.data.success) {
+          setProducts(response.data.data); // Lưu dữ liệu vào state
+        } else {
+          console.error("Failed to fetch products.");
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const handleAddToCart = (product) => {
     setSelectedProduct(product);
@@ -76,7 +78,7 @@ const ProductSlider = () => {
         }}
       >
         {products.map((product, index) => (
-          <SwiperSlide key={product.id}>
+          <SwiperSlide key={product._id}>
             <motion.div
               className="product-card"
               initial="hidden"
@@ -91,20 +93,20 @@ const ProductSlider = () => {
               }}
             >
               <div className="product-image">
-                <Link to={`/detailfood/${product.id}`}>
+                <Link to={`/detailfood/${product._id}`}>
                   <img src={product.image} alt={product.name} />
                 </Link>
               </div>
               <div
                 className={`favorite ${favorites[product.id] ? "favorite-active" : ""}`}
-                onClick={() => handleToggleFavorite(product.id)}
+                onClick={() => handleToggleFavorite(product._id)}
               >
-                {favorites[product.id] ? "♥" : "♡"}
+                {favorites[product._id] ? "♥" : "♡"}
               </div>
               <div className="product-bubble">HOT</div>
               <div className="product-info">
                 <h6 className="product-name">
-                  <Link to={`/detailfood/${product.id}`}>{product.name}</Link>
+                  <Link to={`/detailfood/${product._id}`}>{product.name}</Link>
                 </h6>
                 <div className="product-price">
                   <span>{product.sell_price.toLocaleString()} đ</span>

@@ -4,10 +4,11 @@ import productRoutes from "./routes/product.route.js";
 import accountRoutes from "./routes/account.route.js";
 import loginFormRoutes from "./routes/loginForm.route.js";
 import categoryRoutes from "./routes/category.route.js";
+import blogRoutes from "./routes/blog.route.js";
+import mainPage from "./routes/mainPage.route.js";
 import cors from "cors";
 import { fileURLToPath } from "url";
 import path from "path";
-import blogRoutes from "./routes/blog.route.js";
 
 const app = express();
 app.use(cors());
@@ -23,6 +24,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/users", loginFormRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/accounts", accountRoutes);
+app.use("/api/mainPages", mainPage);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
