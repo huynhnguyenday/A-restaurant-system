@@ -1,4 +1,5 @@
 import Product from "../models/product.model.js";
+import Category from "../models/category.model.js";
 import mongoose from "mongoose";
 
 export const getProductById = async (req, res) => {
@@ -64,5 +65,44 @@ export const getHotProducts = async (req, res) => {
       success: false,
       message: "Server Error",
     });
+  }
+};
+
+export const getActiveProducts = async (req, res) => {
+  try {
+    const filter = {
+      displayType: 1,
+    };
+
+    const products = await Product.find(filter).populate("category", "name");
+
+    // Cập nhật đường dẫn hình ảnh đầy đủ
+    const productsWithFullImagePath = products.map((product) => ({
+      ...product.toObject(),
+      image: `http://localhost:5000/assets/${product.image}`,
+    }));
+
+    res.status(200).json({
+      success: true,
+      data: productsWithFullImagePath,
+    });
+  } catch (error) {
+    console.error("Error in fetching filtered products:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+export const getActiveCategory = async (req, res) => {
+  try {
+    // Lọc chỉ lấy những category có isActive = 1
+    const categories = await Category.find({ isActive: 1 });
+
+    res.status(200).json({ success: true, data: categories });
+  } catch (error) {
+    console.log("Error in fetching categories", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
   }
 };

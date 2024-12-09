@@ -17,7 +17,7 @@ const Menu = () => {
    useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/categories"); // Thay URL phù hợp với API backend
+        const response = await axios.get("http://localhost:5000/api/mainPages/activeCategories"); // Thay URL phù hợp với API backend
         const categoryData = response.data.data.map((category) => category.name); // Chỉ lấy tên danh mục
         setCategories(["TẤT CẢ", ...categoryData]); // Thêm "TẤT CẢ" vào đầu danh sách
       } catch (error) {
@@ -32,7 +32,7 @@ const Menu = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/products"); // Thay URL phù hợp
+        const response = await axios.get("http://localhost:5000/api/mainPages/activeProducts"); // Thay URL phù hợp
         setProducts(response.data.data);
       } catch (error) {
         console.error("Error fetching products:", error.message);
