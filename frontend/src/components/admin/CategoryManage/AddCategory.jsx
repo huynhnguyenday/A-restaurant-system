@@ -35,7 +35,7 @@ const AddCategory = ({ onAddCategory, onClose }) => {
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="mb-1 block font-medium">Category Name</label>
+            <label className="block pb-2 text-xl font-medium">Category Name</label>
             <input
               type="text"
               name="name"
@@ -47,7 +47,7 @@ const AddCategory = ({ onAddCategory, onClose }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="mb-1 block font-medium">Active Status</label>
+            <label className="block pb-2 text-xl font-medium">Active Status</label>
             <select
               name="isActive"
               value={newCategory.isActive}
@@ -58,11 +58,11 @@ const AddCategory = ({ onAddCategory, onClose }) => {
               <option value={2}>Inactive</option>
             </select>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
+              className="rounded-md w-28 bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
             >
               Cancel
             </button>

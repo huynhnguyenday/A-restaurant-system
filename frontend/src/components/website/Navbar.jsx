@@ -70,7 +70,7 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-center">
-        <NavbarLink/>
+        <NavbarLink />
       </div>
 
       <div className="navbar-right">
@@ -134,10 +134,16 @@ const Navbar = () => {
                   <input type="text" placeholder="Tên đăng nhập" />
                   <input type="email" placeholder="Nhập Gmail" />
                   <input type="password" placeholder="Mật khẩu" />
-                  <button type="submit" className="submit-login">Đăng Ký</button>
+                  <button type="submit" className="submit-login">
+                    Đăng Ký
+                  </button>
                 </form>
                 <div className="login-options">
-                  <a href="#admin" className="register" onClick={handleSwitchToLogin}>
+                  <a
+                    href="#admin"
+                    className="register"
+                    onClick={handleSwitchToLogin}
+                  >
                     Đã có tài khoản?
                   </a>
                 </div>
@@ -149,13 +155,20 @@ const Navbar = () => {
                 <form>
                   <input type="text" placeholder="Tên đăng nhập" />
                   <input type="password" placeholder="Mật khẩu" />
-                  <button type="submit" className="submit-login"> <Link to="/admin">Đăng Nhập</Link> </button>
+                  <button type="submit" className="submit-login">
+                    {" "}
+                    <Link to="/admin">Đăng Nhập</Link>{" "}
+                  </button>
                 </form>
                 <div className="login-options">
                   <a href="#forgot-password" className="forgot-password">
                     Bạn quên mật khẩu?
                   </a>
-                  <a href="#register" className="register" onClick={handleSwitchToRegister}>
+                  <a
+                    href="#register"
+                    className="register"
+                    onClick={handleSwitchToRegister}
+                  >
                     Đăng ký
                   </a>
                 </div>
@@ -166,7 +179,9 @@ const Navbar = () => {
       )}
 
       {/* Overlay */}
-      {isCartVisible && <div className="overlay" onClick={handleCartClick}></div>}
+      {isCartVisible && (
+        <div className="overlay" onClick={handleCartClick}></div>
+      )}
 
       {/* Sidebar giỏ hàng */}
       {isCartVisible && (
@@ -180,35 +195,44 @@ const Navbar = () => {
 
           <div className="cart-items">
             <div className="cart-items">
-              {cartItems.map(item => (
-                  <div key={item.id} className="cart-item">
-                      <img src={item.img} alt={item.name} className="cart-item-img" />
-                      <div className="cart-item-info">
-                          <div className="cart-item-name">{item.name}</div>
-                          <div className="cart-item-price">
-                              {item.quantity} x {item.price.toLocaleString()} VNĐ 
-                          </div>
-                      </div>
-                      <button className="remove-item-btn" onClick={() => removeItem(item.id)}>
-                          <FontAwesomeIcon icon={faTimes} />
-                      </button>
+              {cartItems.map((item) => (
+                <div key={item.id} className="cart-item">
+                  <img
+                    src={item.img}
+                    alt={item.name}
+                    className="cart-item-img"
+                  />
+                  <div className="cart-item-info">
+                    <div className="cart-item-name font-semibold">{item.name}</div>
+                    <div className="cart-item-price">
+                      {item.quantity} x {item.price.toLocaleString()} ₫
+                    </div>
                   </div>
+                  <button
+                    className="remove-item-btn"
+                    onClick={() => removeItem(item.id)}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+                </div>
               ))}
             </div>
           </div>
 
           <div className="cart-total">
-              <span>Tổng cộng</span>
-              <span>
-                  {cartItems.reduce((total, item) => total + item.quantity * item.price, 0).toLocaleString()} VNĐ
-              </span>
+            <span>Tổng cộng</span>
+            <span>
+              {cartItems
+                .reduce((total, item) => total + item.quantity * item.price, 0)
+                .toLocaleString()}{" "}
+              ₫
+            </span>
           </div>
-            <Link 
-              to="/payment" 
-              state={{ cartItems, totalPrice }}
-            >
-              <button className="checkout-btn" onClick={handleCartClick}>Thanh toán</button>
-            </Link>
+          <Link to="/payment" state={{ cartItems, totalPrice }}>
+            <button className="checkout-btn" onClick={handleCartClick}>
+              Thanh toán
+            </button>
+          </Link>
         </div>
       )}
     </nav>

@@ -231,13 +231,13 @@ const UpdateProduct = ({
             <button
               type="button"
               onClick={() => setShowModal(false)}
-              className="mr-28 w-32 rounded-md bg-gray-200 px-4 py-2 text-gray-600"
+              className="mr-28 h-12 w-28 rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="w-32 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              className="h-12 w-36 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
             >
               Update Product
             </button>

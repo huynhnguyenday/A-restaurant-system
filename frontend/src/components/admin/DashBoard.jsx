@@ -32,6 +32,7 @@ const SidebarItem = ({ icon, label, isSidebarExpanded, onClick, isActive }) => (
       {label}
     </span>
   </li>
+  
 );
 
 const DashBoard = () => {

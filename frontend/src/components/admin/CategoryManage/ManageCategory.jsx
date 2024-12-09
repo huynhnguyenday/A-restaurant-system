@@ -87,12 +87,17 @@ const ManageCategory = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-72 rounded-md border border-gray-300 p-2"
           />
-          <button
-            onClick={() => setAddFormVisible(true)}
-            className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-          >
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
+          <div className="group relative">
+            <button
+              onClick={() => setAddFormVisible(true)}
+              className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+            <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-4 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+              Add Category
+            </span>
+          </div>
         </div>
 
         <div className="overflow-x-auto rounded-lg shadow-md">

@@ -6,10 +6,18 @@ import { faTimes, faShop } from "@fortawesome/free-solid-svg-icons";
 
 const PaymentPage = () => {
   const location = useLocation();
-  const { cartItems: initialCartItems, totalPrice: initialTotalPrice } = location.state || {};
+  const { cartItems: initialCartItems } = location.state || {};
 
   const [cartItems, setCartItems] = useState(initialCartItems || []);
   const [selectedPayment, setSelectedPayment] = useState("bank-transfer");
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+
+  const validCoupons = [
+    { id: 1, name: "30k", value: 30000 },
+    { id: 2, name: "50k", value: 50000 },
+    { id: 3, name: "100k", value: 100000 },
+  ];
 
   if (!cartItems || cartItems.length === 0) {
     return (
@@ -56,10 +64,20 @@ const PaymentPage = () => {
 
   const calculatedTotalPrice = cartItems.reduce(
     (total, item) => total + item.quantity * item.price,
-    0
+    0,
   );
 
-  
+  const handleApplyCoupon = () => {
+    const coupon = validCoupons.find((c) => c.name === couponCode);
+    if (coupon) {
+      setDiscount(coupon.value);
+    } else {
+      alert("Mã coupon không hợp lệ");
+      setDiscount(0);
+    }
+  };
+
+  const finalPrice = calculatedTotalPrice - discount;
 
   return (
     <div className="container mx-auto my-10 px-4 pb-20">
@@ -165,38 +183,66 @@ const PaymentPage = () => {
 
             <button
               type="submit"
-              className="button-submit h-14 w-full rounded-2xl "
+              className="button-submit h-14 w-full rounded-2xl"
             >
-             ĐẶT NGAY {calculatedTotalPrice.toLocaleString()}₫
+              ĐẶT NGAY {finalPrice.toLocaleString()}₫
             </button>
           </form>
         </div>
 
         {/* Phần giỏ hàng và sản phẩm chiếm 4 cột */}
-        <div className="col-span-10 sm:col-span-4 pl-8">
-          <h3 className="name-option-payment mb-4 text-xl">Thông tin sản phẩm</h3>
-          <div className="p-4 bg-white rounded-lg">
+        <div className="col-span-10 pl-8 sm:col-span-4">
+          <h3 className="name-option-payment mb-4 text-xl">
+            Thông tin sản phẩm
+          </h3>
+          <div className="rounded-lg bg-white p-4">
             {cartItems.map((item) => (
-              <div key={item.id} className="relative flex items-center border-b pb-4 mb-4">
-                <div className="flex-shrink-0 w-3/12">
-                  <img src={item.img} alt={item.name} className="h-20% w-20% rounded-lg object-cover" />
+              <div
+                key={item.id}
+                className="relative mb-4 flex items-center border-b pb-4"
+              >
+                <div className="w-3/12 flex-shrink-0">
+                  <img
+                    src={item.img}
+                    alt={item.name}
+                    className="h-20% w-20% rounded-lg object-cover"
+                  />
                 </div>
                 <div className="w-6/12 px-4">
-                  <span className="font-medium block truncate">{item.name}</span>
+                  <span className="block truncate font-medium">
+                    {item.name}
+                  </span>
                   <div className="mt-2 flex items-center space-x-2 pt-6">
-                    <button onClick={() => decreaseQuantity(item.id)} className="px-3 py-1 bg-gray-200 rounded-full hover:bg-gray-300">-</button>
-                    <input type="text" value={item.quantity} readOnly className="w-12 text-center border rounded" />
-                    <button onClick={() => increaseQuantity(item.id)} className="px-3 py-1 bg-gray-200 rounded-full  hover:bg-gray-300">+</button>
+                    <button
+                      onClick={() => decreaseQuantity(item.id)}
+                      className="rounded-full bg-gray-200 px-3 py-1 hover:bg-gray-300"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="text"
+                      value={item.quantity}
+                      readOnly
+                      className="w-12 rounded border text-center"
+                    />
+                    <button
+                      onClick={() => increaseQuantity(item.id)}
+                      className="rounded-full bg-gray-200 px-3 py-1 hover:bg-gray-300"
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
-                <div className="w-3/12 text-right relative">
+                <div className="relative w-3/12 text-right">
                   <button
-                    className="absolute top-0 right-0 text-2xl text-gray-400 hover:text-black"
+                    className="absolute right-0 top-0 text-2xl text-gray-400 hover:text-black"
                     onClick={() => removeItem(item.id)}
                   >
                     <FontAwesomeIcon icon={faTimes} />
                   </button>
-                  <span className="text-black font-semibold block pt-16">{(item.quantity * item.price).toLocaleString()}₫</span>
+                  <span className="block pt-16 font-semibold text-black">
+                    {(item.quantity * item.price).toLocaleString()}₫
+                  </span>
                 </div>
               </div>
             ))}
@@ -204,23 +250,26 @@ const PaymentPage = () => {
           <div className="coupon-section mb-4 flex items-center space-x-2">
             <input
               type="text"
-              className="coupon-input w-2/3 rounded-full border border-black p-3 placeholder-gray-400 text-gray-700"
+              className="coupon-input w-2/3 rounded-full border border-black p-3 text-gray-700 placeholder-gray-400"
               placeholder="Coupon code"
+              value={couponCode}
+              onChange={(e) => setCouponCode(e.target.value)}
             />
             <button
               type="button"
               className="apply-coupon-btn h-12 w-1/3 rounded-full bg-black text-white"
+              onClick={handleApplyCoupon}
             >
               Apply coupon
             </button>
           </div>
-          <div className="subtotal ">
+          <div className="subtotal">
             <span>GIẢM GIÁ</span>
-            <span>493,000₫</span>
+            <span>{discount.toLocaleString()}₫</span>
           </div>
           <div className="total">
             <span>TỔNG CỘNG</span>
-            <span>{calculatedTotalPrice.toLocaleString()}₫</span>
+            <span>{finalPrice.toLocaleString()}₫</span>
           </div>
         </div>
       </div>

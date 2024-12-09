@@ -82,7 +82,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
 
  return (
    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-     <div className="w-full max-w-lg rounded-lg bg-white p-6">
+     <div className="h-auto w-full max-w-xl rounded-lg bg-white p-6">
        <h2 className="mb-4 flex justify-center text-4xl font-bold">
          Create Product
        </h2>
@@ -189,19 +189,19 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
              </select>
            </div>
          </div>
-         <div className="flex justify-between pt-2">
+         <div className="flex justify-between pt-6">
            <button
              type="button"
              onClick={() => setShowModal(false)}
-             className="w-32 rounded-md bg-gray-200 px-4 py-2 text-gray-600"
+             className="h-12 w-32 rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
            >
              Cancel
            </button>
            <button
              type="submit"
-             className="w-32 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-800"
+             className="h-12 w-36 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-800"
            >
-             Create
+             Create Product
            </button>
          </div>
        </form>

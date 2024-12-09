@@ -43,6 +43,7 @@
   
   .btn-buy:hover {
     background-color: #633c02;
+    border-radius: 2rem;
   }
   
   .image-container {

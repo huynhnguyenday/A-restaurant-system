@@ -51,7 +51,7 @@ const AddAccount = ({ onAddAccount, onClose }) => {
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="mb-1 block font-medium">Username</label>
+            <label className="block pb-2 text-xl font-medium">Username</label>
             <input
               type="text"
               name="username"
@@ -61,7 +61,7 @@ const AddAccount = ({ onAddAccount, onClose }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="mb-1 block font-medium">Password</label>
+            <label className="block pb-2 text-xl font-medium">Password</label>
             <input
               type="password"
               name="password"
@@ -71,7 +71,7 @@ const AddAccount = ({ onAddAccount, onClose }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="mb-1 block font-medium">Gmail</label>
+            <label className="block pb-2 text-xl font-medium">Gmail</label>
             <input
               type="email"
               name="gmail"
@@ -81,7 +81,7 @@ const AddAccount = ({ onAddAccount, onClose }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="mb-1 block font-medium">Phone Number</label>
+            <label className="block pb-2 text-xl font-medium">Phone Number</label>
             <input
               type="text"
               name="numbers"
@@ -91,7 +91,7 @@ const AddAccount = ({ onAddAccount, onClose }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="mb-1 block font-medium">Role</label>
+            <label className="block pb-2 text-xl font-medium">Role</label>
             <select
               name="role"
               value={newAccount.role}
@@ -103,11 +103,11 @@ const AddAccount = ({ onAddAccount, onClose }) => {
               <option value="customer">Customer</option>
             </select>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
+              className="rounded-md w-24 bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
             >
               Cancel
             </button>

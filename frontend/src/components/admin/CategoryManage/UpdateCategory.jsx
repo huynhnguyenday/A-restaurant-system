@@ -41,7 +41,9 @@ const UpdateCategory = ({ category, onClose, onUpdateCategory }) => {
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="mb-1 block font-medium">Category Name</label>
+            <label className="block pb-2 text-xl font-medium">
+              Category Name
+            </label>
             <input
               type="text"
               name="name"
@@ -50,7 +52,7 @@ const UpdateCategory = ({ category, onClose, onUpdateCategory }) => {
               className="w-full rounded-md border border-gray-300 p-2"
             />
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between pt-4">
             <button
               type="button"
               onClick={onClose}
