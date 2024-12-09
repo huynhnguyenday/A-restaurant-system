@@ -5,15 +5,12 @@ import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import "./DetailFood.css";
 import axios from "axios";
 
-const menuCategories = [
-  "TẤT CẢ", "CAFÉ", "TRÀ", "TRÀ SỮA", "SINH TỐ", "TRÀ LẠNH"
-];
-
 const DetailFood = () => {
   const [quantity, setQuantity] = useState(1);
-  const [product, setProduct] = useState(null); // State lưu sản phẩm
-  const [loading, setLoading] = useState(true); // State hiển thị trạng thái tải dữ liệu
-  const { id } = useParams(); // Lấy ID từ URL
+  const [categories, setCategories] = useState([]);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true); 
+  const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +33,23 @@ const DetailFood = () => {
     fetchProduct();
   }, [id]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/mainPages/activeCategories"); // Thay URL phù hợp với API backend
+        if (response.data.success) {
+          setCategories(response.data.data); // Lưu danh mục vào state
+        } else {
+          console.error("Lỗi khi lấy danh mục.");
+        }
+      } catch (error) {
+        console.error("Lỗi khi gọi API danh mục:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   if (loading) {
     return <div>Đang tải dữ liệu...</div>; // Hiển thị trạng thái tải
   }
@@ -46,8 +60,8 @@ const DetailFood = () => {
 
   const activeCategory = product.category; // Identify the active category based on the product's category
 
-  const handleCategoryClick = (category) => {
-    navigate(`/menu?category=${category}`); // Chuyển hướng đến Menu với query parameter category
+  const handleCategoryClick = (categoryName) => {
+    navigate(`/menu?category=${categoryName}`); // Chuyển hướng đến Menu với query parameter category
   };
 
   const handleQuantityChange = (e) => {
@@ -101,13 +115,13 @@ const DetailFood = () => {
       <div className="flex-1 category">
         <h3 className="df-category-name">Danh mục thực đơn</h3>
         <ul className="menu-list">
-          {menuCategories.map((category) => (
+          {categories.map((category) => (
             <li
-              key={category}
-              onClick={() => handleCategoryClick(category)}
-              className={category === activeCategory ? "active-category" : ""}
+              key={category._id}
+              onClick={() => handleCategoryClick(category.name)}
+              className={category.name === activeCategory ? "active-category" : ""}
             >
-              {category}
+              {category.name}
             </li>
           ))}
         </ul>

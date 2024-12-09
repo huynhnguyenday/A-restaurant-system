@@ -49,7 +49,6 @@ export const getHotProducts = async (req, res) => {
 
     const products = await Product.find(filter).populate("category", "name");
 
-    // Cập nhật đường dẫn hình ảnh đầy đủ
     const productsWithFullImagePath = products.map((product) => ({
       ...product.toObject(),
       image: `http://localhost:5000/assets/${product.image}`,
@@ -79,7 +78,6 @@ export const getActiveProducts = async (req, res) => {
       "name isActive"
     );
 
-    // Cập nhật đường dẫn hình ảnh đầy đủ
     const productsWithFullImagePath = products.map((product) => ({
       ...product.toObject(),
       image: `http://localhost:5000/assets/${product.image}`,
@@ -100,7 +98,6 @@ export const getActiveProducts = async (req, res) => {
 
 export const getActiveCategory = async (req, res) => {
   try {
-    // Lọc chỉ lấy những category có isActive = 1
     const categories = await Category.find({ isActive: 1 });
 
     res.status(200).json({ success: true, data: categories });

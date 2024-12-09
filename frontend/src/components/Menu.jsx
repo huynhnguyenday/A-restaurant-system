@@ -50,7 +50,7 @@ const Menu = () => {
 
   // Lọc sản phẩm theo danh mục
   const filterItems =
-    activeCategory === "TẤT CẢ" ? products : products.filter((item) => item.category.name === activeCategory);
+    activeCategory === "TẤT CẢ" ? products.filter((item) => item.category?.isActive === 1) : products.filter((item) => item.category.name === activeCategory);
   
   // Xử lý khi nhấn yêu thích
   const handleToggleFavorite = (id) => {
