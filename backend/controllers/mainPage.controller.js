@@ -74,7 +74,10 @@ export const getActiveProducts = async (req, res) => {
       displayType: 1,
     };
 
-    const products = await Product.find(filter).populate("category", "name");
+    const products = await Product.find(filter).populate(
+      "category",
+      "name isActive"
+    );
 
     // Cập nhật đường dẫn hình ảnh đầy đủ
     const productsWithFullImagePath = products.map((product) => ({
