@@ -1,50 +1,41 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-import imgblog1 from "../../../../backend/assets/imgblog1.png";
-import imgblog2 from "../../../../backend/assets/imgblog2.png";
-import imgblog3 from "../../../../backend/assets/imgblog3.png";
-
-// Dữ liệu blog ban đầu
-const blogs = [
-  {
-    id: 1,
-    title: "Here are the trends I see coming this fall",
-    date: "27/04/2024",
-    image: imgblog1,
-    content: "Detailed content for blog 1. Here is where the full article will be displayed. This is a long content for testing purposes.",
-  },
-  {
-    id: 2,
-    title: "The ultimate guide to your autumn wardrobe",
-    date: "25/02/2024",
-    image: imgblog2,
-    content: "Detailed content for blog 2. Here's everything you need to know about autumn wardrobes. This content is also a bit long to check how it is displayed.",
-  },
-  {
-    id: 3,
-    title: "Top 5 destinations for this winter vacation",
-    date: "27/02/2024",
-    image: imgblog3,
-    content: "Detailed content for blog 3. Explore the best destinations for your winter vacation! This content has some extra length.",
-  },
-];
+import axios from "axios";
 
 const ManageBlog = () => {
-  const [blogList, setBlogList] = useState(blogs);
+  const [blogList, setBlogList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   // Lọc blog dựa trên từ khóa tìm kiếm
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/blogs");
+        setBlogList(response.data.data); // Giả sử API trả về data trong `response.data.data`
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
   const filteredBlogs = blogList.filter(
     (blog) =>
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.date.toLowerCase().includes(searchTerm.toLowerCase())
+      new Date(blog.createdAt).toLocaleDateString().includes(searchTerm) // So sánh với ngày tháng
   );
+
 
   // Xóa blog
   const deleteBlog = (id) => {
     const updatedBlogs = blogList.filter((blog) => blog.id !== id);
     setBlogList(updatedBlogs);
+  };
+
+  const formatDate = (timestamp) => {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return new Date(timestamp).toLocaleDateString("en-GB", options); // Định dạng DD/MM/YYYY
   };
 
   // Hàm để cắt nội dung
@@ -97,7 +88,7 @@ const ManageBlog = () => {
             </thead>
             <tbody>
               {filteredBlogs.map((blog) => (
-                <tr key={blog.id} className="border-b">
+                <tr key={blog._id} className="border-b">
                   <td className="py-4 px-4 text-center flex justify-center">
                     <img src={blog.image} alt={blog.title} className="w-16 h-16 object-cover rounded" />
                   </td>
@@ -105,14 +96,14 @@ const ManageBlog = () => {
                   <td className="py-4 px-4 text-center">
                     {truncateContent(blog.content, 50)} {/* Cắt nội dung tại đây */}
                   </td>
-                  <td className="py-4 px-4 text-center">{blog.date}</td>
+                  <td className="py-4 px-4 text-center">{formatDate(blog.createdAt)}</td>
                   <td className="py-4 px-4 text-center">
                     <button className="text-blue-700 px-3 py-1 mr-2 text-center rounded-md hover:bg-slate-300 hover:rounded-full">
                       <FontAwesomeIcon icon={faPen} />
                     </button>
                     <button
                       className="text-red-700 px-3 py-1 text-center rounded-md hover:bg-slate-300 hover:rounded-full"
-                      onClick={() => deleteBlog(blog.id)}
+                      onClick={() => deleteBlog(blog._id)}
                     >
                       <FontAwesomeIcon icon={faTrash} />
                     </button>

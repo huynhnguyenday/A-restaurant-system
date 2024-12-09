@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -10,7 +10,7 @@ import {
   faClipboardList,
 } from "@fortawesome/free-solid-svg-icons";
 import ManageProduct from "./ProductManage/ManageProduct";
-import ManageBlog from "./ManageBlog";
+import ManageBlog from "./BlogManage/ManageBlog";
 import ManageAccount from "./AccountManage/ManageAccount";
 import ManageCategory from "./CategoryManage/ManageCategory";
 import { Link } from "react-router-dom";
