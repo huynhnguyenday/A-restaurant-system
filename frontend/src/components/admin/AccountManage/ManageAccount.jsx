@@ -131,23 +131,33 @@ const ManageAccount = () => {
                     {new Date(account.updatedAt).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-6 text-center text-2xl">
-                    <FontAwesomeIcon
-                      icon={account.isActive === 1 ? faToggleOn : faToggleOff}
-                      className={
-                        account.isActive === 1
-                          ? "cursor-pointer text-green-500"
-                          : "cursor-pointer text-gray-400"
-                      }
-                      onClick={() => toggleIsActive(account._id)}
-                    />
+                    <div className="group relative">
+                      <FontAwesomeIcon
+                        icon={account.isActive === 1 ? faToggleOn : faToggleOff}
+                        className={
+                          account.isActive === 1
+                            ? "cursor-pointer text-green-500"
+                            : "cursor-pointer text-gray-400"
+                        }
+                        onClick={() => toggleIsActive(account._id)}
+                      />
+                      <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                        Set active account
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-6 text-center text-xl">
-                    <button
-                      onClick={() => openUpdateForm(account)}
-                      className="rounded-md px-3 py-1 text-blue-400 hover:bg-slate-300"
-                    >
-                      <FontAwesomeIcon icon={faPen} />
-                    </button>
+                    <div className="group relative">
+                      <button
+                        onClick={() => openUpdateForm(account)}
+                        className="rounded-md px-3 py-1 text-blue-400 hover:bg-slate-300"
+                      >
+                        <FontAwesomeIcon icon={faPen} />
+                      </button>
+                      <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                        Edit Account
+                      </span>
+                    </div>
                   </td>
                 </tr>
               ))}

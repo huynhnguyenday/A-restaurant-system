@@ -120,7 +120,7 @@ const ManageProduct = () => {
           />
           <div className="group relative">
             <button
-              onClick={() => setShowAddModal(true)} // Hiển thị modal tạo sản phẩm
+              onClick={() => setShowAddModal(true)}
               className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
               <FontAwesomeIcon icon={faPlus} />
@@ -201,34 +201,49 @@ const ManageProduct = () => {
                     {new Date(product.updatedAt).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-2 text-center">
-                    <FontAwesomeIcon
-                      icon={faFire}
-                      className={
-                        product.displayHot === 1
-                          ? "cursor-pointer text-2xl text-red-500"
-                          : "cursor-pointer text-xl text-gray-400"
-                      }
-                      onClick={() => toggleDisplayHot(product._id)}
-                    />
+                    <div className="group relative">
+                      <FontAwesomeIcon
+                        icon={faFire}
+                        className={
+                          product.displayHot === 1
+                            ? "cursor-pointer text-2xl text-red-500"
+                            : "cursor-pointer text-xl text-gray-400"
+                        }
+                        onClick={() => toggleDisplayHot(product._id)}
+                      />
+                      <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                        Set Product Hot
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-2 text-center">
-                    <FontAwesomeIcon
-                      icon={product.displayType === 1 ? faEye : faEyeSlash}
-                      className={
-                        product.displayType === 1
-                          ? "cursor-pointer text-2xl text-blue-500"
-                          : "cursor-pointer text-xl text-gray-400"
-                      }
-                      onClick={() => toggleDisplayType(product._id)}
-                    />
+                    <div className="group relative">
+                      <FontAwesomeIcon
+                        icon={product.displayType === 1 ? faEye : faEyeSlash}
+                        className={
+                          product.displayType === 1
+                            ? "cursor-pointer text-2xl text-blue-500"
+                            : "cursor-pointer text-xl text-gray-400"
+                        }
+                        onClick={() => toggleDisplayType(product._id)}
+                      />
+                      <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                        Set Product Display
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-2 text-center text-xl">
-                    <button
-                      className="rounded-md px-3 py-1 text-blue-400 hover:bg-slate-300"
-                      onClick={() => handleEditProduct(product)} // Edit action
-                    >
-                      <FontAwesomeIcon icon={faPen} />
-                    </button>
+                    <div className="group relative">
+                      <button
+                        className="rounded-full px-3 py-1 text-blue-400 hover:bg-slate-300"
+                        onClick={() => handleEditProduct(product)} 
+                      >
+                        <FontAwesomeIcon icon={faPen} />
+                      </button>
+                      <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-xs text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                        Edit Product
+                      </span>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -5,7 +5,7 @@ import imgnews2 from "../../../../backend/assets/imgnews2.png";
 import imgnews3 from "../../../../backend/assets/imgnews3.png";
 
 const PricingContentNew = ({ closeFlyout }) => {
-  const blogs = ["Cà phê nguyên chất", "Trà sữa hấp dẫn", "Trà lạnh mùa hè"];
+  const blogs = ["Giảm giá sốc mùa noel", "Trà sữa nay đã có nhiều lựa chọn", "Trà lạnh mùa hè thích hợp cả vào mùa đông"];
   const navigate = useNavigate();
 
   const handleNavigate = (blogTitle) => {

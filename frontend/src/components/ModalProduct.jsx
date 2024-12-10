@@ -23,7 +23,6 @@ const ModalProduct = ({ selectedProduct, quantity, setQuantity, onClose, addToCa
   };
 
   const handleAddToCart = () => {
-    // Gọi hàm addToCart để thêm sản phẩm vào giỏ hàng
     addToCart({
       id: selectedProduct.id,
       name: selectedProduct.name,
@@ -31,7 +30,7 @@ const ModalProduct = ({ selectedProduct, quantity, setQuantity, onClose, addToCa
       img: selectedProduct.image,
       quantity: quantity,
     });
-    onClose(); // Đóng modal sau khi thêm vào giỏ hàng
+    onClose();
   };
 
   return (

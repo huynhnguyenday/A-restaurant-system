@@ -122,23 +122,35 @@ const ManageCategory = () => {
                     {new Date(category.updatedAt).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-6 text-center text-2xl">
-                    <FontAwesomeIcon
-                      icon={category.isActive === 1 ? faToggleOn : faToggleOff}
-                      className={
-                        category.isActive === 1
-                          ? "cursor-pointer text-green-500"
-                          : "cursor-pointer text-gray-400"
-                      }
-                      onClick={() => toggleIsActive(category._id)}
-                    />
+                    <div className="group relative">
+                      <FontAwesomeIcon
+                        icon={
+                          category.isActive === 1 ? faToggleOn : faToggleOff
+                        }
+                        className={
+                          category.isActive === 1
+                            ? "cursor-pointer text-green-500"
+                            : "cursor-pointer text-gray-400"
+                        }
+                        onClick={() => toggleIsActive(category._id)}
+                      />
+                      <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                        Set Active Category
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-6 text-center text-xl">
-                    <button
-                      onClick={() => openUpdateForm(category)}
-                      className="rounded-md px-3 py-1 text-blue-400 hover:bg-slate-300"
-                    >
-                      <FontAwesomeIcon icon={faPen} />
-                    </button>
+                    <div className="group relative">
+                      <button
+                        onClick={() => openUpdateForm(category)}
+                        className="rounded-full px-3 py-1 text-blue-400 hover:bg-slate-300"
+                      >
+                        <FontAwesomeIcon icon={faPen} />
+                      </button>
+                      <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                        Edit Category
+                      </span>
+                    </div>
                   </td>
                 </tr>
               ))}
