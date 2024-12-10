@@ -17,6 +17,7 @@ const ManageProduct = () => {
   const [showAddModal, setShowAddModal] = useState(false); // Separate state for adding product modal
   const [showUpdateModal, setShowUpdateModal] = useState(false); // Separate state for updating product modal
   const [selectedProduct, setSelectedProduct] = useState(null); // State to track selected product for editing
+  
 
   // Tách riêng hàm fetchProducts để tái sử dụng
   const fetchProducts = async () => {
@@ -212,7 +213,7 @@ const ManageProduct = () => {
                         onClick={() => toggleDisplayHot(product._id)}
                       />
                       <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Set Product Hot
+                        Set Hot Product
                       </span>
                     </div>
                   </td>
@@ -228,7 +229,7 @@ const ManageProduct = () => {
                         onClick={() => toggleDisplayType(product._id)}
                       />
                       <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Set Product Display
+                        Set Display Product
                       </span>
                     </div>
                   </td>
