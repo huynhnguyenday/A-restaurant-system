@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import imgdropdown1 from "../../../../backend/assets/imgdropdown1.png";
 import imgdropdown2 from "../../../../backend/assets/imgdropdown2.png";
 import imgdropdown3 from "../../../../backend/assets/imgdropdown3.png";
 
 const PricingContentMenu = ({ closeFlyout }) => {
-  const categories = ["CAFÉ", "TRÀ", "TRÀ SỮA", "SINH TỐ", "TRÀ LẠNH"];
+  const [categories, setCategories] = useState([]); // Default categories
   const navigate = useNavigate();
+
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/mainPages/activeCategories",
+        );
+        const categoryData = response.data.data.map(
+          (category) => category.name,
+        );
+        setCategories(categoryData); // Set fetched categories
+      } catch (error) {
+        console.error("Error fetching categories:", error.message);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleNavigate = (category) => {
     closeFlyout();
@@ -28,7 +48,7 @@ const PricingContentMenu = ({ closeFlyout }) => {
               <a
                 key={category}
                 onClick={() => handleNavigate(category)}
-                className="mr-4 block cursor-pointer border-b-[1px] !font-josefin border-white border-opacity-30 pl-2 text-2xl !text-white hover:!text-slate-400"
+                className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-2xl !text-white hover:!text-slate-400"
               >
                 + {category}
               </a>
@@ -64,12 +84,12 @@ const PricingContentMenu = ({ closeFlyout }) => {
             <h3 className="mt-2 pt-2 text-2xl font-bold text-orange-700">
               Trà sữa nung
             </h3>
-            <p className="mt-1 h-[60px] text-base text-gray-600 font-josefin">
+            <p className="mt-1 h-[60px] font-josefin text-base text-gray-600">
               Hòa quyện giữa trà sữa và các hương liệu, nung nóng tạo hương vị
               đặc biệt.
             </p>
             <button
-              className="mt-2 pt-4 text-xl font-semibold text-orange-700 hover:text-orange-900 font-josefin"
+              className="mt-2 pt-4 font-josefin text-xl font-semibold text-orange-700 hover:text-orange-900"
               onClick={handleNavigateToMenu}
             >
               Xem thêm
@@ -88,12 +108,12 @@ const PricingContentMenu = ({ closeFlyout }) => {
             <h3 className="mt-2 pt-2 text-2xl font-bold text-orange-700">
               Trà Chanh Giã Tay
             </h3>
-            <p className="mt-1 h-[60px] text-base text-gray-600 font-josefin">
+            <p className="mt-1 h-[60px] font-josefin text-base text-gray-600">
               Hương vị Chanh nước hoa thơm ngát kết hợp với trà tạo hương vị
               tinh tế và độc đáo.
             </p>
             <button
-              className="mt-2 pt-4 text-xl font-semibold text-orange-700 hover:text-orange-900 font-josefin"
+              className="mt-2 pt-4 font-josefin text-xl font-semibold text-orange-700 hover:text-orange-900"
               onClick={handleNavigateToMenu}
             >
               Xem thêm
@@ -112,12 +132,12 @@ const PricingContentMenu = ({ closeFlyout }) => {
             <h3 className="mt-2 pt-2 text-2xl font-bold text-orange-700">
               Trà Mãng Cầu
             </h3>
-            <p className="mt-1 h-[60px] text-base text-gray-600 font-josefin">
+            <p className="mt-1 h-[60px] font-josefin text-base text-gray-600">
               Kết hợp hương vị ngọt ngào của mãng cầu mang đến sự tươi mới và
               hấp dẫn
             </p>
             <button
-              className="mt-2 pt-4 text-xl font-semibold text-orange-700 hover:text-orange-900 font-josefin"
+              className="mt-2 pt-4 font-josefin text-xl font-semibold text-orange-700 hover:text-orange-900"
               onClick={handleNavigateToMenu}
             >
               Xem thêm

@@ -32,7 +32,6 @@ const SidebarItem = ({ icon, label, isSidebarExpanded, onClick, isActive }) => (
       {label}
     </span>
   </li>
-  
 );
 
 const DashBoard = () => {
@@ -170,7 +169,6 @@ const DashBoard = () => {
             )}
           </div>
         </div>
-
         {/* Main Content Area */}
         <div className="flex-1 overflow-y-auto bg-gray-50 p-6">
           {renderContent()}

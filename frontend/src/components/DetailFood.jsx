@@ -9,24 +9,24 @@ const DetailFood = () => {
   const [quantity, setQuantity] = useState(1);
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        setLoading(true); // Bắt đầu tải dữ liệu
+        setLoading(true);
         const response = await axios.get(`http://localhost:5000/api/mainPages/${id}`);
         if (response.data.success) {
-          setProduct(response.data.data); // Lưu sản phẩm vào state
+          setProduct(response.data.data);
         } else {
           console.error("Sản phẩm không tồn tại hoặc API lỗi.");
         }
       } catch (error) {
         console.error("Lỗi khi gọi API:", error);
       } finally {
-        setLoading(false); // Kết thúc tải dữ liệu
+        setLoading(false);
       }
     };
 
@@ -36,9 +36,9 @@ const DetailFood = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/mainPages/activeCategories"); // Thay URL phù hợp với API backend
+        const response = await axios.get("http://localhost:5000/api/mainPages/activeCategories");
         if (response.data.success) {
-          setCategories(response.data.data); // Lưu danh mục vào state
+          setCategories(response.data.data);
         } else {
           console.error("Lỗi khi lấy danh mục.");
         }
@@ -51,17 +51,17 @@ const DetailFood = () => {
   }, []);
 
   if (loading) {
-    return <div>Đang tải dữ liệu...</div>; // Hiển thị trạng thái tải
+    return <div>Đang tải dữ liệu...</div>;
   }
 
   if (!product) {
     return <div>Sản phẩm không tồn tại.</div>;
   }
 
-  const activeCategory = product.category; // Identify the active category based on the product's category
+  const activeCategory = product.category; // Đảm bảo sản phẩm có thuộc tính category
 
   const handleCategoryClick = (categoryName) => {
-    navigate(`/menu?category=${categoryName}`); // Chuyển hướng đến Menu với query parameter category
+    navigate(`/menu?category=${categoryName}`);
   };
 
   const handleQuantityChange = (e) => {
@@ -103,7 +103,7 @@ const DetailFood = () => {
             value={quantity}
             onChange={handleQuantityChange}
             onBlur={handleBlur}
-            className="quantity-input "
+            className="quantity-input"
           />
           <button className="btn-plus-food" onClick={() => setQuantity((prev) => prev + 1)}>+</button>
         </div>

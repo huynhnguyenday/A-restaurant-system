@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { blogs } from "./BlogMain";
 import "./news.css"; 
 
-
 const formatDate = (dateString) => {
   const [day, month] = dateString.split("/"); 
   return `${day} Th${parseInt(month)}`; 
@@ -23,8 +22,8 @@ const News = () => {
               <div
                 key={blog.id}
                 className="card-news"
-                onClick={() => navigate(`/blogs/${blog.id}`)} // Chuyển hướng
-                style={{ cursor: "pointer" }} // Hiển thị con trỏ khi hover
+                onClick={() => navigate(`/blogs/${blog.id}`)} 
+                style={{ cursor: "pointer" }} 
               >
                 {/* Phần trên: Ảnh bài viết */}
                 <div className="card-news-image">

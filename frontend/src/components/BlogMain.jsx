@@ -7,27 +7,30 @@ import imgblog1 from "../../../backend/assets/imgblog1.png";
 import imgblog2 from "../../../backend/assets/imgblog2.png";
 import imgblog3 from "../../../backend/assets/imgblog3.png";
 
-export const blogs = [ 
+export const blogs = [
   {
     id: 1,
-    title: "Here are the trends I see coming this fall",
+    title: "Cà phê nguyên chất",
     date: "27/04/2024",
     image: imgblog1,
-    content: "Detailed content for blog 1. Here is where the full article will be displayed.",
+    content:
+      "Detailed content for blog 1. Here is where the full article will be displayed.",
   },
   {
     id: 2,
-    title: "The ultimate guide to your autumn wardrobe",
+    title: "Trà sữa hấp dẫn",
     date: "25/02/2024",
     image: imgblog2,
-    content: "Detailed content for blog 2. Here's everything you need to know about autumn wardrobes.",
+    content:
+      "Detailed content for blog 2. Here's everything you need to know about autumn wardrobes.",
   },
   {
     id: 3,
-    title: "Top 5 destinations for this winter vacation",
+    title: "Trà lạnh mùa hè",
     date: "27/02/2024",
     image: imgblog3,
-    content: "Detailed content for blog 3. Explore the best destinations for your winter vacation!",
+    content:
+      "Detailed content for blog 3. Explore the best destinations for your winter vacation!",
   },
 ];
 

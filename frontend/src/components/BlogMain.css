@@ -60,39 +60,35 @@
 .blog_item img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Đảm bảo ảnh phủ đầy khung mà không bị méo */
+  object-fit: cover; 
   transition: transform 0.3s ease;
 }
 
-/* Khi hover vào blog_item, phóng to ảnh */
 .blog_item:hover img {
-  transform: scale(1.1); /* Phóng to ảnh khi hover */
+  transform: scale(1.1); 
 }
 
-/* Overlay Content */
 .blog_content_overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Nền overlay */
-  color: #fff; /* Màu chữ */
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff; 
   display: flex;
   flex-direction: column;
-  align-items: center; /* Canh giữa theo chiều ngang */
-  justify-content: center; /* Canh giữa theo chiều dọc */
+  align-items: center;
+  justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
-  text-align: center; /* Căn giữa chữ */
+  text-align: center;
 }
 
 .blog_item:hover .blog_content_overlay {
-  opacity: 1; /* Hiển thị overlay khi hover */
+  opacity: 1; 
 }
 
-  
-  /* Tiêu đề Blog */
   .blog_title {
     font-size: 18px;
     font-weight: bold;
@@ -100,14 +96,12 @@
     padding: 0px 5px 0px 5px;
   }
   
-  /* Meta Information */
   .blog_meta {
     font-size: 14px;
     margin-bottom: 10px;
     font-style: italic;
   }
-  
-  /* Read More Link */
+
   .blog_more {
     font-size: 14px;
     color: #fff;
@@ -116,6 +110,6 @@
   }
   
   .blog_more:hover {
-    color: #df5555; /* Đổi màu khi hover */
+    color: #df5555; 
   }
   

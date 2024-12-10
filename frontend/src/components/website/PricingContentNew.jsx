@@ -5,18 +5,20 @@ import imgnews2 from "../../../../backend/assets/imgnews2.png";
 import imgnews3 from "../../../../backend/assets/imgnews3.png";
 
 const PricingContentNew = ({ closeFlyout }) => {
-  const categories = ["CAFÉ", "TRÀ", "TRÀ SỮA", "SINH TỐ", "TRÀ LẠNH"];
-  const navigate = useNavigate(); 
+  const blogs = ["Cà phê nguyên chất", "Trà sữa hấp dẫn", "Trà lạnh mùa hè"];
+  const navigate = useNavigate();
 
-  const handleNavigate = (category) => {
+  const handleNavigate = (blogTitle) => {
     closeFlyout();
-    navigate(`/menu?category=${category}`);
+    navigate(`/news?blog=${blogTitle}`);
   };
 
   const handleNavigateToNews = () => {
     closeFlyout();
-    navigate("/news"); 
+    navigate("/news");
   };
+
+  const overlayTitles = ["TỔ CHỨC EVENT", "ACOUSTIC", "BÓI BÀI TAROT"]; // Tiêu đề cho mỗi ảnh
 
   return (
     <div className="flex h-[480px] w-[1200px] bg-white shadow-xl">
@@ -24,13 +26,13 @@ const PricingContentNew = ({ closeFlyout }) => {
         <div className="mb-3 space-y-3">
           <h3 className="pb-4 text-3xl font-bold text-white">TIN TỨC</h3>
           <div className="space-y-4 pb-4">
-            {categories.map((category) => (
+            {blogs.map((blog) => (
               <a
-                key={category}
-                onClick={() => handleNavigate(category)}
+                key={blog}
+                onClick={() => handleNavigate(blog)}
                 className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-2xl !text-white hover:!text-slate-400"
               >
-                + {category}
+                + {blog}
               </a>
             ))}
           </div>
@@ -45,38 +47,25 @@ const PricingContentNew = ({ closeFlyout }) => {
 
       <div className="flex w-full flex-col">
         <div className="flex">
-          {/* Item 1 */}
-          <div className="w-1/3 py-4 px-4 text-start">
-            <div className="overflow-hidden">
-              <img
-                src={imgnews2}
-                alt="imgnews1"
-                className="h-[440px] w-full object-cover"
-              />
+          {[imgnews2, imgnews3, imgnews1].map((image, index) => (
+            <div
+              key={index}
+              className="group relative w-1/3 px-4 py-4 text-start"
+            >
+              {/* Tiêu đề overlay */}
+              <div className="absolute left-6 bottom-6 z-10 rounded-md px-3 py-1 text-2xl font-bold text-white">
+                {overlayTitles[index]}
+              </div>
+              {/* Ảnh */}
+              <div className="overflow-hidden">
+                <img
+                  src={image}
+                  alt={`imgnews${index + 1}`}
+                  className="h-[440px] w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                />
+              </div>
             </div>
-          </div>
-
-          {/* Item 2 */}
-          <div className="w-1/3 py-4 px-4 text-start">
-            <div className="overflow-hidden">
-              <img
-                src={imgnews3}
-                alt="imgnews2"
-                className="h-[440px] w-full object-cover"
-              />
-            </div>
-          </div>
-
-          {/* Item 3 */}
-          <div className="w-1/3 py-4 px-4 text-start">
-            <div className="overflow-hidden">
-              <img
-                src={imgnews1}
-                alt="imgnews3"
-                className="h-[440px] w-full object-cover"
-              />
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
