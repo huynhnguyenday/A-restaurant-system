@@ -240,7 +240,7 @@ const ManageProduct = () => {
                       >
                         <FontAwesomeIcon icon={faPen} />
                       </button>
-                      <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-xs text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                      <span className="absolute bottom-full left-1/3 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
                         Edit Product
                       </span>
                     </div>

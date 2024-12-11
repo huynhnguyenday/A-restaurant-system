@@ -135,12 +135,12 @@ const ManageBlog = () => {
                     <img
                       src={blog.image}
                       alt={blog.title}
-                      className="h-16 w-16 rounded object-cover"
+                      className="h-20 w-auto object-cover"
                     />
                   </td>
                   <td className="px-4 py-4 font-bold">{blog.title}</td>
                   <td className="px-4 py-4 text-center">
-                    {truncateContent(blog.content, 50)}{" "}
+                    {truncateContent(blog.content, 40)}{" "}
                   </td>
                   <td className="px-4 py-4 text-center">
                     {formatDate(blog.createdAt)}
@@ -157,20 +157,32 @@ const ManageBlog = () => {
                         onClick={() => toggleDisplayHot(blog._id)}
                       />
                       <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Set Hot Product
+                        Set Hot Blog
                       </span>
                     </div>
                   </td>
                   <td className="px-4 py-4 text-center">
-                    <button
-                      className="mr-2 rounded-md px-3 py-1 text-center text-blue-700 hover:rounded-full hover:bg-slate-300"
-                      onClick={() => handleEditClick(blog)} // Chỉnh sửa blog
-                    >
-                      <FontAwesomeIcon icon={faPen} />
-                    </button>
-                    <button className="rounded-md px-3 py-1 text-center text-red-700 hover:rounded-full hover:bg-slate-300">
-                      <FontAwesomeIcon icon={faTrash} />
-                    </button>
+                    <div className="flex justify-center space-x-4 text-xl">
+                      <div className="group relative">
+                        <button
+                          className="rounded-full px-3 py-1 text-blue-400 hover:bg-slate-300"
+                          onClick={() => handleEditClick(blog)}
+                        >
+                          <FontAwesomeIcon icon={faPen} />
+                        </button>
+                        <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                          Edit Blog
+                        </span>
+                      </div>
+                      <div className="group relative">
+                        <button className="rounded-md px-3 py-1 text-center text-red-400 hover:rounded-full hover:bg-slate-300">
+                          <FontAwesomeIcon icon={faTrash} />
+                        </button>
+                        <span className="absolute bottom-full left-1/3 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                          Delete Blog
+                        </span>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -8,6 +8,7 @@ import {
   faNewspaper,
   faRightToBracket,
   faClipboardList,
+  faImage,
 } from "@fortawesome/free-solid-svg-icons";
 import ManageProduct from "./ProductManage/ManageProduct";
 import ManageBlog from "./BlogManage/ManageBlog";
@@ -15,6 +16,7 @@ import ManageAccount from "./AccountManage/ManageAccount";
 import ManageCategory from "./CategoryManage/ManageCategory";
 import { Link } from "react-router-dom";
 import imgpersonportal from "../../../../backend/assets/imgpersonportal.png";
+import ManageBanner from "./BannerManage/ManageBanner";
 
 const SidebarItem = ({ icon, label, isSidebarExpanded, onClick, isActive }) => (
   <li
@@ -63,6 +65,8 @@ const DashBoard = () => {
         return <ManageCategory />;
       case "Blog":
         return <ManageBlog />;
+      case "Banner":
+        return <ManageBanner/>;
       case "Settings":
         return (
           <div className="p-6">
@@ -134,6 +138,13 @@ const DashBoard = () => {
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Blog")}
             isActive={activeComponent === "Blog"}
+          />
+          <SidebarItem
+            icon={faImage}
+            label="Banner"
+            isSidebarExpanded={isSidebarExpanded}
+            onClick={() => handleSetActiveComponent("Banner")}
+            isActive={activeComponent === "Banner"}
           />
           <SidebarItem
             icon={faChartColumn}
