@@ -10,6 +10,7 @@ import imgfood4 from "../../../../backend/assets/imgfood4.png";
 import imgfood5 from "../../../../backend/assets/imgfood5.png";
 import imgfood6 from "../../../../backend/assets/imgfood6.png";
 import NavbarLink from "./NavbarLink";
+import ModalLogin from "./ModalLogin";
 
 const Navbar = () => {
   const [cartItems, setCartItems] = useState([
@@ -117,66 +118,10 @@ const Navbar = () => {
         </a>
       </div>
 
-      {/* Modal Đăng nhập */}
-      {isLoginModalVisible && (
-        <div className="login-modal">
-          <div className="modal-content">
-            {/* Nút đóng */}
-            <button className="close-modal" onClick={handleLoginClose}>
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-
-            {isRegisterMode ? (
-              // Modal Đăng ký
-              <div>
-                <h2 className="login-title">Đăng Ký</h2>
-                <form>
-                  <input type="text" placeholder="Tên đăng nhập" />
-                  <input type="email" placeholder="Nhập Gmail" />
-                  <input type="password" placeholder="Mật khẩu" />
-                  <button type="submit" className="submit-login">
-                    Đăng Ký
-                  </button>
-                </form>
-                <div className="login-options">
-                  <a
-                    href="#admin"
-                    className="register"
-                    onClick={handleSwitchToLogin}
-                  >
-                    Đã có tài khoản?
-                  </a>
-                </div>
-              </div>
-            ) : (
-              // Modal Đăng nhập
-              <div>
-                <h2 className="login-title">Đăng Nhập</h2>
-                <form>
-                  <input type="text" placeholder="Tên đăng nhập" />
-                  <input type="password" placeholder="Mật khẩu" />
-                  <button type="submit" className="submit-login">
-                    {" "}
-                    <Link to="/admin">Đăng Nhập</Link>{" "}
-                  </button>
-                </form>
-                <div className="login-options">
-                  <a href="#forgot-password" className="forgot-password">
-                    Bạn quên mật khẩu?
-                  </a>
-                  <a
-                    href="#register"
-                    className="register"
-                    onClick={handleSwitchToRegister}
-                  >
-                    Đăng ký
-                  </a>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      <ModalLogin
+        isLoginModalVisible={isLoginModalVisible}
+        onClose={handleLoginClose}
+      />
 
       {/* Overlay */}
       {isCartVisible && (
@@ -203,7 +148,9 @@ const Navbar = () => {
                     className="cart-item-img"
                   />
                   <div className="cart-item-info">
-                    <div className="cart-item-name font-semibold">{item.name}</div>
+                    <div className="cart-item-name font-semibold">
+                      {item.name}
+                    </div>
                     <div className="cart-item-price">
                       {item.quantity} x {item.price.toLocaleString()} ₫
                     </div>

@@ -2,17 +2,22 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import AddBlog from "./AddBlog";
+import UpdateBlog from "./UpdateBlog";
 
 const ManageBlog = () => {
   const [blogList, setBlogList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isAddFormVisible, setAddFormVisible] = useState(false);
+  const [isEditFormVisible, setEditFormVisible] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState(null); 
 
   // Lọc blog dựa trên từ khóa tìm kiếm
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/blogs");
-        setBlogList(response.data.data); // Giả sử API trả về data trong `response.data.data`
+        setBlogList(response.data.data);
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
@@ -20,90 +25,103 @@ const ManageBlog = () => {
 
     fetchBlogs();
   }, []);
-  const filteredBlogs = blogList.filter(
-    (blog) =>
-      blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      new Date(blog.createdAt).toLocaleDateString().includes(searchTerm) // So sánh với ngày tháng
-  );
 
-
-  // Xóa blog
-  const deleteBlog = (id) => {
-    const updatedBlogs = blogList.filter((blog) => blog.id !== id);
-    setBlogList(updatedBlogs);
+  const handleEditClick = (blog) => {
+    setSelectedBlog(blog); // Lưu blog cần chỉnh sửa
+    setEditFormVisible(true); // Hiển thị form chỉnh sửa
   };
+
 
   const formatDate = (timestamp) => {
     const options = { day: "2-digit", month: "2-digit", year: "numeric" };
-    return new Date(timestamp).toLocaleDateString("en-GB", options); // Định dạng DD/MM/YYYY
+    return new Date(timestamp).toLocaleDateString("en-GB", options);
   };
 
   // Hàm để cắt nội dung
   const truncateContent = (content, length) => {
     if (content.length > length) {
-      return content.substring(0, length) + "..."; // Cắt nội dung và thêm dấu "..."
+      return content.substring(0, length) + "...";
     }
     return content;
   };
 
+  const filteredBlogs = blogList.filter((blog) => {
+    return (
+      blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      formatDate(blog.createdAt).includes(searchTerm)
+    );
+  });
+
+
   return (
-    <div className="flex justify-center items-center min-h-screen p-6 bg-gray-50">
-      <div className="w-full max-w-7xl bg-white p-6 rounded-lg shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
+      <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
         {/* Header Section */}
-        <div className="text-2xl font-bold mb-4 text-center">Blog Management</div>
+        <div className="mb-4 text-center text-2xl font-bold">
+          Blog Management
+        </div>
 
         {/* Search and Add Blog */}
-        <div className="flex justify-between items-center mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <input
             type="text"
             placeholder="Search by Title or Date"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border border-gray-300 p-2 rounded-md w-72"
+            className="w-72 rounded-md border border-gray-300 p-2"
           />
           {/* Tooltip và nút Plus */}
-          <div className="relative group">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600">
+          <div className="group relative">
+            <button
+              onClick={() => setAddFormVisible(true)}
+              className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            >
               <FontAwesomeIcon icon={faPlus} />
             </button>
-            <span
-              className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-sm rounded-md px-4 py-2 shadow-lg whitespace-nowrap"
-            >
+            <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-4 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
               Add Blog
             </span>
           </div>
         </div>
 
         {/* Blog Table */}
-        <div className="overflow-x-auto shadow-md rounded-lg">
+        <div className="overflow-x-auto rounded-lg shadow-md">
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="py-2 px-4 text-center">Image</th>
-                <th className="py-2 px-4 text-left">Title</th>
-                <th className="py-2 px-4 text-left">Content</th>
-                <th className="py-2 px-4 text-center">Date</th>
-                <th className="py-2 px-4 text-center">Actions</th>
+                <th className="px-4 py-2 text-center">Image</th>
+                <th className="px-4 py-2 text-left">Title</th>
+                <th className="px-4 py-2 text-left">Content</th>
+                <th className="px-4 py-2 text-center">Date</th>
+                <th className="px-4 py-2 text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredBlogs.map((blog) => (
                 <tr key={blog._id} className="border-b">
-                  <td className="py-4 px-4 text-center flex justify-center">
-                    <img src={blog.image} alt={blog.title} className="w-16 h-16 object-cover rounded" />
+                  <td className="flex justify-center px-4 py-4 text-center">
+                    <img
+                      src={blog.image}
+                      alt={blog.title}
+                      className="h-16 w-16 rounded object-cover"
+                    />
                   </td>
-                  <td className="py-4 px-4 font-bold">{blog.title}</td>
-                  <td className="py-4 px-4 text-center">
-                    {truncateContent(blog.content, 50)} {/* Cắt nội dung tại đây */}
+                  <td className="px-4 py-4 font-bold">{blog.title}</td>
+                  <td className="px-4 py-4 text-center">
+                    {truncateContent(blog.content, 50)}{" "}
                   </td>
-                  <td className="py-4 px-4 text-center">{formatDate(blog.createdAt)}</td>
-                  <td className="py-4 px-4 text-center">
-                    <button className="text-blue-700 px-3 py-1 mr-2 text-center rounded-md hover:bg-slate-300 hover:rounded-full">
+                  <td className="px-4 py-4 text-center">
+                    {formatDate(blog.createdAt)}
+                  </td>
+                  <td className="px-4 py-4 text-center">
+                    <button
+                      className="mr-2 rounded-md px-3 py-1 text-center text-blue-700 hover:rounded-full hover:bg-slate-300"
+                      onClick={() => handleEditClick(blog)} // Chỉnh sửa blog
+                    >
                       <FontAwesomeIcon icon={faPen} />
                     </button>
                     <button
-                      className="text-red-700 px-3 py-1 text-center rounded-md hover:bg-slate-300 hover:rounded-full"
-                      onClick={() => deleteBlog(blog._id)}
+                      className="rounded-md px-3 py-1 text-center text-red-700 hover:rounded-full hover:bg-slate-300"
                     >
                       <FontAwesomeIcon icon={faTrash} />
                     </button>
@@ -114,8 +132,30 @@ const ManageBlog = () => {
           </table>
         </div>
       </div>
+
+      {isAddFormVisible && (
+        <AddBlog
+          onClose={() => setAddFormVisible(false)}
+          onBlogAdded={(newBlog) => setBlogList((prev) => [newBlog, ...prev])}
+        />
+      )}
+
+      {isEditFormVisible && selectedBlog && (
+        <UpdateBlog
+          blog={selectedBlog}
+          onClose={() => setEditFormVisible(false)}
+          onBlogUpdated={(updatedBlog) => {
+            setBlogList((prev) =>
+              prev.map((blog) =>
+                blog._id === updatedBlog._id ? updatedBlog : blog,
+              ),
+            );
+          }}
+        />
+      )}
     </div>
   );
 };
+
 
 export default ManageBlog;

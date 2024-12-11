@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -39,7 +39,19 @@ const DashBoard = () => {
   const [activeComponent, setActiveComponent] = useState("Home");
   const [isHovered, setIsHovered] = useState(false); // Trạng thái hover
 
-  const toggleSidebar = () => setIsSidebarExpanded(!isSidebarExpanded);
+  // Đọc giá trị activeComponent từ localStorage khi trang được tải lại
+  useEffect(() => {
+    const savedComponent = localStorage.getItem("activeComponent");
+    if (savedComponent) {
+      setActiveComponent(savedComponent); // Đọc lại giá trị từ localStorage
+    }
+  }, []);
+
+  // Lưu giá trị activeComponent vào localStorage khi thay đổi
+  const handleSetActiveComponent = (component) => {
+    setActiveComponent(component);
+    localStorage.setItem("activeComponent", component); // Lưu vào localStorage
+  };
 
   const renderContent = () => {
     switch (activeComponent) {
@@ -48,7 +60,7 @@ const DashBoard = () => {
       case "Product":
         return <ManageProduct />;
       case "Category":
-        return <ManageCategory />
+        return <ManageCategory />;
       case "Blog":
         return <ManageBlog />;
       case "Settings":
@@ -86,7 +98,7 @@ const DashBoard = () => {
             Bamos<span className="admin-name-app text-orange-900">Coffee</span>
           </span>
           <button
-            onClick={toggleSidebar}
+            onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
             className="px-1 text-gray-400 hover:text-black focus:outline-none"
           >
             <FontAwesomeIcon icon={faBars} className="text-2xl" />
@@ -99,35 +111,35 @@ const DashBoard = () => {
             icon={faUser}
             label="Account"
             isSidebarExpanded={isSidebarExpanded}
-            onClick={() => setActiveComponent("Home")}
+            onClick={() => handleSetActiveComponent("Home")}
             isActive={activeComponent === "Home"}
           />
           <SidebarItem
             icon={faMugSaucer}
             label="Product"
             isSidebarExpanded={isSidebarExpanded}
-            onClick={() => setActiveComponent("Product")}
+            onClick={() => handleSetActiveComponent("Product")}
             isActive={activeComponent === "Product"}
           />
           <SidebarItem
-            icon={faClipboardList} 
+            icon={faClipboardList}
             label="Category"
             isSidebarExpanded={isSidebarExpanded}
-            onClick={() => setActiveComponent("Category")}
+            onClick={() => handleSetActiveComponent("Category")}
             isActive={activeComponent === "Category"}
           />
           <SidebarItem
             icon={faNewspaper}
             label="Blog"
             isSidebarExpanded={isSidebarExpanded}
-            onClick={() => setActiveComponent("Blog")}
+            onClick={() => handleSetActiveComponent("Blog")}
             isActive={activeComponent === "Blog"}
           />
           <SidebarItem
             icon={faChartColumn}
             label="Chart"
             isSidebarExpanded={isSidebarExpanded}
-            onClick={() => setActiveComponent("Settings")}
+            onClick={() => handleSetActiveComponent("Settings")}
             isActive={activeComponent === "Settings"}
           />
         </ul>
