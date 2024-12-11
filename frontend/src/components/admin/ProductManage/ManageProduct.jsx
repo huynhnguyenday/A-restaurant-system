@@ -14,9 +14,9 @@ import UpdateProduct from "./UpdateProduct"; // Import UpdateProduct component
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showAddModal, setShowAddModal] = useState(false); // Separate state for adding product modal
-  const [showUpdateModal, setShowUpdateModal] = useState(false); // Separate state for updating product modal
-  const [selectedProduct, setSelectedProduct] = useState(null); // State to track selected product for editing
+  const [showAddModal, setShowAddModal] = useState(false); 
+  const [showUpdateModal, setShowUpdateModal] = useState(false); 
+  const [selectedProduct, setSelectedProduct] = useState(null); 
   
 
   // Tách riêng hàm fetchProducts để tái sử dụng
@@ -97,10 +97,9 @@ const ManageProduct = () => {
     }
   };
 
-  // Handle the edit product action (open the update modal)
   const handleEditProduct = (product) => {
-    setSelectedProduct(product); // Set the selected product to be edited
-    setShowUpdateModal(true); // Show the update modal
+    setSelectedProduct(product); 
+    setShowUpdateModal(true); 
   };
 
   return (

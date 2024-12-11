@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faPen, faTrash, faFire } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import AddBlog from "./AddBlog";
 import UpdateBlog from "./UpdateBlog";
@@ -27,8 +27,8 @@ const ManageBlog = () => {
   }, []);
 
   const handleEditClick = (blog) => {
-    setSelectedBlog(blog); // Lưu blog cần chỉnh sửa
-    setEditFormVisible(true); // Hiển thị form chỉnh sửa
+    setSelectedBlog(blog); 
+    setEditFormVisible(true); 
   };
 
 
@@ -52,6 +52,33 @@ const ManageBlog = () => {
     );
   });
 
+  const toggleDisplayHot = async (id) => {
+    try {
+      // Cập nhật trạng thái local
+      const updatedBlogs = blogList.map((blog) =>
+        blog._id === id
+          ? { ...blog, displayHot: blog.displayHot === 1 ? 2 : 1 }
+          : blog,
+      );
+      setBlogList(updatedBlogs);
+
+      // Gửi yêu cầu API để cập nhật trạng thái trên server
+      await axios.put(`http://localhost:5000/api/blogs/${id}`, {
+        displayHot: updatedBlogs.find((blog) => blog._id === id).displayHot,
+      });
+    } catch (error) {
+      console.error("Error updating display hot:", error);
+
+      // Khôi phục trạng thái ban đầu nếu có lỗi
+      setBlogList((prev) =>
+        prev.map((blog) =>
+          blog._id === id
+            ? { ...blog, displayHot: blog.displayHot === 2 ? 1 : 2 }
+            : blog,
+        ),
+      );
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
@@ -93,6 +120,7 @@ const ManageBlog = () => {
                 <th className="px-4 py-2 text-left">Title</th>
                 <th className="px-4 py-2 text-left">Content</th>
                 <th className="px-4 py-2 text-center">Date</th>
+                <th className="px-4 py-2 text-center">Hot</th>
                 <th className="px-4 py-2 text-center">Actions</th>
               </tr>
             </thead>
@@ -113,6 +141,22 @@ const ManageBlog = () => {
                   <td className="px-4 py-4 text-center">
                     {formatDate(blog.createdAt)}
                   </td>
+                  <td className="px-4 py-2 text-center">
+                    <div className="group relative">
+                      <FontAwesomeIcon
+                        icon={faFire}
+                        className={
+                          blog.displayHot === 1
+                            ? "cursor-pointer text-2xl text-red-500"
+                            : "cursor-pointer text-xl text-gray-400"
+                        }
+                        onClick={() => toggleDisplayHot(blog._id)}
+                      />
+                      <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                        Set Hot Product
+                      </span>
+                    </div>
+                  </td>
                   <td className="px-4 py-4 text-center">
                     <button
                       className="mr-2 rounded-md px-3 py-1 text-center text-blue-700 hover:rounded-full hover:bg-slate-300"
@@ -120,9 +164,7 @@ const ManageBlog = () => {
                     >
                       <FontAwesomeIcon icon={faPen} />
                     </button>
-                    <button
-                      className="rounded-md px-3 py-1 text-center text-red-700 hover:rounded-full hover:bg-slate-300"
-                    >
+                    <button className="rounded-md px-3 py-1 text-center text-red-700 hover:rounded-full hover:bg-slate-300">
                       <FontAwesomeIcon icon={faTrash} />
                     </button>
                   </td>

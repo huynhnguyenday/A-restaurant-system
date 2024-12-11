@@ -1,11 +1,10 @@
 import Blog from "../models/blog.model.js";
+import mongoose from "mongoose";
 
 export const getBlogs = async (req, res) => {
   try {
-    // Lấy tất cả blog từ database
     const blogs = await Blog.find();
 
-    // Thêm đường dẫn đầy đủ cho ảnh
     const blogsWithFullImagePath = blogs.map((blog) => ({
       ...blog.toObject(),
       image: `http://localhost:5000/assets/${blog.image}`,
@@ -23,7 +22,7 @@ export const getBlogs = async (req, res) => {
 
 export const createBlog = async (req, res) => {
   try {
-    const { title, content } = req.body;
+    const { title, content, displayHot } = req.body;
 
     // Kiểm tra title và content
     if (!title || !content) {
@@ -45,6 +44,7 @@ export const createBlog = async (req, res) => {
       image: imagePath,
       title,
       content,
+      displayHot,
     });
 
     await newBlog.save();
@@ -65,7 +65,7 @@ export const createBlog = async (req, res) => {
 
 export const updateBlog = async (req, res) => {
   const { id } = req.params;
-  const { title, content } = req.body;
+  const { title, content, displayHot } = req.body;
 
   // Kiểm tra ID hợp lệ
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -87,7 +87,7 @@ export const updateBlog = async (req, res) => {
 
     const updatedBlog = await Blog.findByIdAndUpdate(
       id,
-      { title, content, image: updatedImagePath },
+      { title, content, image: updatedImagePath, displayHot },
       { new: true }
     );
 

@@ -10,11 +10,12 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true, // Bắt buộc phải có tiêu đề
       trim: true, // Loại bỏ khoảng trắng thừa
-    },  
+    },
     content: {
       type: String,
       required: true, // Bắt buộc phải có nội dung
     },
+    displayHot: { type: Number, default: 1 },
   },
   {
     timestamps: true, // Tự động thêm createdAt và updatedAt
