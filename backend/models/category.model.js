@@ -1,4 +1,4 @@
-import mongoose, { mongo, Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const categorySchema = new mongoose.Schema(
   {

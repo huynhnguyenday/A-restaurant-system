@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faPen, faTrash, faFire } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faPen,
+  faTrash,
+  faFire,
+} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import AddBlog from "./AddBlog";
 import UpdateBlog from "./UpdateBlog";
@@ -10,7 +15,7 @@ const ManageBlog = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddFormVisible, setAddFormVisible] = useState(false);
   const [isEditFormVisible, setEditFormVisible] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState(null); 
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
   // Lọc blog dựa trên từ khóa tìm kiếm
   useEffect(() => {
@@ -27,10 +32,9 @@ const ManageBlog = () => {
   }, []);
 
   const handleEditClick = (blog) => {
-    setSelectedBlog(blog); 
-    setEditFormVisible(true); 
+    setSelectedBlog(blog);
+    setEditFormVisible(true);
   };
-
 
   const formatDate = (timestamp) => {
     const options = { day: "2-digit", month: "2-digit", year: "numeric" };
@@ -198,6 +202,5 @@ const ManageBlog = () => {
     </div>
   );
 };
-
 
 export default ManageBlog;

@@ -6,6 +6,7 @@ import axios from "axios";
 const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
   const [title, setTitle] = useState(blog.title);
   const [content, setContent] = useState(blog.content);
+  const [displayHot, setDisplayHot] = useState(blog.displayHot);
   const [image, setImage] = useState(null);
   const [error, setError] = useState("");
 
@@ -18,7 +19,7 @@ const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !content) {
+    if (!title || !content || !displayHot) {
       setError("Title and Content are required.");
       return;
     }
@@ -26,6 +27,7 @@ const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
+    formData.append("displayHot", displayHot);
 
     // Thêm ảnh mới vào formData nếu có, nếu không giữ ảnh cũ
     if (image) {
@@ -49,8 +51,6 @@ const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
     }
   };
 
-  
-
   // Hiển thị ảnh hiện tại nếu có
   const displayImage = image ? (
     <img
@@ -67,7 +67,6 @@ const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
       />
     )
   );
-
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -88,6 +87,19 @@ const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full rounded-md border border-gray-300 p-2"
                 />
+              </div>
+              <div className="w-1/2">
+                <label className="block pb-2 text-xl font-medium">
+                  Display Hot
+                </label>
+                <select
+                  value={displayHot}
+                  onChange={(e) => setDisplayHot(e.target.value)}
+                  className="h-12 w-full rounded-md border border-gray-300 p-2"
+                >
+                  <option value={1}>Hot</option>
+                  <option value={2}>Not Hot</option>
+                </select>
               </div>
 
               {/* Ảnh hiển thị bên dưới ô chọn tệp */}
@@ -115,11 +127,11 @@ const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
                 value={content}
                 onChange={setContent}
                 style={{
-                  height: "300px", 
-                  resize: "both", 
-                  overflow: "hidden", 
+                  height: "300px",
+                  resize: "both",
+                  overflow: "hidden",
                   maxWidth: "100%",
-                  maxHeight: "480px", 
+                  maxHeight: "480px",
                 }}
                 className="w-full rounded-md border border-gray-300"
               />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
@@ -7,6 +7,7 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
+  const [displayHot, setDisplayHot] = useState(1);
   const [error, setError] = useState("");
 
   const handleImageChange = (e) => {
@@ -16,7 +17,7 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !content || !image) {
+    if (!title || !content || !image || !displayHot) {
       setError("All fields are required.");
       return;
     }
@@ -25,6 +26,7 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
     formData.append("title", title);
     formData.append("content", content);
     formData.append("image", image);
+    formData.append("displayHot", displayHot);
 
     try {
       const response = await axios.post(
@@ -51,7 +53,7 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
             {/* Phần Tiêu đề và Ảnh */}
             <div>
               <div className="mb-4 mt-1">
-                <label className="block text-xl mb-2 font-medium text-gray-700">
+                <label className="mb-2 block text-xl font-medium text-gray-700">
                   Title
                 </label>
                 <input
@@ -62,8 +64,21 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
                   required
                 />
               </div>
+              <div className="w-1/2">
+                <label className="block pb-2 text-xl font-medium">
+                  Display Hot
+                </label>
+                <select
+                  value={displayHot}
+                  onChange={(e) => setDisplayHot(+e.target.value)}
+                  className="h-12 w-full rounded-md border border-gray-300 p-2"
+                >
+                  <option value={1}>Hot</option>
+                  <option value={2}>Not Hot</option>
+                </select>
+              </div>
               <div className="mb-4">
-                <label className="block text-xl mb-2 font-medium text-gray-700">
+                <label className="mb-2 block text-xl font-medium text-gray-700">
                   Image
                 </label>
                 <input
@@ -75,7 +90,6 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
                 />
               </div>
             </div>
-
             {/* Phần Content (Quill) */}
             <div>
               <label className="mb-2 block text-xl font-medium text-gray-700">
@@ -85,10 +99,10 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
                 value={content}
                 onChange={setContent}
                 style={{
-                  height: "300px", 
-                  resize: "both", 
-                  overflow: "hidden", 
-                  maxWidth: "100%", 
+                  height: "300px",
+                  resize: "both",
+                  overflow: "hidden",
+                  maxWidth: "100%",
                   maxHeight: "480px",
                 }}
                 className="w-full rounded-md border border-gray-300"
@@ -96,7 +110,7 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
             </div>
           </div>
 
-          <div className="flex justify-center space-x-40 ">
+          <div className="flex justify-center space-x-40">
             <button
               type="button"
               onClick={onClose}
