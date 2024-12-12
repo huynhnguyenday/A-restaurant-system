@@ -17,17 +17,17 @@ const BannerSwiper = () => {
     {
       id: 1,
       image: imgbanner1,
-      alt: "Khuyến mãi 1",
+      title: "Khuyến mãi 1",
     },
     {
       id: 2,
       image: imgbanner2,
-      alt: "Khuyến mãi 2",
+      title: "Khuyến mãi 2",  
     },
     {
       id: 3,
       image: imgbanner3,
-      alt: "Khuyến mãi 3",
+      title: "Khuyến mãi 3",
     },
   ];
 
@@ -52,7 +52,7 @@ const BannerSwiper = () => {
             <div className="h-full w-full">
               <img
                 src={banner.image}
-                alt={banner.alt}
+                alt={banner.title}
                 className="h-[500px] w-full"
               />
             </div>

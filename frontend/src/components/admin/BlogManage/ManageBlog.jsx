@@ -139,9 +139,14 @@ const ManageBlog = () => {
                     />
                   </td>
                   <td className="px-4 py-4 font-bold">{blog.title}</td>
-                  <td className="px-4 py-4 text-center">
-                    {truncateContent(blog.content, 40)}{" "}
+                  <td className="px-4 py-4 text-left">
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: truncateContent(blog.content, 40),
+                      }}
+                    ></div>
                   </td>
+
                   <td className="px-4 py-4 text-center">
                     {formatDate(blog.createdAt)}
                   </td>

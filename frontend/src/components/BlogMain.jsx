@@ -32,6 +32,14 @@ export const blogs = [
     content:
       "Detailed content for blog 3. Explore the best destinations for your winter vacation!",
   },
+  {
+    id: 4,
+    title: "Trà lạnh mùa hè",
+    date: "27/02/2024",
+    image: imgblog3,
+    content:
+      "Detailed content for blog 3. Explore the best destinations for your winter vacation!",
+  },
 ];
 
 const BlogMain = () => {
