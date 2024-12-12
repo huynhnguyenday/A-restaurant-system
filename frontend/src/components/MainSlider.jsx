@@ -1,20 +1,28 @@
 import React from "react";
-import "./MainSlider.css"; // CSS để định dạng giao diện
 import imgBackground from "../../../backend/assets/img_background.png"; // Đường dẫn tới ảnh
 
 const MainSlider = () => {
   return (
-    <div className="main-slider">
-      <div className="content">
-        <h4>Áp dụng cho học sinh sinh viên</h4>
-        <h1 className="animated-title">Hè đến - Giảm giá 30%</h1>
-        <a href="/menu" className="btn-buy hover:bg-[#633c02]">Mua ngay</a>
+    <div className="flex flex-col-reverse items-center justify-center gap-x-0 lg:flex-row">
+      <div className="content mb-20 mt-8 px-4 text-[#633c02] lg:ml-32 lg:mt-8">
+        <h1 className="animated-title mb-3 text-4xl font-bold lg:text-5xl">
+          ĐÔNG ĐẾN GIẢM 30%
+        </h1>
+        <h4 className="mb-6 font-josefin text-2xl">
+          Áp dụng cho học sinh sinh viên
+        </h4>
+        <a
+          href="/menu"
+          className="btn-buy rounded-lg bg-[#d88453] px-6 py-2 text-2xl text-white hover:rounded-3xl hover:bg-[#633c02]"
+        >
+          Mua ngay
+        </a>
       </div>
-      <div className="image-container">
+      <div className="image-container mt-4 lg:mt-0">
         <img
           src={imgBackground}
           alt="Background"
-          className="background-image"
+          className="background-image h-auto w-full"
         />
       </div>
     </div>

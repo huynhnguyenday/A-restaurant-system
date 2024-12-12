@@ -58,10 +58,10 @@ const BlogMain = () => {
   };
 
   return (
-    <div className="bg-gray-100 py-12 font-sans">
+    <div className="bg-[#f9f9f9] py-12 font-sans">
       <div className="mx-auto max-w-screen-xl">
         <div className="mb-8 text-center">
-          <div className="text-brown-800 text-4xl font-bold">
+          <div className="text-4xl font-bold text-[#633402]">
             Tin mới nóng hổi
           </div>
           <div className="bg-brown-800 mx-auto my-4 h-1 w-12"></div>
@@ -75,7 +75,7 @@ const BlogMain = () => {
             loop={false}
             breakpoints={{
               430: { slidesPerView: 1.3 },
-              768: { slidesPerView: 2.2 }, 
+              768: { slidesPerView: 2.2 },
               1024: { slidesPerView: 3.3 },
             }}
           >

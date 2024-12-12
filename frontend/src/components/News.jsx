@@ -5,7 +5,7 @@ import axios from "axios";
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Tháng từ 0 nên cần cộng thêm 1
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); 
   return `${day} Th${parseInt(month)}`;
 };
 
@@ -45,20 +45,29 @@ const News = () => {
             style={{ cursor: "pointer" }}
           >
             {/* Phần trên: Ảnh bài viết */}
-            <div className="relative flex-1 bg-[#f0f0f0]">
-              <div className="absolute left-2 top-2 flex h-[50px] w-[50px] items-center justify-center rounded-full bg-[#d88453] text-xs font-bold text-white shadow-md">
-                {formatDate(blog.updatedAt)}
+            <div className="relative h-[179px] w-full overflow-hidden bg-[#f0f0f0]">
+              <div className="absolute left-2 top-2 flex h-[55px] w-[55px] flex-col items-center justify-center rounded-full bg-[#d88453] text-xs font-bold text-white shadow-md">
+                <span className="text-sm">
+                  {formatDate(blog.updatedAt).split(" ")[0]}
+                </span>
+                <span className="text-sm">
+                  {formatDate(blog.updatedAt).split(" ")[1]}
+                </span>
               </div>
+
               <img
                 src={blog.image}
                 alt={blog.title}
-                className="h-[171px] w-[298px] object-cover"
+                className="h-full w-full object-cover"
               />
             </div>
+
             {/* Phần dưới: Tiêu đề và đoạn trích */}
             <div className="p-2 text-center">
               <h2 className="mb-2 text-lg font-bold text-[#633402]">
-                {blog.title}
+                {blog.title.length > 50
+                  ? `${blog.title.slice(0, 50)}...`
+                  : blog.title}
               </h2>
               <p
                 className="pb-2 text-sm text-[#555]"

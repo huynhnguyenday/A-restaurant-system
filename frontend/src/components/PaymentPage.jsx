@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import "./PaymentPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faShop } from "@fortawesome/free-solid-svg-icons";
 
@@ -23,16 +22,15 @@ const PaymentPage = () => {
     return (
       <button
         type="button"
-        className="h-24 w-1/3 flex items-center justify-center text-2xl mx-auto mt-20 mb-20 bg-black text-white rounded-full"
+        className="mx-auto mb-20 mt-20 flex h-24 w-1/3 items-center justify-center rounded-full bg-black text-2xl text-white"
       >
         <a href="/menu" className="flex items-center space-x-2">
-          <FontAwesomeIcon icon={faShop} className="text-4xl" /> 
+          <FontAwesomeIcon icon={faShop} className="text-4xl" />
           <span className="text-xl">QUAY TRỞ LẠI TRANG MUA SẮM</span>
         </a>
       </button>
     );
   }
-  
 
   const handlePaymentOptionClick = (paymentId) => {
     setSelectedPayment(paymentId);
@@ -43,18 +41,16 @@ const PaymentPage = () => {
       cartItems.map((item) =>
         item.id === id && item.quantity > 1
           ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
+          : item,
+      ),
     );
   };
 
   const increaseQuantity = (id) => {
     setCartItems(
       cartItems.map((item) =>
-        item.id === id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      )
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+      ),
     );
   };
 
@@ -80,11 +76,13 @@ const PaymentPage = () => {
   const finalPrice = calculatedTotalPrice - discount;
 
   return (
-    <div className="container mx-auto my-10 px-4 pb-20">
-      <div className="content-payment grid grid-cols-10 gap-6">
+    <div className="mx-auto my-10 max-w-[1200px] px-4 pb-20">
+      <div className="grid grid-cols-10 gap-6 pt-12">
         {/* Phần thông tin khách hàng chiếm 6 cột */}
         <div className="payment-left col-span-10 sm:col-span-6">
-          <h3 className="payment-left-title mb-4">Thông tin khách hàng</h3>
+          <h3 className="mb-4 pt-4 font-josefin text-[32px] font-bold">
+            Thông tin khách hàng
+          </h3>
           <form className="input-group space-y-4">
             {/* Các trường thông tin */}
             <div className="input-payment">
@@ -97,7 +95,7 @@ const PaymentPage = () => {
             <div className="input-payment">
               <input
                 type="text"
-                className="h-14 w-full rounded-2xl border border-gray-300 p-2"
+                className="h-14 w-full rounded-2xl border border-gray-300 p-2 pt-3"
                 placeholder="Địa chỉ"
               />
             </div>
@@ -114,7 +112,9 @@ const PaymentPage = () => {
               />
             </div>
             <div>
-              <p className="input-note pb-1 pl-1 pt-1">Ghi chú đặt hàng</p>
+              <p className="pb-1 pl-1 pt-1 font-josefin text-[18px] font-bold">
+                Ghi chú đặt hàng
+              </p>
               <input
                 type="text"
                 className="h-16 w-full rounded-2xl border border-gray-300 p-2"
@@ -123,14 +123,18 @@ const PaymentPage = () => {
             </div>
 
             <div className="payment-method">
-              <h4 className="payment-name mb-4 text-lg">
+              <h4 className="mb-4 py-6 font-josefin text-[32px] text-lg font-bold">
                 Phương tiện thanh toán
               </h4>
 
               {/* Option 1 */}
               <button
                 type="button"
-                className={`payment-option mb-4 flex w-full cursor-pointer items-center rounded-2xl border p-4 ${selectedPayment === "bank-transfer" ? "selected" : ""}`}
+                className={`payment-option mb-4 flex w-full cursor-pointer items-center rounded-2xl border p-4 transition-colors duration-300 hover:text-black ${
+                  selectedPayment === "bank-transfer"
+                    ? "border-[#2f5acf]"
+                    : "border-gray-300"
+                }`}
                 onClick={() => handlePaymentOptionClick("bank-transfer")}
               >
                 <input
@@ -141,13 +145,25 @@ const PaymentPage = () => {
                   checked={selectedPayment === "bank-transfer"}
                   readOnly
                 />
-                <div className="checkbox-circle"></div>
+                <div
+                  className={`checkbox-circle relative flex h-[20px] w-[20px] items-center justify-center rounded-full border-2 bg-white transition-colors duration-300 ${
+                    selectedPayment === "bank-transfer"
+                      ? "border-[#2f5acf]"
+                      : "border-gray-300"
+                  }`}
+                >
+                  {selectedPayment === "bank-transfer" && (
+                    <div className="h-[10px] w-[10px] rounded-full bg-[#2f5acf]"></div> // This adds the blue circle
+                  )}
+                </div>
                 <label
                   htmlFor="bank-transfer"
                   className="ml-4 flex-grow text-left text-gray-700"
                 >
-                  <p className="name-option">Chuyển khoản ngân hàng:</p>
-                  <span className="detail-option">
+                  <p className="name-option font-josefin text-[20px] font-semibold text-[#8e8e8e] transition-colors duration-300 ease-in-out">
+                    Chuyển khoản ngân hàng:
+                  </p>
+                  <span className="detail-option font-josefin text-[14px] text-[#8e8e8e] transition-colors duration-300 ease-in-out">
                     Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng
                     tôi.
                   </span>
@@ -157,7 +173,11 @@ const PaymentPage = () => {
               {/* Option 2 */}
               <button
                 type="button"
-                className={`payment-option flex w-full cursor-pointer items-center rounded-2xl border p-4 ${selectedPayment === "cash-on-delivery" ? "selected" : ""}`}
+                className={`payment-option flex w-full cursor-pointer items-center rounded-2xl border p-4 transition-colors duration-300 hover:text-black ${
+                  selectedPayment === "cash-on-delivery"
+                    ? "border-[#2f5acf]"
+                    : "border-gray-300"
+                }`}
                 onClick={() => handlePaymentOptionClick("cash-on-delivery")}
               >
                 <input
@@ -168,13 +188,25 @@ const PaymentPage = () => {
                   checked={selectedPayment === "cash-on-delivery"}
                   readOnly
                 />
-                <div className="checkbox-circle"></div>
+                <div
+                  className={`checkbox-circle relative flex h-[20px] w-[20px] items-center justify-center rounded-full border-2 bg-white transition-colors duration-300 ${
+                    selectedPayment === "cash-on-delivery"
+                      ? "border-[#2f5acf]"
+                      : "border-gray-300"
+                  }`}
+                >
+                  {selectedPayment === "cash-on-delivery" && (
+                    <div className="h-[10px] w-[10px] rounded-full bg-[#2f5acf]"></div> // This adds the blue circle
+                  )}
+                </div>
                 <label
                   htmlFor="cash-on-delivery"
                   className="ml-4 flex-grow text-left text-gray-700"
                 >
-                  <p className="name-option">Trả tiền mặt khi nhận hàng:</p>
-                  <span className="detail-option">
+                  <p className="name-option font-josefin text-[20px] font-semibold text-[#8e8e8e] transition-colors duration-300 ease-in-out">
+                    Trả tiền mặt khi nhận hàng:
+                  </p>
+                  <span className="detail-option font-josefin text-[14px] text-[#8e8e8e] transition-colors duration-300 ease-in-out">
                     Trả tiền mặt khi giao hàng.
                   </span>
                 </label>
@@ -183,7 +215,7 @@ const PaymentPage = () => {
 
             <button
               type="submit"
-              className="button-submit h-14 w-full rounded-2xl"
+              className="mt-8 h-16 w-full rounded-2xl bg-black px-4 font-josefin text-xl font-bold text-white hover:bg-[#494949]"
             >
               ĐẶT NGAY {finalPrice.toLocaleString()}₫
             </button>
@@ -192,7 +224,7 @@ const PaymentPage = () => {
 
         {/* Phần giỏ hàng và sản phẩm chiếm 4 cột */}
         <div className="col-span-10 pl-8 sm:col-span-4">
-          <h3 className="name-option-payment mb-4 text-xl">
+          <h3 className="name-option-payment mb-4 pt-4 font-josefin text-[32px] text-xl font-bold">
             Thông tin sản phẩm
           </h3>
           <div className="rounded-lg bg-white p-4">
@@ -263,11 +295,11 @@ const PaymentPage = () => {
               Apply coupon
             </button>
           </div>
-          <div className="subtotal">
+          <div className="mb-[5px] flex justify-between font-josefin text-[18px] font-semibold">
             <span>GIẢM GIÁ</span>
             <span>{discount.toLocaleString()}₫</span>
           </div>
-          <div className="total">
+          <div className="mb-[5px] flex justify-between font-josefin text-[18px] font-semibold">
             <span>TỔNG CỘNG</span>
             <span>{finalPrice.toLocaleString()}₫</span>
           </div>

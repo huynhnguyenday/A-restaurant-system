@@ -11,6 +11,7 @@ import imgfood5 from "../../../../backend/assets/imgfood5.png";
 import imgfood6 from "../../../../backend/assets/imgfood6.png";
 import NavbarLink from "./NavbarLink";
 import ModalLogin from "./ModalLogin";
+import SidebarCart from "./SidebarCart";
 
 const Navbar = () => {
   const [cartItems, setCartItems] = useState([
@@ -130,57 +131,12 @@ const Navbar = () => {
 
       {/* Sidebar giỏ hàng */}
       {isCartVisible && (
-        <div className="cart-sidebar">
-          <button className="close-btn" onClick={handleCartClick}>
-            <FontAwesomeIcon icon={faTimes} />
-          </button>
-          <div className="cart-title">Giỏ hàng</div>
-
-          <div className="cart-divider"></div>
-
-          <div className="cart-items">
-            <div className="cart-items">
-              {cartItems.map((item) => (
-                <div key={item.id} className="cart-item">
-                  <img
-                    src={item.img}
-                    alt={item.name}
-                    className="cart-item-img"
-                  />
-                  <div className="cart-item-info">
-                    <div className="cart-item-name font-semibold">
-                      {item.name}
-                    </div>
-                    <div className="cart-item-price">
-                      {item.quantity} x {item.price.toLocaleString()} ₫
-                    </div>
-                  </div>
-                  <button
-                    className="remove-item-btn"
-                    onClick={() => removeItem(item.id)}
-                  >
-                    <FontAwesomeIcon icon={faTimes} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="cart-total">
-            <span>Tổng cộng</span>
-            <span>
-              {cartItems
-                .reduce((total, item) => total + item.quantity * item.price, 0)
-                .toLocaleString()}{" "}
-              ₫
-            </span>
-          </div>
-          <Link to="/payment" state={{ cartItems, totalPrice }}>
-            <button className="checkout-btn" onClick={handleCartClick}>
-              Thanh toán
-            </button>
-          </Link>
-        </div>
+        <SidebarCart
+          cartItems={cartItems}
+          removeItem={removeItem}
+          totalPrice={totalPrice}
+          handleCartClick={handleCartClick}
+        />
       )}
     </nav>
   );
