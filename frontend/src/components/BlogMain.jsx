@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import "./BlogMain.css";
 import imgblog1 from "../../../backend/assets/imgblog1.png";

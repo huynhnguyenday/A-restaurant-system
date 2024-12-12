@@ -1,6 +1,7 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "swiper/css";
 import "swiper/css/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +14,8 @@ import imgbanner2 from "../../../../backend/assets/imgbanner2.png";
 import imgbanner3 from "../../../../backend/assets/imgbanner3.png";
 
 const BannerSwiper = () => {
-  const banners = [
+  const navigate = useNavigate(); // Hook để điều hướng
+  const blogs = [
     {
       id: 1,
       image: imgbanner1,
@@ -22,7 +24,7 @@ const BannerSwiper = () => {
     {
       id: 2,
       image: imgbanner2,
-      title: "Khuyến mãi 2",  
+      title: "Khuyến mãi 2",
     },
     {
       id: 3,
@@ -47,12 +49,15 @@ const BannerSwiper = () => {
         }}
         loop={true}
       >
-        {banners.map((banner) => (
-          <SwiperSlide key={banner.id}>
-            <div className="h-full w-full">
+        {blogs.map((blog) => (
+          <SwiperSlide key={blog.id}>
+            <div
+              className="h-full w-full cursor-pointer"
+              onClick={() => navigate(`/blogs/${blog.id}`)} // Điều hướng khi nhấn vào banner
+            >
               <img
-                src={banner.image}
-                alt={banner.title}
+                src={blog.image}
+                alt={blog.title}
                 className="h-[500px] w-full"
               />
             </div>
@@ -69,7 +74,6 @@ const BannerSwiper = () => {
         <FontAwesomeIcon icon={faChevronLeft} className="text-4xl" />
       </div>
 
-      {/* Button Next */}
       <div
         className="swiper-button-next-banner absolute right-4 top-1/2 z-10 hidden h-[70px] w-[40px] -translate-y-1/2 cursor-pointer items-center justify-center text-white group-hover:flex"
         style={{
