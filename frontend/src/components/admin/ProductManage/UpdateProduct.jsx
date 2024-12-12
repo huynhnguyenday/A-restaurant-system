@@ -202,6 +202,7 @@ const UpdateProduct = ({
             </div>
 
             {/* Phần Ảnh */}
+            {/* Hiển thị ảnh đã chọn hoặc ảnh cũ */}
             <div className="w-2/5">
               <label className="block pb-2 text-xl font-medium">Image</label>
               <input
@@ -210,18 +211,21 @@ const UpdateProduct = ({
                 accept="image/*"
                 className="w-full rounded-md border border-gray-300 p-2"
               />
-              <div className="mb-2">
-                <img
-                  src={
-                    updatedProduct.image.startsWith("http") ||
-                    updatedProduct.image.startsWith("data") ||
-                    updatedProduct.image.startsWith("/uploads/")
-                      ? updatedProduct.image
-                      : `/uploads/${updatedProduct.image}`
-                  }
-                  alt={updatedProduct.name}
-                  className="mb-2 h-2/5 w-2/5 rounded-md border object-cover"
-                />
+              <div className="mb-2 mt-4">
+                {updatedProduct.image && (
+                  <img
+                    src={
+                      updatedProduct.imageFile
+                        ? URL.createObjectURL(updatedProduct.imageFile) // Bản xem trước nếu có ảnh mới
+                        : updatedProduct.image.startsWith("http") ||
+                            updatedProduct.image.startsWith("data")
+                          ? updatedProduct.image // Đường dẫn ảnh từ server
+                          : `/uploads/${updatedProduct.image}` // Ảnh cũ
+                    }
+                    alt={updatedProduct.name || "Product Image"}
+                    className="h-1/3 w-1/3 rounded-md border object-cover"
+                  />
+                )}
               </div>
             </div>
           </div>

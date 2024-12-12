@@ -42,14 +42,6 @@ const ManageBlog = () => {
     return new Date(timestamp).toLocaleDateString("en-GB", options);
   };
 
-  // Hàm để cắt nội dung
-  const truncateContent = (content, length) => {
-    if (content.length > length) {
-      return content.substring(0, length) + "...";
-    }
-    return content;
-  };
-
   const filteredBlogs = blogList.filter((blog) => {
     return (
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -114,6 +106,16 @@ const ManageBlog = () => {
     }
   };
 
+  const truncateHTMLContent = (htmlContent, wordLimit) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlContent;
+    const textContent = tempDiv.textContent || tempDiv.innerText || "";
+    const words = textContent.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : textContent;
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
@@ -173,7 +175,7 @@ const ManageBlog = () => {
                   <td className="px-4 py-4 text-left">
                     <div
                       dangerouslySetInnerHTML={{
-                        __html: truncateContent(blog.content, 40),
+                        __html: truncateHTMLContent(blog.content, 10),
                       }}
                     ></div>
                   </td>

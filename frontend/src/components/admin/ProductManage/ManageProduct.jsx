@@ -29,12 +29,10 @@ const ManageProduct = () => {
     }
   };
 
-  // Gọi API khi component được render lần đầu
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  // Reload khi showModal thay đổi thành false
   useEffect(() => {
     if (!showAddModal && !showUpdateModal) {
       fetchProducts();

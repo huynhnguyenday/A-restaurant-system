@@ -51,19 +51,18 @@ const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
     }
   };
 
-  // Hiển thị ảnh hiện tại nếu có
   const displayImage = image ? (
     <img
       src={URL.createObjectURL(image)}
       alt="Preview"
-      className="mx-auto h-32 w-32 rounded-md object-cover"
+      className="mx-auto w-3/4 h-32 object-cover"
     />
   ) : (
     blog.image && (
       <img
         src={blog.image}
         alt="Blog"
-        className="mx-auto h-32 w-32 rounded-md object-cover"
+        className="mx-auto w-3/4 h-32 object-cover"
       />
     )
   );

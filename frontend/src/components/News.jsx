@@ -52,7 +52,7 @@ const News = () => {
               <img
                 src={blog.image}
                 alt={blog.title}
-                className="h-full w-full object-cover"
+                className="h-[171px] w-[298px] object-cover"
               />
             </div>
             {/* Phần dưới: Tiêu đề và đoạn trích */}
@@ -65,7 +65,7 @@ const News = () => {
                 dangerouslySetInnerHTML={{
                   __html:
                     blog.content.length > 50
-                      ? `${blog.content.slice(0, 50)}...`
+                      ? `${blog.content.slice(0, 40)}...`
                       : blog.content,
                 }}
               />
