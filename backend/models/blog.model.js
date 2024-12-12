@@ -16,6 +16,7 @@ const blogSchema = new mongoose.Schema(
       required: true, // Bắt buộc phải có nội dung
     },
     displayHot: { type: Number, default: 1 },
+    displayBanner: { type: Number, default: 1 },
   },
   {
     timestamps: true, // Tự động thêm createdAt và updatedAt

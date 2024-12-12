@@ -22,7 +22,7 @@ export const getBlogs = async (req, res) => {
 
 export const createBlog = async (req, res) => {
   try {
-    const { title, content, displayHot } = req.body;
+    const { title, content, displayHot, displayBanner } = req.body;
 
     // Kiểm tra title và content
     if (!title || !content) {
@@ -45,6 +45,7 @@ export const createBlog = async (req, res) => {
       title,
       content,
       displayHot,
+      displayBanner,
     });
 
     await newBlog.save();
@@ -65,7 +66,7 @@ export const createBlog = async (req, res) => {
 
 export const updateBlog = async (req, res) => {
   const { id } = req.params;
-  const { title, content, displayHot } = req.body;
+  const { title, content, displayHot, displayBanner } = req.body;
 
   // Kiểm tra ID hợp lệ
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -87,7 +88,7 @@ export const updateBlog = async (req, res) => {
 
     const updatedBlog = await Blog.findByIdAndUpdate(
       id,
-      { title, content, image: updatedImagePath, displayHot },
+      { title, content, image: updatedImagePath, displayHot, displayBanner },
       { new: true }
     );
 
@@ -132,6 +133,48 @@ export const deleteBlog = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in deleting blog:", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+export const getHotBlogs = async (req, res) => {
+  try {
+    // Lấy tối đa 3 bài viết có displayHot: 1
+    const hotBlogs = await Blog.find({ displayHot: 1 }).sort({ updatedAt: -1 });
+
+    // Thêm đường dẫn đầy đủ cho ảnh
+    const blogsWithFullImagePath = hotBlogs.map((blog) => ({
+      ...blog.toObject(),
+      image: `http://localhost:5000/assets/${blog.image}`,
+    }));
+
+    res.status(200).json({
+      success: true,
+      data: blogsWithFullImagePath,
+    });
+  } catch (error) {
+    console.error("Error in fetching hot blogs:", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+export const getBannerBlogs = async (req, res) => {
+  try {
+    // Lấy các bài blog có displayBanner: 1
+    const bannerBlogs = await Blog.find({ displayBanner: 1 });
+
+    // Chỉ lấy image và title, đồng thời thêm đường dẫn đầy đủ cho ảnh
+    const bannerBlogsWithImagePath = bannerBlogs.map((blog) => ({
+      image: `http://localhost:5000/assets/${blog.image}`,
+      title: blog.title,
+    }));
+
+    res.status(200).json({
+      success: true,
+      data: bannerBlogsWithImagePath,
+    });
+  } catch (error) {
+    console.error("Error in fetching banner blogs:", error.message);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };

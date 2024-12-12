@@ -5,9 +5,15 @@ import {
   createBlog,
   updateBlog,
   deleteBlog,
+  getBannerBlogs,
+  getHotBlogs,
 } from "../controllers/blog.controller.js";
 
 const router = express.Router();
+
+router.get("/bannerblogs", getBannerBlogs);
+
+router.get("/hotblogs", getHotBlogs);
 
 // Lấy tất cả blogs
 router.get("/", getBlogs);
