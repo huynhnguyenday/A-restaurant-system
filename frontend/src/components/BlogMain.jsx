@@ -2,7 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import "./BlogMain.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules"; // Import Navigation module
+import "swiper/css";
+import "swiper/css/navigation";
 import imgblog1 from "../../../backend/assets/imgblog1.png";
 import imgblog2 from "../../../backend/assets/imgblog2.png";
 import imgblog3 from "../../../backend/assets/imgblog3.png";
@@ -55,40 +58,64 @@ const BlogMain = () => {
   };
 
   return (
-    <div className="blogs">
-      <div className="container">
-        <div className="row">
-          <div className="col text-center">
-            <div className="section_title">
-              <h2>Tin mới nóng hổi</h2>
-              <div className="divider"></div>
-            </div>
+    <div className="bg-gray-100 py-12 font-sans">
+      <div className="mx-auto max-w-screen-xl">
+        <div className="mb-8 text-center">
+          <div className="text-brown-800 text-4xl font-bold">
+            Tin mới nóng hổi
           </div>
+          <div className="bg-brown-800 mx-auto my-4 h-1 w-12"></div>
         </div>
-        <div className="row blogs_container" ref={ref}>
-          {blogs.map((blog, index) => (
-            <motion.div
-              key={blog.id}
-              className="col-lg-4 blog_item_col"
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-              custom={index}
-              variants={cardVariants}
-            >
-              <div className="blog_item">
-                <img src={blog.image} alt={blog.title} />
-                <div className="blog_content_overlay">
-                  <h4 className="blog_title">{blog.title}</h4>
-                  <span className="blog_meta">
-                   {blog.date}
-                  </span>
-                  <Link className="blog_more" to={`/blogs/${blog.id}`}> 
-                    Đọc Thêm
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        <div className="flex flex-wrap justify-center gap-12" ref={ref}>
+          <Swiper
+            modules={[Navigation]}
+            spaceBetween={20}
+            slidesPerView="auto"
+            navigation
+            loop={false}
+            breakpoints={{
+              430: { slidesPerView: 1.3 },
+              768: { slidesPerView: 2.2 }, 
+              1024: { slidesPerView: 3.3 },
+            }}
+          >
+            {blogs.map((blog, index) => (
+              <SwiperSlide key={blog.id}>
+                <motion.div
+                  className="flex justify-center"
+                  initial="hidden"
+                  animate={inView ? "visible" : "hidden"}
+                  custom={index}
+                  variants={cardVariants}
+                >
+                  <div className="group relative mb-12 w-full max-w-[350px]">
+                    {/* The container for the image */}
+                    <div className="relative h-[255px] w-full overflow-hidden shadow-lg">
+                      <img
+                        src={blog.image}
+                        alt={blog.title}
+                        className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+                      />
+                    </div>
+
+                    {/* Overlay Content */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 text-center text-white opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
+                      <h4 className="mb-2 px-4 text-xl font-bold">
+                        {blog.title}
+                      </h4>
+                      <span className="mb-2 text-sm italic">{blog.date}</span>
+                      <Link
+                        className="text-sm text-white underline hover:text-red-500"
+                        to={`/blogs/${blog.id}`}
+                      >
+                        Đọc Thêm
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
     </div>
