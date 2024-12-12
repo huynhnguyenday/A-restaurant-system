@@ -1,5 +1,6 @@
 html {
     scrollbar-width: thin; 
+    overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {
@@ -18,4 +19,5 @@ html {
 body, .app-container {
     height: 100vh; 
     overflow-y: auto; 
+    overflow-x: hidden; /* Tắt scrollbar ngang cho body và app-container */
 }

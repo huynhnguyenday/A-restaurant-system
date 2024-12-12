@@ -5,6 +5,7 @@ import {
   faPen,
   faTrash,
   faFire,
+  faLightbulb,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import AddBlog from "./AddBlog";
@@ -199,11 +200,11 @@ const ManageBlog = () => {
                   <td className="px-4 py-2 text-center">
                     <div className="group relative">
                       <FontAwesomeIcon
-                        icon={faFire}
+                        icon={faLightbulb}
                         className={
                           blog.displayBanner === 1
-                            ? "cursor-pointer text-2xl text-red-500"
-                            : "cursor-pointer text-xl text-gray-400"
+                            ? "cursor-pointer text-3xl text-yellow-500"
+                            : "cursor-pointer text-2xl text-gray-400"
                         }
                         onClick={() => toggleDisplayBanner(blog._id)}
                       />
