@@ -84,6 +84,35 @@ const ManageBlog = () => {
     }
   };
 
+  const toggleDisplayBanner = async (id) => {
+    try {
+      // Cập nhật trạng thái local
+      const updatedBlogs = blogList.map((blog) =>
+        blog._id === id
+          ? { ...blog, displayBanner: blog.displayBanner === 1 ? 2 : 1 }
+          : blog,
+      );
+      setBlogList(updatedBlogs);
+
+      // Gửi yêu cầu API để cập nhật trạng thái trên server
+      await axios.put(`http://localhost:5000/api/blogs/${id}`, {
+        displayBanner: updatedBlogs.find((blog) => blog._id === id)
+          .displayBanner,
+      });
+    } catch (error) {
+      console.error("Error updating display banner:", error);
+
+      // Khôi phục trạng thái ban đầu nếu có lỗi
+      setBlogList((prev) =>
+        prev.map((blog) =>
+          blog._id === id
+            ? { ...blog, displayBanner: blog.displayBanner === 2 ? 1 : 2 }
+            : blog,
+        ),
+      );
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
@@ -125,6 +154,7 @@ const ManageBlog = () => {
                 <th className="px-4 py-2 text-left">Content</th>
                 <th className="px-4 py-2 text-center">Date</th>
                 <th className="px-4 py-2 text-center">Hot</th>
+                <th className="px-4 py-2 text-center">Banner</th>
                 <th className="px-4 py-2 text-center">Actions</th>
               </tr>
             </thead>
@@ -163,6 +193,22 @@ const ManageBlog = () => {
                       />
                       <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
                         Set Hot Blog
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-2 text-center">
+                    <div className="group relative">
+                      <FontAwesomeIcon
+                        icon={faFire}
+                        className={
+                          blog.displayBanner === 1
+                            ? "cursor-pointer text-2xl text-red-500"
+                            : "cursor-pointer text-xl text-gray-400"
+                        }
+                        onClick={() => toggleDisplayBanner(blog._id)}
+                      />
+                      <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                        Set Banner Blog
                       </span>
                     </div>
                   </td>

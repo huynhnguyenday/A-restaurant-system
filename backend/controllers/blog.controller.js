@@ -165,6 +165,7 @@ export const getBannerBlogs = async (req, res) => {
 
     // Chỉ lấy image và title, đồng thời thêm đường dẫn đầy đủ cho ảnh
     const bannerBlogsWithImagePath = bannerBlogs.map((blog) => ({
+      _id: blog._id,
       image: `http://localhost:5000/assets/${blog.image}`,
       title: blog.title,
     }));

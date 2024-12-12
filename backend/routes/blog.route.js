@@ -11,9 +11,9 @@ import {
 
 const router = express.Router();
 
-router.get("/bannerblogs", getBannerBlogs);
+router.get("/bannerBlogs", getBannerBlogs);
 
-router.get("/hotblogs", getHotBlogs);
+router.get("/hotBlogs", getHotBlogs);
 
 // Lấy tất cả blogs
 router.get("/", getBlogs);

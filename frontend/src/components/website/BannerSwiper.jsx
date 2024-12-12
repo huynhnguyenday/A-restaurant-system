@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
@@ -9,29 +9,27 @@ import {
   faChevronRight,
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import imgbanner1 from "../../../../backend/assets/imgbanner1.png";
-import imgbanner2 from "../../../../backend/assets/imgbanner2.png";
-import imgbanner3 from "../../../../backend/assets/imgbanner3.png";
+import axios from "axios";
 
 const BannerSwiper = () => {
   const navigate = useNavigate(); // Hook để điều hướng
-  const blogs = [
-    {
-      id: 1,
-      image: imgbanner1,
-      title: "Khuyến mãi 1",
-    },
-    {
-      id: 2,
-      image: imgbanner2,
-      title: "Khuyến mãi 2",
-    },
-    {
-      id: 3,
-      image: imgbanner3,
-      title: "Khuyến mãi 3",
-    },
-  ];
+  const [blogs, setBlogs] = useState([]); // State để lưu các blog banner
+
+  useEffect(() => {
+    // Lấy dữ liệu từ API
+    const fetchBannerBlogs = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/blogs/bannerBlogs",
+        );
+        setBlogs(response.data.data); // Lưu dữ liệu vào state
+      } catch (error) {
+        console.error("Error fetching banner blogs:", error);
+      }
+    };
+
+    fetchBannerBlogs(); // Gọi API khi component mount
+  }, []); // Chạy một lần khi component mount
 
   return (
     <div className="group relative mx-auto max-h-[500px] max-w-full overflow-hidden">
@@ -50,10 +48,10 @@ const BannerSwiper = () => {
         loop={true}
       >
         {blogs.map((blog) => (
-          <SwiperSlide key={blog.id}>
+          <SwiperSlide key={blog._id}>
             <div
               className="h-full w-full cursor-pointer"
-              onClick={() => navigate(`/blogs/${blog.id}`)} // Điều hướng khi nhấn vào banner
+              onClick={() => navigate(`/blogs/${blog._id}`)} // Điều hướng khi nhấn vào banner
             >
               <img
                 src={blog.image}
