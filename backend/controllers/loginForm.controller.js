@@ -1,49 +1,57 @@
-import generateToken from "../generateToken.js";
-import Account from '../models/account.model.js'
+import Account from "../models/account.model.js";
+import generateToken from "../generateToken.js"; // Nhớ import hàm generateToken của bạn
+import bcrypt from "bcrypt";
 
 export const login = async (req, res) => {
-  const {username, password } = req.body;
+  const { username, password } = req.body;
 
-  res.status(200).json({ success: true, message: "Auth user" });
-};
-
-export const registerUser = async (req, res) => {
-  const {username, password, numbers, gmail} = req.body;
-
-  try{
-    const userExists = await Account.findOne({username});
-    if (userExists) {
+  try {
+    // Kiểm tra xem người dùng có tồn tại không
+    const user = await Account.findOne({ username });
+    if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Username already exists",
+        message: "Invalid username or password", // Nếu không tìm thấy người dùng
       });
     }
-    const role = "customer";
 
-    const newUser = new Account({ username, password, numbers, gmail, role });
-    await newUser.save();
+    // So sánh mật khẩu người dùng nhập với mật khẩu trong DB
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid username or password" });
+    }
 
-    const token = generateToken(newUser._id);
+    // Tạo JWT token
+    generateToken(res, user._id); // Gửi token trong cookie
 
-    res.status(201).json({
+    // Trả về thông tin người dùng và token
+    res.status(200).json({
       success: true,
-      message: "User registered successfully",
-      token,
+      message: "Login successful",
+      user: {
+        id: user._id,
+        username: user.username,
+        role: user.role,
+        numbers: user.numbers,
+        gmail: user.gmail,
+      },
     });
-  } catch (error){
-    console.error("Register error:", error.message);
+  } catch (error) {
+    console.error("Login error:", error.message);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 export const forgotPassword = async (req, res) => {
-  res.status(200).json({success: true, message: "Register user"})
-}
+  res.status(200).json({ success: true, message: "Register user" });
+};
 
 export const resetPassword = async (req, res) => {
-  res.status(200).json({success: true, message: "Register user"})
+  res.status(200).json({ success: true, message: "Register user" });
 };
 
 export const logout = async (req, res) => {
-  res.status(200).json({success: true, message: "Register user"})
+  res.status(200).json({ success: true, message: "Register user" });
 };

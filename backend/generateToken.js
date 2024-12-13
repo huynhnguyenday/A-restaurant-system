@@ -5,7 +5,7 @@ const generateToken = (res, id) => {
 
   // Gửi token dưới dạng cookie
   res.cookie("jwt", token, {
-    httpOnly: true,
+    httpOnly: false,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     maxAge: 7 * 24 * 60 * 60 * 1000,

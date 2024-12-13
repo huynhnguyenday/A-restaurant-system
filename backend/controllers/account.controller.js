@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import Account from "../models/account.model.js";
+import jwt from "jsonwebtoken";
+
 export const getAccounts = async (req, res) => {
   try {
     const accounts = await Account.find();
@@ -14,14 +16,12 @@ export const createAccount = async (req, res) => {
   const { username, password, numbers, gmail, role } = req.body;
 
   const missingFields = [];
-  // Kiểm tra các trường dữ liệu bắt buộc
   if (!username) missingFields.push("username");
   if (!password) missingFields.push("password");
   if (!numbers) missingFields.push("numbers");
   if (!gmail) missingFields.push("gmail");
   if (!role) missingFields.push("role");
 
-  // Nếu có trường bị thiếu, trả về danh sách các trường đó
   if (missingFields.length > 0) {
     return res.status(400).json({
       success: false,
@@ -29,7 +29,6 @@ export const createAccount = async (req, res) => {
     });
   }
 
-  // Kiểm tra role hợp lệ
   const validRoles = ["admin", "staff", "customer"];
   if (!validRoles.includes(role)) {
     return res.status(400).json({
@@ -49,11 +48,25 @@ export const createAccount = async (req, res) => {
     });
     const savedAccount = await newAccount.save();
 
-    // Trả về kết quả
-    res.status(201).json({ success: true, data: savedAccount });
+    // Tạo JWT token
+    const token = jwt.sign(
+      {
+        id: savedAccount._id,
+        username: savedAccount.username,
+        role: savedAccount.role,
+      },
+      process.env.JWT_SECRET, // Bí mật được lưu trong biến môi trường
+      { expiresIn: "1h" } // Thời gian sống của token (1 giờ)
+    );
+
+    // Trả về thông tin tài khoản và token
+    res.status(201).json({
+      success: true,
+      data: savedAccount,
+      token, // Token được trả về
+    });
   } catch (error) {
     if (error.code === 11000) {
-      // Mã lỗi MongoDB khi trùng lặp
       console.error("Duplicate key error:", error);
       return res.status(400).json({
         success: false,

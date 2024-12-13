@@ -1,15 +1,50 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const ModalLogin = ({ isLoginModalVisible, onClose }) => {
   const [isRegisterMode, setRegisterMode] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          username,
+          password,
+        },
+        { withCredentials: true },
+      );
+
+      if (response.data.success) {
+        // Đăng nhập thành công
+        alert("Đăng nhập thành công!");
+        onClose(); // Đóng modal
+        // Điều hướng đến trang admin
+        navigate("/admin");
+      }
+    } catch (error) {
+      // Xử lý lỗi
+      if (error.response && error.response.data) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage("Đã xảy ra lỗi. Vui lòng thử lại.");
+      }
+    }
+  };
 
   // Xử lý chuyển đổi giữa đăng nhập và đăng ký
   const toggleMode = (e, mode) => {
     e.preventDefault();
     setRegisterMode(mode);
+    setErrorMessage(""); // Xóa thông báo lỗi khi chuyển chế độ
   };
 
   if (!isLoginModalVisible) return null;
@@ -56,7 +91,7 @@ const ModalLogin = ({ isLoginModalVisible, onClose }) => {
             </form>
             <div className="mt-4">
               <a
-                href="#login"
+                href="/admin"
                 className="text-gray-500 hover:text-black"
                 onClick={(e) => toggleMode(e, false)}
               >
@@ -67,24 +102,31 @@ const ModalLogin = ({ isLoginModalVisible, onClose }) => {
         ) : (
           <div>
             <h2 className="mb-4 w-full text-3xl font-bold">Đăng Nhập</h2>
-            <form>
+            <form onSubmit={handleLogin}>
               <input
                 type="text"
                 placeholder="Tên đăng nhập"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 className="mb-4 w-full rounded border border-gray-300 p-2"
               />
               <input
                 type="password"
                 placeholder="Mật khẩu"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
                 className="mb-4 w-full rounded border border-gray-300 p-2"
               />
+              {errorMessage && (
+                <p className="mb-4 text-red-500">{errorMessage}</p>
+              )}
               <button
                 type="submit"
                 className="w-full rounded bg-black py-2 text-white hover:bg-gray-600"
               >
-                <Link to="/admin">Đăng Nhập</Link>
+                Đăng Nhập
               </button>
             </form>
             <div className="mt-4 flex justify-between">

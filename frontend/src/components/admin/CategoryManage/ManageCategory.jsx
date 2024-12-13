@@ -20,7 +20,7 @@ const ManageCategory = () => {
   useEffect(() => {
     // Fetch categories from API
     axios
-      .get("http://localhost:5000/api/categories")
+      .get("http://localhost:5000/api/categories", { withCredentials: true })
       .then((response) => {
         setCategories(response.data.data);
       })
@@ -30,7 +30,7 @@ const ManageCategory = () => {
   }, []);
 
   const filteredCategories = categories.filter((category) =>
-    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    category.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const toggleIsActive = async (id) => {
@@ -38,7 +38,7 @@ const ManageCategory = () => {
       const updatedCategories = categories.map((category) =>
         category._id === id
           ? { ...category, isActive: category.isActive === 1 ? 2 : 1 }
-          : category
+          : category,
       );
       setCategories(updatedCategories);
 
@@ -62,8 +62,8 @@ const ManageCategory = () => {
   const handleUpdateCategory = (updatedCategory) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
-        category._id === updatedCategory._id ? updatedCategory : category
-      )
+        category._id === updatedCategory._id ? updatedCategory : category,
+      ),
     );
   };
 

@@ -19,7 +19,9 @@ const ManageAccount = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/accounts")
+      .get("http://localhost:5000/api/accounts", {
+        withCredentials: true, // Cho phép gửi cookie
+      })
       .then((response) => {
         setAccounts(response.data.data);
       })
