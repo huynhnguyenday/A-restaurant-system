@@ -1,13 +1,57 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { blogs } from "./BlogMain";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./DetailBlog.css"; // Vẫn sử dụng CSS riêng cho styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
 
 const DetailBlog = () => {
-  const { id } = useParams();
-  const blog = blogs.find((b) => b.id === parseInt(id)); // Tìm bài viết theo id.
+  const { id } = useParams(); // Lấy id từ URL
+  const navigate = useNavigate(); // Để điều hướng nếu cần
+  const [blog, setBlog] = useState(null); // Lưu bài viết hiện tại
+  const [relatedBlogs, setRelatedBlogs] = useState([]); // Lưu bài viết liên quan
+  const [loading, setLoading] = useState(true); // Trạng thái loading
+
+  // Fetch dữ liệu bài viết từ API
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `http://localhost:5000/api/blogs/${id}`,
+        ); // Gọi API lấy bài viết
+
+        if (response.data.success) {
+          setBlog(response.data.data); // Lưu bài viết vào state
+
+          // Fetch danh sách bài viết liên quan (trừ bài viết hiện tại)
+          const relatedResponse = await axios.get(
+            "http://localhost:5000/api/blogs",
+          );
+          if (relatedResponse.data.success) {
+            setRelatedBlogs(
+              relatedResponse.data.data.filter(
+                (b) => b._id !== response.data.data._id,
+              ),
+            );
+          }
+        } else {
+          navigate("/news"); // Nếu không tìm thấy bài viết, quay về trang tin tức
+        }
+      } catch (error) {
+        console.error("Error fetching blog:", error);
+        navigate("/news");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlog();
+  }, [id, navigate]);
+
+  if (loading) {
+    return <div className="loading">Đang tải...</div>;
+  }
 
   if (!blog) {
     return (
@@ -30,7 +74,9 @@ const DetailBlog = () => {
           <h1>TIN TỨC BAMOS</h1>
           <h2>{blog.title}</h2>
           <div className="divider"></div>
-          <p className="author-date">Ngày: {blog.date}</p>
+          <p className="author-date">
+            Ngày: {new Date(blog.updatedAt).toLocaleDateString("vi-VN")}
+          </p>
           <img src={blog.image} alt={blog.title} />
           <p className="content-blog">{blog.content}</p>
         </div>
@@ -38,13 +84,11 @@ const DetailBlog = () => {
         <div className="related-blogs col-span-10 lg:col-span-3">
           <h3>Bài viết khác</h3>
           <ul>
-            {blogs
-              .filter((b) => b.id !== blog.id)
-              .map((otherBlog) => (
-                <li key={otherBlog.id}>
-                  <a href={`/blogs/${otherBlog.id}`}>{otherBlog.title}</a>
-                </li>
-              ))}
+            {relatedBlogs.map((otherBlog) => (
+              <li key={otherBlog._id}>
+                <a href={`/blogs/${otherBlog._id}`}>{otherBlog.title}</a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

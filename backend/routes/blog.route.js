@@ -7,6 +7,7 @@ import {
   deleteBlog,
   getBannerBlogs,
   getHotBlogs,
+  getBlogById,
 } from "../controllers/blog.controller.js";
 
 const router = express.Router();
@@ -17,6 +18,8 @@ router.get("/hotBlogs", getHotBlogs);
 
 // Lấy tất cả blogs
 router.get("/", getBlogs);
+
+router.get("/:id", getBlogById);
 
 // Tạo mới blog, sử dụng Multer để upload ảnh
 router.post("/", upload.single("image"), createBlog);

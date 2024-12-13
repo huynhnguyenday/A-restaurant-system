@@ -20,6 +20,41 @@ export const getBlogs = async (req, res) => {
   }
 };
 
+export const getBlogById = async (req, res) => {
+  const { id } = req.params;
+
+  // Kiểm tra ID có hợp lệ không
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ success: false, message: "Invalid Blog ID" });
+  }
+
+  try {
+    // Tìm blog theo ID
+    const blog = await Blog.findById(id);
+
+    // Nếu không tìm thấy blog
+    if (!blog) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Blog not found" });
+    }
+
+    // Thêm đường dẫn đầy đủ cho ảnh
+    const blogWithFullImagePath = {
+      ...blog.toObject(),
+      image: `http://localhost:5000/assets/${blog.image}`,
+    };
+
+    res.status(200).json({
+      success: true,
+      data: blogWithFullImagePath,
+    });
+  } catch (error) {
+    console.error("Error in fetching blog by ID:", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
 export const createBlog = async (req, res) => {
   try {
     const { title, content, displayHot, displayBanner } = req.body;

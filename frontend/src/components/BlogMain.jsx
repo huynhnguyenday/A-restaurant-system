@@ -1,4 +1,5 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -6,47 +7,26 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules"; // Import Navigation module
 import "swiper/css";
 import "swiper/css/navigation";
-import imgblog1 from "../../../backend/assets/imgblog1.png";
-import imgblog2 from "../../../backend/assets/imgblog2.png";
-import imgblog3 from "../../../backend/assets/imgblog3.png";
-
-export const blogs = [
-  {
-    id: 1,
-    title: "Cà phê nguyên chất",
-    date: "27/04/2024",
-    image: imgblog1,
-    content:
-      "Detailed content for blog 1. Here is where the full article will be displayed.",
-  },
-  {
-    id: 2,
-    title: "Trà sữa hấp dẫn",
-    date: "25/02/2024",
-    image: imgblog2,
-    content:
-      "Detailed content for blog 2. Here's everything you need to know about autumn wardrobes.",
-  },
-  {
-    id: 3,
-    title: "Trà lạnh mùa hè",
-    date: "27/02/2024",
-    image: imgblog3,
-    content:
-      "Detailed content for blog 3. Explore the best destinations for your winter vacation!",
-  },
-  {
-    id: 4,
-    title: "Trà lạnh mùa hè",
-    date: "27/02/2024",
-    image: imgblog3,
-    content:
-      "Detailed content for blog 3. Explore the best destinations for your winter vacation!",
-  },
-];
 
 const BlogMain = () => {
+  const [blogs, setBlogs] = useState([]); // State lưu trữ dữ liệu blogs
   const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: false });
+
+  // Fetch blogs từ API
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/blogs"); // Đường dẫn đến API
+        if (response.data.success) {
+          setBlogs(response.data.data); // Lưu data vào state
+        }
+      } catch (error) {
+        console.error("Error fetching blogs:", error.message);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -80,7 +60,7 @@ const BlogMain = () => {
             navigation={false} // Tắt nút điều hướng
           >
             {blogs.map((blog, index) => (
-              <SwiperSlide key={blog.id}>
+              <SwiperSlide key={blog._id}>
                 <motion.div
                   className="flex justify-center"
                   initial="hidden"
@@ -103,10 +83,12 @@ const BlogMain = () => {
                       <h4 className="mb-2 px-4 text-xl font-bold">
                         {blog.title}
                       </h4>
-                      <span className="mb-2 text-sm italic">{blog.date}</span>
+                      <span className="mb-2 text-sm italic">
+                        {new Date(blog.updatedAt).toLocaleDateString("vi-VN")}
+                      </span>
                       <Link
                         className="text-sm text-white underline hover:text-red-500"
-                        to={`/blogs/${blog.id}`}
+                        to={`/blogs/${blog._id}`}
                       >
                         Đọc Thêm
                       </Link>
