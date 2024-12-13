@@ -1,38 +1,43 @@
-import React from 'react';
-import './Newsletter.css'; 
+import React from "react";
 
 const Newsletter = () => {
-    return (
-        <div className="newsletter">
-            <div className="container mx-auto">
-                <div className="flex flex-col md:flex-row">
-                    <div className="newsletter_left flex-1">
-                        <div>
-                            <h4 className="title-dangky">Đăng ký</h4>
-                            <p className="newsletter_text">Đăng ký để nhận thông tin sớm nhất về chương trình giảm giá.</p>
-                        </div>
-                    </div>
-
-                    <div className="newsletter_right flex-1">
-                        <form action="post">
-                            <div className="newsletter_form">
-                                <input 
-                                  id="newsletter_email" 
-                                  type="email" 
-                                  placeholder="Email của bạn" 
-                                  required 
-                                  data-error="Valid email is required." 
-                                />
-                                <button id="newsletter_submit" type="submit" className="newsletter_submit_btn">
-                                    Đăng ký
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+  return (
+    <div className="bg-[#f2f2f2] p-5">
+      <div className="mx-auto w-full max-w-screen-xl">
+        <div className="flex flex-col md:flex-row">
+          <div className="flex flex-1 items-center justify-start text-left">
+            <div>
+              <h4 className="text-[30px] font-bold text-[#d88453]">Đăng ký</h4>
+              <p className="text-[#666] mb-4">
+                Đăng ký để nhận thông tin sớm nhất về chương trình giảm giá.
+              </p>
             </div>
+          </div>
+
+          <div className="flex flex-1 items-center justify-end">
+            <form action="post" className="w-full">
+              <div className="flex w-full flex-col items-center justify-center md:flex-row md:gap-0">
+                <input
+                  id="newsletter_email"
+                  type="email"
+                  placeholder="Email của bạn"
+                  required
+                  className="h-[46px] w-full border border-gray-300 p-2 md:w-[300px]"
+                />
+                <button
+                  id="newsletter_submit"
+                  type="submit"
+                  className="h-[46px] w-[160px] mt-4 cursor-pointer border-none bg-[#d88453] text-white hover:bg-[#633c02] md:mt-0 md:w-[160px]"
+                >
+                  Đăng ký
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Newsletter;

@@ -71,13 +71,13 @@ const BlogMain = () => {
             modules={[Navigation]}
             spaceBetween={20}
             slidesPerView="auto"
-            navigation
             loop={false}
             breakpoints={{
               430: { slidesPerView: 1.3 },
               768: { slidesPerView: 2.2 },
               1024: { slidesPerView: 3.3 },
             }}
+            navigation={false} // Tắt nút điều hướng
           >
             {blogs.map((blog, index) => (
               <SwiperSlide key={blog.id}>

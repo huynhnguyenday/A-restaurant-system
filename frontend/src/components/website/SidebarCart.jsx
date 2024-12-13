@@ -12,12 +12,14 @@ const SidebarCart = ({
   return (
     <div className="fixed right-0 top-0 z-[1000] flex h-full w-[350px] flex-col overflow-y-auto bg-white p-5 shadow-lg transition-transform ease-in-out">
       <button
-        className="absolute right-2 top-2 cursor-pointer border-none bg-transparent text-xl text-[#909090] hover:text-black"
+        className="absolute right-5 top-2 cursor-pointer border-none bg-transparent text-3xl text-[#909090] hover:text-black"
         onClick={handleCartClick}
       >
         <FontAwesomeIcon icon={faTimes} />
       </button>
-      <div className="mb-2 text-center text-2xl font-bold">Giỏ hàng</div>
+      <div className="mb-2 text-center text-2xl font-bold text-[#633c02]">
+        Giỏ hàng
+      </div>
 
       <div className="mb-5 border-b-2 border-[#ccc]"></div>
 
@@ -33,13 +35,15 @@ const SidebarCart = ({
               className="mr-4 h-[85px] w-[50px] object-cover"
             />
             <div className="flex flex-grow flex-col">
-              <div className="mb-1 w-[170px] text-lg">{item.name}</div>
+              <div className="my-1 h-[50px] w-[170px] font-josefin text-lg">
+                {item.name}
+              </div>
               <div className="w-[170px] text-sm text-gray-500">
                 {item.quantity} x {item.price.toLocaleString()} ₫
               </div>
             </div>
             <button
-              className="absolute right-2 top-[30px] cursor-pointer border-none bg-transparent text-xl text-[#a9a8a8] hover:text-black"
+              className="absolute right-3 top-[30px] cursor-pointer border-none bg-transparent text-2xl text-[#a9a8a8] hover:text-black"
               onClick={() => removeItem(item.id)}
             >
               <FontAwesomeIcon icon={faTimes} />
@@ -49,8 +53,8 @@ const SidebarCart = ({
       </div>
 
       <div className="mt-5 flex justify-between font-bold">
-        <span>Tổng cộng</span>
-        <span>
+        <span className="text-xl">Tổng cộng</span>
+        <span className="text-xl">
           {cartItems
             .reduce((total, item) => total + item.quantity * item.price, 0)
             .toLocaleString()}{" "}

@@ -1,59 +1,75 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+// src/components/Navbar.js
+
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faShoppingCart, faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
-import "./Navbar.css";
+import {
+  faSearch,
+  faShoppingCart,
+  faUser,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
+import NavbarLink from "./NavbarLink";
+import ModalLogin from "./ModalLogin";
+import SidebarCart from "./SidebarCart";
+import SidebarMenu from "./SidebarMenu"; // Import SidebarMenu
 import imgfood1 from "../../../../backend/assets/imgfood1.png";
 import imgfood2 from "../../../../backend/assets/imgfood2.png";
 import imgfood3 from "../../../../backend/assets/imgfood3.png";
 import imgfood4 from "../../../../backend/assets/imgfood4.png";
 import imgfood5 from "../../../../backend/assets/imgfood5.png";
 import imgfood6 from "../../../../backend/assets/imgfood6.png";
-import NavbarLink from "./NavbarLink";
-import ModalLogin from "./ModalLogin";
-import SidebarCart from "./SidebarCart";
 
 const Navbar = () => {
   const [cartItems, setCartItems] = useState([
     { id: 1, name: "Cà Phê", price: 50000, img: imgfood1, quantity: 2 },
     { id: 2, name: "Trà Sữa", price: 60000, img: imgfood2, quantity: 1 },
-    { id: 3, name: "Sinh Tố Trân Châu Đường Đen", price: 40000, img: imgfood3, quantity: 1 },
-    { id: 4, name: "Sinh Tố Trân Châu Đường Đen", price: 40000, img: imgfood4, quantity: 1 },
-    { id: 5, name: "Sinh Tố Trân Châu Đường Đen", price: 40000, img: imgfood5, quantity: 1 },
-    { id: 6, name: "Sinh Tố Trân Châu Đường Đen", price: 40000, img: imgfood6, quantity: 1 },
-]);
-  const [isCartVisible, setCartVisible] = useState(false);  
+    {
+      id: 3,
+      name: "Sinh Tố Trân Châu Đường Đen",
+      price: 40000,
+      img: imgfood3,
+      quantity: 1,
+    },
+    {
+      id: 4,
+      name: "Sinh Tố Trân Châu Đường Đen",
+      price: 40000,
+      img: imgfood4,
+      quantity: 1,
+    },
+    {
+      id: 5,
+      name: "Sinh Tố Trân Châu Đường Đen",
+      price: 40000,
+      img: imgfood5,
+      quantity: 1,
+    },
+    {
+      id: 6,
+      name: "Sinh Tố Trân Châu Đường Đen",
+      price: 40000,
+      img: imgfood6,
+      quantity: 1,
+    },
+  ]);
+  const [isCartVisible, setCartVisible] = useState(false);
   const [isPopoverVisible, setPopoverVisible] = useState(false);
-  const [isLoginModalVisible, setLoginModalVisible] = useState(false); // Trạng thái hiển thị modal đăng nhập
-  const [isRegisterMode, setRegisterMode] = useState(false);
+  const [isLoginModalVisible, setLoginModalVisible] = useState(false);
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Xử lý hiển thị/ẩn Popover tìm kiếm
   const handlePopoverEnter = () => setPopoverVisible(true);
   const handlePopoverLeave = () => setPopoverVisible(false);
 
-  // Xử lý hiển thị/ẩn sidebar giỏ hàng
   const handleCartClick = () => {
     setCartVisible(!isCartVisible);
   };
 
-  // Xử lý mở cửa sổ đăng nhập
   const handleLoginClick = () => {
     setLoginModalVisible(true);
   };
 
-  // Xử lý đóng cửa sổ đăng nhập
   const handleLoginClose = () => {
     setLoginModalVisible(false);
-  };
-
-  // Chuyển sang chế độ đăng ký
-  const handleSwitchToRegister = () => {
-    setRegisterMode(true);
-  };
-
-  // Chuyển sang chế độ đăng nhập
-  const handleSwitchToLogin = () => {
-    setRegisterMode(false);
   };
 
   const removeItem = (id) => {
@@ -62,38 +78,50 @@ const Navbar = () => {
 
   const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
 
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <nav className="navbar">
-      <div className="navbar-left">
-        <span className="brand-name">
-          <span className="brand-black">Bamos</span>
-          <span className="brand-red">Coffee</span>
-        </span>
+    <nav className="relative z-10 flex items-center justify-between bg-white px-4 py-[23px] shadow-lg sm:px-8 md:px-16 lg:px-32">
+      {/* Brand Name */}
+      <div className="text-2xl font-bold sm:text-4xl">
+        <span className="text-black">Bamos</span>
+        <span className="text-[#c63402]">Coffee</span>
       </div>
 
-      <div className="navbar-center">
+      {/* Navbar Links */}
+      <div className="hidden flex-grow sm:flex">
         <NavbarLink />
       </div>
 
-      <div className="navbar-right">
-        {/* Tìm kiếm */}
+      {/* Mobile Menu Toggle */}
+      <div className="flex items-center sm:hidden">
+        <button onClick={toggleMobileMenu}>
+          <FontAwesomeIcon icon={faBars} size="lg" />
+        </button>
+      </div>
+
+      {/* Search, Cart, and Login Icons */}
+      <div className="flex items-center space-x-4">
+        {/* Search */}
         <div
-          className="popover-container"
+          className="relative"
           onMouseEnter={handlePopoverEnter}
           onMouseLeave={handlePopoverLeave}
         >
-          <button className="search-button">
+          <button className="cursor-pointer text-2xl text-[#333] transition-all duration-300">
             <FontAwesomeIcon icon={faSearch} />
           </button>
           {isPopoverVisible && (
-            <div className="popover-content">
-              <div className="search-container">
+            <div className="absolute right-[-7rem] top-[2rem] z-10 w-[300px] bg-white p-2 shadow-lg">
+              <div className="flex items-center">
                 <input
                   type="text"
-                  className="search-input"
+                  className="flex-1 border border-gray-300 p-2"
                   placeholder="Tìm kiếm..."
                 />
-                <button className="icon-search">
+                <button className="bg-black p-2 text-white transition-all duration-300 hover:bg-gray-300">
                   <FontAwesomeIcon icon={faSearch} />
                 </button>
               </div>
@@ -101,23 +129,35 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Đăng nhập */}
+        {/* Login */}
         <a
           href="#login"
-          className="login-icon"
-          onClick={handleLoginClick} // Mở cửa sổ đăng nhập
+          className="cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-red-600"
+          onClick={handleLoginClick}
         >
           <FontAwesomeIcon icon={faUser} />
         </a>
 
-        {/* Giỏ hàng */}
-        <a href="#cart" className="cart-icon" onClick={handleCartClick}>
+        {/* Cart */}
+        <a
+          href="#cart"
+          className="relative cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-red-600"
+          onClick={handleCartClick}
+        >
           <FontAwesomeIcon icon={faShoppingCart} />
           {cartItems.length > 0 && (
-            <div className="cart-badge">{cartItems.length}</div>
+            <div className="absolute right-[-5px] top-[-3px] flex h-[15px] w-[15px] items-center justify-center rounded-full bg-[#ed4321] text-xs text-white">
+              {cartItems.length}
+            </div>
           )}
         </a>
       </div>
+
+      {/* Sidebar Mobile Menu */}
+      <SidebarMenu
+        isMobileMenuOpen={isMobileMenuOpen}
+        toggleMobileMenu={toggleMobileMenu}
+      />
 
       <ModalLogin
         isLoginModalVisible={isLoginModalVisible}
@@ -126,10 +166,13 @@ const Navbar = () => {
 
       {/* Overlay */}
       {isCartVisible && (
-        <div className="overlay" onClick={handleCartClick}></div>
+        <div
+          className="fixed left-0 top-0 z-50 h-full w-full bg-black bg-opacity-50"
+          onClick={handleCartClick}
+        ></div>
       )}
 
-      {/* Sidebar giỏ hàng */}
+      {/* Sidebar Cart */}
       {isCartVisible && (
         <SidebarCart
           cartItems={cartItems}

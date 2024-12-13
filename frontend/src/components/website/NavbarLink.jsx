@@ -5,8 +5,8 @@ import PricingContentMenu from "./PricingContentMenu";
 
 const NavbarLink = () => {
   return (
-    <div>
-      <ul className="navbar-links flex">
+    <div className="w-full">
+      <ul className="navbar-links flex flex-col items-start justify-center space-y-4 sm:flex-row sm:space-x-8 sm:space-y-0">
         <li>
           <FlyoutLink href="/home">TRANG CHỦ</FlyoutLink>
         </li>
@@ -40,7 +40,10 @@ const FlyoutLink = ({ children, href, FlyoutContent }) => {
       onMouseLeave={() => setOpen(false)}
       className="relative"
     >
-      <a href={href} className="relative text-white">
+      <a
+        href={href}
+        className="inline px-8 font-oswald font-semibold text-black transition-colors duration-300 hover:text-orange-600"
+      >
         {children}
         <span
           style={{
@@ -56,9 +59,8 @@ const FlyoutLink = ({ children, href, FlyoutContent }) => {
             exit={{ opacity: 0, y: 15 }}
             style={{ translateX: "-50%" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 top-[62px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
+            className="absolute left-1/2 top-[56px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
           >
-            
             <FlyoutContent closeFlyout={closeFlyout} />
           </motion.div>
         )}
@@ -79,7 +81,10 @@ const FlyoutLinkNews = ({ children, href, FlyoutContent }) => {
       onMouseLeave={() => setOpen(false)}
       className="relative"
     >
-      <a href={href} className="relative text-white">
+      <a
+        href={href}
+        className="inline px-8 font-oswald font-semibold text-black transition-colors duration-300 hover:text-orange-600"
+      >
         {children}
         <span
           style={{
@@ -93,9 +98,9 @@ const FlyoutLinkNews = ({ children, href, FlyoutContent }) => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 15 }}
-            style={{ translateX: "calc(-50% - 140px)" }}
+            style={{ translateX: "calc(-52.8% - 140px)" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 top-[62px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
+            className="absolute left-1/2 top-[56px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
           >
             <FlyoutContent closeFlyout={closeFlyout} />
           </motion.div>
@@ -104,6 +109,5 @@ const FlyoutLinkNews = ({ children, href, FlyoutContent }) => {
     </div>
   );
 };
-
 
 export default NavbarLink;

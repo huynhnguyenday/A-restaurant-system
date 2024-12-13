@@ -30,7 +30,7 @@ const PricingContentNew = ({ closeFlyout }) => {
               <a
                 key={blog}
                 onClick={() => handleNavigate(blog)}
-                className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-2xl !text-white hover:!text-slate-400"
+                className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-base !text-white hover:!text-slate-400"
               >
                 + {blog}
               </a>
@@ -53,7 +53,7 @@ const PricingContentNew = ({ closeFlyout }) => {
               className="group relative w-1/3 px-4 py-4 text-start"
             >
               {/* Tiêu đề overlay */}
-              <div className="absolute left-6 bottom-6 z-10 rounded-md px-3 py-1 text-2xl font-bold text-white">
+              <div className="absolute left-5 bottom-6 z-10 rounded-md px-3 py-1 text-2xl font-bold text-white">
                 {overlayTitles[index]}
               </div>
               {/* Ảnh */}

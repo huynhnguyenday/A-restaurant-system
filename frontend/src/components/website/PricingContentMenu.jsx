@@ -48,7 +48,7 @@ const PricingContentMenu = ({ closeFlyout }) => {
               <a
                 key={category}
                 onClick={() => handleNavigate(category)}
-                className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-2xl !text-white hover:!text-slate-400"
+                className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-base !text-white hover:!text-slate-400"
               >
                 + {category}
               </a>

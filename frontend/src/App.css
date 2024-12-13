@@ -19,5 +19,5 @@ html {
 body, .app-container {
     height: 100vh; 
     overflow-y: auto; 
-    overflow-x: hidden; /* Tắt scrollbar ngang cho body và app-container */
+    overflow-x: hidden;
 }

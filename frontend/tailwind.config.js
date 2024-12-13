@@ -8,6 +8,7 @@ export default {
     extend: {
       fontFamily: {
         josefin: ["'Josefin Sans'", "sans-serif"], 
+        oswald: ["'Oswald'", "sans-serif"],
       },
     },
   },
