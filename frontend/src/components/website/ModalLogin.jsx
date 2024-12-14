@@ -3,7 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 const ModalLogin = ({ isLoginModalVisible, onClose }) => {
   const [isRegisterMode, setRegisterMode] = useState(false);
   const [username, setUsername] = useState("");
@@ -25,8 +26,23 @@ const ModalLogin = ({ isLoginModalVisible, onClose }) => {
 
       if (response.data.success) {
         // Đăng nhập thành công
-        alert("Đăng nhập thành công!");
-        onClose(); // Đóng modal
+        toast.success("Đăng nhập thành công!");
+
+        // Lưu token vào Local Storage
+        const token = response.data.token;
+        console.log("Extracted token:", token);
+
+        if (token) {
+          // Lưu token vào cookies (cookie sẽ hết hạn sau 7 ngày)
+          Cookies.set("jwtToken", token, { expires: 7, path: "/" });
+          console.log("JWT Token saved to cookies:", Cookies.get("jwtToken"));
+        } else {
+          console.error("Token not received from server.");
+        }
+
+        // Đóng modal
+        onClose();
+
         // Điều hướng đến trang admin
         navigate("/admin");
       }

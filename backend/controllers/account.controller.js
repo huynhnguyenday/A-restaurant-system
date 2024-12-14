@@ -66,17 +66,12 @@ export const createAccount = async (req, res) => {
       token, // Token được trả về
     });
   } catch (error) {
-    if (error.code === 11000) {
-      console.error("Duplicate key error:", error);
-      return res.status(400).json({
-        success: false,
-        message: `Duplicate key error: ID or username already exists`,
-      });
-    }
     console.error("Error creating account:", error.message);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
+import generateToken from "../generateToken.js";
 
 export const updateAccount = async (req, res) => {
   const { id } = req.params;
@@ -90,11 +85,29 @@ export const updateAccount = async (req, res) => {
   }
 
   try {
-    const updateAccount = await Account.findByIdAndUpdate(id, account, {
+    const updatedAccount = await Account.findByIdAndUpdate(id, account, {
       new: true,
     });
-    res.status(200).json({ success: true, data: updateAccount });
+
+    if (!updatedAccount) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Account not found" });
+    }
+
+    // Nếu cần tạo token mới (ví dụ khi username hoặc role thay đổi)
+    if (account.username || account.role) {
+      generateToken(
+        res,
+        updatedAccount._id,
+        updatedAccount.username,
+        updatedAccount.role
+      );
+    }
+
+    res.status(200).json({ success: true, data: updatedAccount });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+

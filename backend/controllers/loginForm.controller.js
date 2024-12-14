@@ -11,11 +11,11 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Invalid username or password", // Nếu không tìm thấy người dùng
+        message: "Invalid username or password",
       });
     }
 
-    // So sánh mật khẩu người dùng nhập với mật khẩu trong DB
+    // So sánh mật khẩu
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res
@@ -24,12 +24,13 @@ export const login = async (req, res) => {
     }
 
     // Tạo JWT token
-    generateToken(res, user._id); // Gửi token trong cookie
+    const token = generateToken(res, user._id, user.username, user.role);
 
     // Trả về thông tin người dùng và token
     res.status(200).json({
       success: true,
       message: "Login successful",
+      token, // Include the token in the response
       user: {
         id: user._id,
         username: user.username,

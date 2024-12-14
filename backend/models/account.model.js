@@ -22,7 +22,7 @@ const accountSchema = new mongoose.Schema(
     },
     isActive: { type: Number, default: 1 },
     role: {
-      type: String,
+      type: [String],
       enum: ["admin", "staff", "customer"], // Liệt kê các giá trị có thể
       required: true,
     },

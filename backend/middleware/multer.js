@@ -1,6 +1,4 @@
 import multer from "multer";
-import path from "path";
-
 // Cấu hình Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

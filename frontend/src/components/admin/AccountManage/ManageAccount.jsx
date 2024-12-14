@@ -9,6 +9,8 @@ import {
 import AddAccount from "./AddAccount";
 import UpdateAccount from "./UpdateAccount";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 const ManageAccount = () => {
   const [accounts, setAccounts] = useState([]);
@@ -19,9 +21,7 @@ const ManageAccount = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/accounts", {
-        withCredentials: true, // Cho phép gửi cookie
-      })
+      .get("http://localhost:5000/api/accounts", { withCredentials: true })
       .then((response) => {
         setAccounts(response.data.data);
       })
@@ -57,11 +57,20 @@ const ManageAccount = () => {
 
   const handleAddAccount = (newAccount) => {
     axios
-      .post("http://localhost:5000/api/accounts", newAccount)
+      .post("http://localhost:5000/api/accounts", newAccount, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`, // Lấy token từ localStorage (nếu có)
+        },
+        withCredentials: true,
+      })
       .then((response) => {
         setAccounts([...accounts, response.data.data]);
+        toast.success("Thêm nhân viên thành công");
       })
-      .catch((error) => console.error("Error adding account:", error));
+      .catch((error) => {
+        console.error("Error adding account:", error);
+        toast.error(error.response.data.message || "Có lỗi xảy ra");
+      });
   };
 
   const handleUpdateAccount = (updatedAccount) => {

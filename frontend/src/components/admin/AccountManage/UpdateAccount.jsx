@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
+import PropTypes from "prop-types";
 
 const UpdateAccount = ({ account, onClose, onUpdateAccount }) => {
   const [updatedAccount, setUpdatedAccount] = useState(account);
@@ -28,10 +30,19 @@ const UpdateAccount = ({ account, onClose, onUpdateAccount }) => {
     }
 
     axios
-      .put(`http://localhost:5000/api/accounts/${updatedAccount._id}`, updatedAccount)
+      .put(
+        `http://localhost:5000/api/accounts/${updatedAccount._id}`,
+        updatedAccount,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`, // Lấy token từ localStorage (nếu có)
+          },
+          withCredentials: true,
+        },
+      )
       .then((response) => {
-        onUpdateAccount(updatedAccount); 
-        onClose(); 
+        onUpdateAccount(updatedAccount);
+        onClose();
       })
       .catch((error) => {
         console.error("There was an error updating the account:", error);
@@ -76,7 +87,9 @@ const UpdateAccount = ({ account, onClose, onUpdateAccount }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block pb-2 text-xl font-medium">Phone Number</label>
+            <label className="block pb-2 text-xl font-medium">
+              Phone Number
+            </label>
             <input
               type="text"
               name="numbers"
@@ -102,7 +115,7 @@ const UpdateAccount = ({ account, onClose, onUpdateAccount }) => {
             <button
               type="button"
               onClick={onClose}
-              className="rounded-md w-24 bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
+              className="w-24 rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
             >
               Cancel
             </button>
@@ -117,6 +130,19 @@ const UpdateAccount = ({ account, onClose, onUpdateAccount }) => {
       </div>
     </div>
   );
+};
+
+UpdateAccount.propTypes = {
+  account: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    gmail: PropTypes.string.isRequired,
+    numbers: PropTypes.string.isRequired,
+    role: PropTypes.string.isRequired,
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
+  onUpdateAccount: PropTypes.func.isRequired,
 };
 
 export default UpdateAccount;

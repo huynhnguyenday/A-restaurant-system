@@ -15,6 +15,22 @@ import ManageAccount from "./AccountManage/ManageAccount";
 import ManageCategory from "./CategoryManage/ManageCategory";
 import { Link } from "react-router-dom";
 import imgpersonportal from "../../../../backend/assets/imgpersonportal.png";
+import Cookies from "js-cookie";
+
+function decodeJWT(token) {
+  const base64Url = token.split(".")[1]; // Lấy phần payload
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/"); // Đổi ký tự '-' và '_' về '+', '/'
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join(""),
+  );
+
+  return JSON.parse(jsonPayload); // Trả về đối tượng JSON đã giải mã
+}
 
 const SidebarItem = ({ icon, label, isSidebarExpanded, onClick, isActive }) => (
   <li
@@ -36,14 +52,21 @@ const SidebarItem = ({ icon, label, isSidebarExpanded, onClick, isActive }) => (
 
 const DashBoard = () => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
-  const [activeComponent, setActiveComponent] = useState("Home");
-  const [isHovered, setIsHovered] = useState(false); // Trạng thái hover
+  const [activeComponent, setActiveComponent] = useState("Account");
+  const [isHovered, setIsHovered] = useState(false);
+  const [userRole, setUserRole] = useState(null); // Trạng thái role của người dùng
 
   // Đọc giá trị activeComponent từ localStorage khi trang được tải lại
   useEffect(() => {
-    const savedComponent = localStorage.getItem("activeComponent");
-    if (savedComponent) {
-      setActiveComponent(savedComponent); // Đọc lại giá trị từ localStorage
+    const token = Cookies.get("jwtToken"); // Lấy token từ cookie
+    if (token) {
+      try {
+        const decoded = decodeJWT(token);
+        console.log("Decoded token:", decoded); // In thông tin decoded
+        setUserRole(decoded ? decoded.role : null); // Lưu role từ token
+      } catch (error) {
+        console.error("Error decoding token", error);
+      }
     }
   }, []);
 
@@ -54,9 +77,20 @@ const DashBoard = () => {
   };
 
   const renderContent = () => {
+    if (userRole && userRole.includes("customer")) {
+      return (
+        <div className="p-6">
+          <h2 className="text-2xl font-bold">Access Denied</h2>
+          <p>You do not have permission to access this page.</p>
+        </div>
+      );
+    }
+
     switch (activeComponent) {
-      case "Home":
-        return <ManageAccount />;
+      case "Account":
+        return userRole && userRole.includes("admin") ? (
+          <ManageAccount />
+        ) : null;
       case "Product":
         return <ManageProduct />;
       case "Category":
@@ -82,7 +116,8 @@ const DashBoard = () => {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
+      {" "}
+      1{/* Sidebar */}
       <div
         className={`group bg-white text-gray-800 ${
           isSidebarExpanded ? "w-64" : "w-16"
@@ -107,13 +142,15 @@ const DashBoard = () => {
 
         {/* Sidebar Menu */}
         <ul className="mt-4">
-          <SidebarItem
-            icon={faUser}
-            label="Account"
-            isSidebarExpanded={isSidebarExpanded}
-            onClick={() => handleSetActiveComponent("Home")}
-            isActive={activeComponent === "Home"}
-          />
+          {Array.isArray(userRole) && userRole.includes("admin") && (
+            <SidebarItem
+              icon={faUser}
+              label="Account"
+              isSidebarExpanded={isSidebarExpanded}
+              onClick={() => handleSetActiveComponent("Account")}
+              isActive={activeComponent === "Account"}
+            />
+          )}
           <SidebarItem
             icon={faMugSaucer}
             label="Product"
@@ -135,16 +172,17 @@ const DashBoard = () => {
             onClick={() => handleSetActiveComponent("Blog")}
             isActive={activeComponent === "Blog"}
           />
-          <SidebarItem
-            icon={faChartColumn}
-            label="Chart"
-            isSidebarExpanded={isSidebarExpanded}
-            onClick={() => handleSetActiveComponent("Settings")}
-            isActive={activeComponent === "Settings"}
-          />
+          {userRole === "admin" && (
+            <SidebarItem
+              icon={faChartColumn}
+              label="Chart"
+              isSidebarExpanded={isSidebarExpanded}
+              onClick={() => handleSetActiveComponent("Settings")}
+              isActive={activeComponent === "Settings"}
+            />
+          )}
         </ul>
       </div>
-
       {/* Main Content */}
       <div
         className={`flex flex-1 flex-col ${
@@ -154,7 +192,6 @@ const DashBoard = () => {
         {/* Navbar */}
         <div className="flex justify-between bg-white p-4 shadow-md">
           <h1 className="text-2xl font-bold">Dashboard</h1>
-          {/* Nút với trạng thái hover */}
           <div
             className="relative pr-8"
             onMouseEnter={() => setIsHovered(true)}
@@ -181,7 +218,7 @@ const DashBoard = () => {
             )}
           </div>
         </div>
-        {/* Main Content Area */}
+
         <div className="flex-1 overflow-y-auto bg-gray-50 p-6">
           {renderContent()}
         </div>
