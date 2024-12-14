@@ -32,8 +32,8 @@ const PaymentPage = () => {
     );
   }
 
-  const handlePaymentOptionClick = (paymentId) => {
-    setSelectedPayment(paymentId);
+  const handlePaymentOptionClick = (paymentmethod) => {
+    setSelectedPayment(paymentmethod);
   };
 
   const decreaseQuantity = (id) => {

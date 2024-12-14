@@ -8,6 +8,7 @@ import {
   faNewspaper,
   faRightToBracket,
   faClipboardList,
+  faClipboard,
 } from "@fortawesome/free-solid-svg-icons";
 import ManageProduct from "./ProductManage/ManageProduct";
 import ManageBlog from "./BlogManage/ManageBlog";
@@ -16,6 +17,7 @@ import ManageCategory from "./CategoryManage/ManageCategory";
 import { Link } from "react-router-dom";
 import imgpersonportal from "../../../../backend/assets/imgpersonportal.png";
 import Cookies from "js-cookie";
+import ManageOrder from "./OrderManage/ManageOrder";
 
 function decodeJWT(token) {
   const base64Url = token.split(".")[1]; // Lấy phần payload
@@ -97,6 +99,8 @@ const DashBoard = () => {
         return <ManageCategory />;
       case "Blog":
         return <ManageBlog />;
+      case "Order":
+        return <ManageOrder />;
       case "Settings":
         return (
           <div className="p-6">
@@ -172,15 +176,20 @@ const DashBoard = () => {
             onClick={() => handleSetActiveComponent("Blog")}
             isActive={activeComponent === "Blog"}
           />
-          {userRole === "admin" && (
-            <SidebarItem
-              icon={faChartColumn}
-              label="Chart"
-              isSidebarExpanded={isSidebarExpanded}
-              onClick={() => handleSetActiveComponent("Settings")}
-              isActive={activeComponent === "Settings"}
-            />
-          )}
+          <SidebarItem
+            icon={faClipboard}
+            label="Đơn Hàng"
+            isSidebarExpanded={isSidebarExpanded}
+            onClick={() => handleSetActiveComponent("Order")}
+            isActive={activeComponent === "Order"}
+          />
+          <SidebarItem
+            icon={faChartColumn}
+            label="Chart"
+            isSidebarExpanded={isSidebarExpanded}
+            onClick={() => handleSetActiveComponent("Settings")}
+            isActive={activeComponent === "Settings"}
+          />
         </ul>
       </div>
       {/* Main Content */}
@@ -191,7 +200,7 @@ const DashBoard = () => {
       >
         {/* Navbar */}
         <div className="flex justify-between bg-white p-4 shadow-md">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <h1 className="text-2xl font-bold"></h1>
           <div
             className="relative pr-8"
             onMouseEnter={() => setIsHovered(true)}

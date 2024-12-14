@@ -118,14 +118,14 @@ const ManageAccount = () => {
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="px-4 py-2 text-left">Username</th>
-                <th className="px-4 py-2 text-center">Number</th>
-                <th className="px-4 py-2 text-left">Gmail</th>
-                <th className="px-4 py-2 text-center">Role</th>
-                <th className="px-4 py-2 text-center">Date Create</th>
-                <th className="px-4 py-2 text-center">Date Update</th>
-                <th className="px-4 py-2 text-center">Active</th>
-                <th className="px-4 py-2 text-center">Edit</th>
+                <th className="px-4 py-3 text-left">Username</th>
+                <th className="px-4 py-3 text-center">Number</th>
+                <th className="px-4 py-3 text-left">Gmail</th>
+                <th className="px-4 py-3 text-center">Role</th>
+                <th className="px-4 py-3 text-center">Date Create</th>
+                <th className="px-4 py-3 text-center">Date Update</th>
+                <th className="px-4 py-3 text-center">Active</th>
+                <th className="px-4 py-3 text-center">Edit</th>
               </tr>
             </thead>
             <tbody>

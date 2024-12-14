@@ -104,11 +104,11 @@ const ManageCategory = () => {
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="px-4 py-2 text-left">Name</th>
-                <th className="px-4 py-2 text-center">Created At</th>
-                <th className="px-4 py-2 text-center">Updated At</th>
-                <th className="px-4 py-2 text-center">Active</th>
-                <th className="px-4 py-2 text-center">Edit</th>
+                <th className="px-4 py-3 text-left">Name</th>
+                <th className="px-4 py-3 text-center">Created At</th>
+                <th className="px-4 py-3 text-center">Updated At</th>
+                <th className="px-4 py-3 text-center">Active</th>
+                <th className="px-4 py-3 text-center">Edit</th>
               </tr>
             </thead>
             <tbody>

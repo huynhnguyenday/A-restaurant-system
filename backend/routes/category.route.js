@@ -7,7 +7,7 @@ import {
 import { protect } from "../middleware/protect.js";
 const router = express.Router();
 
-router.get("/", protect, getCategory);
+router.get("/", getCategory);
 router.post("/", createCategory);
 router.put("/:id", updateCategory);
 

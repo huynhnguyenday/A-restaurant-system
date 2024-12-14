@@ -160,16 +160,15 @@ const ManageProduct = () => {
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="px-4 py-2 text-center">Image</th>
-                <th className="px-4 py-2 text-left">Product Name</th>
-                <th className="px-4 py-2 text-center">Category</th>
-                <th className="px-4 py-2 text-center">Price</th>
-                <th className="px-4 py-2 text-center">Sell Price</th>
-                <th className="px-4 py-2 text-center">Date Create</th>
-                <th className="px-4 py-2 text-center">Date Update</th>
-                <th className="px-4 py-2 text-center">Hot</th>
-                <th className="px-4 py-2 text-center">Display</th>
-                <th className="px-4 py-2 text-center">Edit</th>
+                <th className="px-4 py-3 text-center">Image</th>
+                <th className="px-4 py-3 text-left">Product Name</th>
+                <th className="px-4 py-3 text-center">Category</th>
+                <th className="px-4 py-3 text-center">Price</th>
+                <th className="px-4 py-3 text-center">Sell Price</th>
+                <th className="px-4 py-3 text-center">Date Update</th>
+                <th className="px-4 py-3 text-center">Hot</th>
+                <th className="px-4 py-3 text-center">Display</th>
+                <th className="px-4 py-3 text-center">Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -191,9 +190,6 @@ const ManageProduct = () => {
                   </td>
                   <td className="px-4 py-2 text-center">
                     {product.sell_price.toLocaleString()}
-                  </td>
-                  <td className="px-4 py-6 text-center">
-                    {new Date(product.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-6 text-center">
                     {new Date(product.updatedAt).toLocaleDateString()}

@@ -152,13 +152,13 @@ const ManageBlog = () => {
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="px-4 py-2 text-center">Image</th>
-                <th className="px-4 py-2 text-left">Title</th>
-                <th className="px-4 py-2 text-left">Content</th>
-                <th className="px-4 py-2 text-center">Date</th>
-                <th className="px-4 py-2 text-center">Hot</th>
-                <th className="px-4 py-2 text-center">Banner</th>
-                <th className="px-4 py-2 text-center">Actions</th>
+                <th className="px-4 py-3 text-center">Image</th>
+                <th className="px-4 py-3 text-left">Title</th>
+                <th className="px-4 py-3 text-left">Content</th>
+                <th className="px-4 py-3 text-center">Date</th>
+                <th className="px-4 py-3 text-center">Hot</th>
+                <th className="px-4 py-3 text-center">Banner</th>
+                <th className="px-4 py-3 text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
