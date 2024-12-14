@@ -1,9 +1,14 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faBasketShopping } from "@fortawesome/free-solid-svg-icons";
-import "./ModalProduct.css";
 
-const ModalProduct = ({ selectedProduct, quantity, setQuantity, onClose, addToCart }) => {
+const ModalProduct = ({
+  selectedProduct,
+  quantity,
+  setQuantity,
+  onClose,
+  addToCart,
+}) => {
   const handleQuantityChange = (e) => {
     const value = e.target.value;
     if (value === "") {
@@ -34,36 +39,67 @@ const ModalProduct = ({ selectedProduct, quantity, setQuantity, onClose, addToCa
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content-food">
-        <div className="modal-left">
-          <img src={selectedProduct.image} alt={selectedProduct.name} className="modal-image" />
+    <div className="fixed left-0 top-0 z-50 flex h-screen w-screen items-center justify-center bg-black bg-opacity-50">
+      <div className="relative flex w-[90%] max-w-[900px] flex-col overflow-hidden rounded-lg bg-white shadow-lg md:h-[435px] md:flex-row md:items-center md:justify-between">
+        {/* Left Section */}
+        <div className="flex w-full items-center justify-center p-5 md:w-1/2">
+          <img
+            src={selectedProduct.image}
+            alt={selectedProduct.name}
+            className="max-h-[300px] max-w-full object-contain"
+          />
         </div>
-        <div className="modal-right">
-          <h1 className="modal-title">{selectedProduct.name}</h1>
-          <p className="modal-price">
-            <span className="modal-sell-price">{selectedProduct.sell_price.toLocaleString()}đ</span>
-            <span className="modal-price-old">{selectedProduct.price.toLocaleString()}đ</span>
+
+        {/* Right Section */}
+        <div className="flex w-full flex-col gap-4 p-5 md:mb-auto md:mr-10 md:mt-auto md:w-1/2">
+          <h1 className="flex flex-col items-center text-4xl font-bold text-[#00561e] md:items-start md:pb-6">
+            {selectedProduct.name}
+          </h1>
+          <p className="flex flex-col items-center gap-2 md:flex-row">
+            <span className="text-3xl font-bold text-[#663402]">
+              {selectedProduct.sell_price.toLocaleString()}đ
+            </span>
+            <span className="text-xl text-gray-500 line-through">
+              {selectedProduct.price.toLocaleString()}đ
+            </span>
           </p>
-          <div className="separator"></div>
-          <div className="modal-quantity">
-            <span className="quantity-label">Số lượng:</span>
-            <div className="quantity-controls">
-              <button className="btn-minus" onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}>-</button>
+          <div className="h-[1px] w-full bg-gray-300"></div>
+          <div className="w-full">
+            <span className="flex flex-col items-center text-lg font-bold text-[#663402] md:items-start">
+              Số lượng:
+            </span>
+            <div className="mt-2 flex items-center justify-center gap-2 md:justify-start">
+              <button
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-xl font-bold transition hover:bg-gray-200"
+                onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
+              >
+                -
+              </button>
               <input
                 type="text"
                 value={quantity}
                 onChange={handleQuantityChange}
                 onBlur={handleBlur}
-                className="quantity-input-modal"
+                className="h-9 w-16 rounded-lg border border-gray-300 text-center"
               />
-              <button className="btn-plus" onClick={() => setQuantity((prev) => prev + 1)}>+</button>
+              <button
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-xl font-bold transition hover:bg-gray-200"
+                onClick={() => setQuantity((prev) => prev + 1)}
+              >
+                +
+              </button>
             </div>
           </div>
-          <button className="add-to-cart-btn" onClick={handleAddToCart}>
+          <button
+            className="mt-4 h-14 w-full rounded-full bg-gradient-to-r from-[#00864a] to-[#925802] text-2xl font-bold text-white transition hover:from-[#006635] hover:to-[#7a3e01]"
+            onClick={handleAddToCart}
+          >
             <FontAwesomeIcon icon={faBasketShopping} /> Thêm vào giỏ
           </button>
-          <button className="close-modal-btn" onClick={onClose}>
+          <button
+            className="absolute right-6 top-4 text-4xl text-gray-400 hover:text-gray-700"
+            onClick={onClose}
+          >
             <FontAwesomeIcon icon={faXmark} />
           </button>
         </div>

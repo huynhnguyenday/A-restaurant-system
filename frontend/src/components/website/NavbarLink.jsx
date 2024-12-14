@@ -6,21 +6,21 @@ import PricingContentMenu from "./PricingContentMenu";
 const NavbarLink = () => {
   return (
     <div className="w-full">
-      <ul className="navbar-links flex flex-col items-start justify-center space-y-4 sm:flex-row sm:space-x-8 sm:space-y-0">
-        <li>
+      <ul className="navbar-links flex flex-col items-start justify-center sm:flex-row sm:space-x-8 sm:space-y-0 sm:pl-8">
+        <li className="w-full border-t-[1px] border-gray-300 py-4 sm:w-max sm:border-none sm:py-0">
           <FlyoutLink href="/home">TRANG CHỦ</FlyoutLink>
         </li>
-        <li>
+        <li className="w-full border-b-[1px] border-t-[1px] border-gray-300 py-4 sm:w-max sm:border-none sm:py-0">
           <FlyoutLink href="/menu" FlyoutContent={PricingContentMenu}>
             THỰC ĐƠN
           </FlyoutLink>
         </li>
-        <li>
+        <li className="w-full border-b-[1px] border-gray-300 py-4 sm:w-max sm:border-none sm:py-0">
           <FlyoutLinkNews href="/news" FlyoutContent={PricingContentNew}>
             TIN TỨC
           </FlyoutLinkNews>
         </li>
-        <li>
+        <li className="w-full border-b-[1px] border-gray-300 py-4 sm:w-max sm:border-none sm:py-0">
           <FlyoutLink href="/address">ĐỊA CHỈ</FlyoutLink>
         </li>
       </ul>
@@ -42,7 +42,7 @@ const FlyoutLink = ({ children, href, FlyoutContent }) => {
     >
       <a
         href={href}
-        className="inline px-8 font-oswald font-semibold text-black transition-colors duration-300 hover:text-orange-600"
+        className="inline px-8 font-oswald font-semibold text-black transition-colors duration-300 hover:text-[#d88453]"
       >
         {children}
         <span
@@ -59,7 +59,7 @@ const FlyoutLink = ({ children, href, FlyoutContent }) => {
             exit={{ opacity: 0, y: 15 }}
             style={{ translateX: "-50%" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 top-[56px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
+            className="absolute left-1/2 top-[68px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
           >
             <FlyoutContent closeFlyout={closeFlyout} />
           </motion.div>
@@ -83,7 +83,7 @@ const FlyoutLinkNews = ({ children, href, FlyoutContent }) => {
     >
       <a
         href={href}
-        className="inline px-8 font-oswald font-semibold text-black transition-colors duration-300 hover:text-orange-600"
+        className="inline px-8 font-oswald font-semibold text-black transition-colors duration-300 hover:text-[#d88453]"
       >
         {children}
         <span
@@ -100,7 +100,7 @@ const FlyoutLinkNews = ({ children, href, FlyoutContent }) => {
             exit={{ opacity: 0, y: 15 }}
             style={{ translateX: "calc(-52.8% - 140px)" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 top-[56px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
+            className="absolute left-1/2 top-[68px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
           >
             <FlyoutContent closeFlyout={closeFlyout} />
           </motion.div>

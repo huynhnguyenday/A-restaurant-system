@@ -8,7 +8,7 @@ const PaymentPage = () => {
   const { cartItems: initialCartItems } = location.state || {};
 
   const [cartItems, setCartItems] = useState(initialCartItems || []);
-  const [selectedPayment, setSelectedPayment] = useState("bank-transfer");
+  const [selectedPayment, setSelectedPayment] = useState(1);
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
 
@@ -80,7 +80,7 @@ const PaymentPage = () => {
       <div className="grid grid-cols-10 gap-6 pt-12">
         {/* Phần thông tin khách hàng chiếm 6 cột */}
         <div className="payment-left col-span-10 sm:col-span-6">
-          <h3 className="mb-4 pt-4 font-josefin text-[32px] font-bold">
+          <h3 className="mb-4 pt-4 font-josefin text-4xl font-bold">
             Thông tin khách hàng
           </h3>
           <form className="input-group space-y-4">
@@ -88,42 +88,42 @@ const PaymentPage = () => {
             <div className="input-payment">
               <input
                 type="text"
-                className="h-14 w-full rounded-2xl border border-gray-300 p-2"
+                className="h-16 w-full rounded-2xl border border-gray-300 p-2 font-josefin"
                 placeholder="Họ tên"
               />
             </div>
             <div className="input-payment">
               <input
                 type="text"
-                className="h-14 w-full rounded-2xl border border-gray-300 p-2 pt-3"
+                className="h-16 w-full rounded-2xl border border-gray-300 p-2 pt-3 font-josefin"
                 placeholder="Địa chỉ"
               />
             </div>
-            <div className="flex h-14 justify-center space-x-4">
+            <div className="flex h-16 justify-center space-x-4 font-josefin">
               <input
                 type="tel"
-                className="w-1/2 rounded-2xl border border-gray-300 p-2"
+                className="w-1/2 rounded-2xl border border-gray-300 p-2 font-josefin"
                 placeholder="Số điện thoại"
               />
               <input
                 type="email"
-                className="w-1/2 rounded-2xl border border-gray-300 p-2"
+                className="w-1/2 rounded-2xl border border-gray-300 p-2 font-josefin"
                 placeholder="Email"
               />
             </div>
             <div>
-              <p className="pb-1 pl-1 pt-1 font-josefin text-[18px] font-bold">
+              <p className="pb-1 pl-1 pt-1 font-josefin text-2xl font-bold">
                 Ghi chú đặt hàng
               </p>
               <input
                 type="text"
-                className="h-16 w-full rounded-2xl border border-gray-300 p-2"
+                className="h-16 w-full rounded-2xl border border-gray-300 p-2 font-josefin"
                 placeholder="Ghi chú (vd: giao lúc 10 giờ)"
               />
             </div>
 
             <div className="payment-method">
-              <h4 className="mb-4 py-6 font-josefin text-[32px] text-lg font-bold">
+              <h4 className="mb-4 py-3 font-josefin text-4xl font-bold">
                 Phương tiện thanh toán
               </h4>
 
@@ -131,41 +131,46 @@ const PaymentPage = () => {
               <button
                 type="button"
                 className={`payment-option mb-4 flex w-full cursor-pointer items-center rounded-2xl border p-4 transition-colors duration-300 hover:text-black ${
-                  selectedPayment === "bank-transfer"
-                    ? "border-[#2f5acf]"
-                    : "border-gray-300"
+                  selectedPayment === 1 ? "border-[#2f5acf]" : "border-gray-300"
                 }`}
-                onClick={() => handlePaymentOptionClick("bank-transfer")}
+                onClick={() => handlePaymentOptionClick(1)}
               >
                 <input
                   type="checkbox"
                   id="bank-transfer"
                   name="payment-method"
                   className="checkbox-method hidden"
-                  checked={selectedPayment === "bank-transfer"}
+                  checked={selectedPayment === 1}
                   readOnly
                 />
                 <div
                   className={`checkbox-circle relative flex h-[20px] w-[20px] items-center justify-center rounded-full border-2 bg-white transition-colors duration-300 ${
-                    selectedPayment === "bank-transfer"
+                    selectedPayment === 1
                       ? "border-[#2f5acf]"
                       : "border-gray-300"
                   }`}
                 >
-                  {selectedPayment === "bank-transfer" && (
-                    <div className="h-[10px] w-[10px] rounded-full bg-[#2f5acf]"></div> // This adds the blue circle
+                  {selectedPayment === 1 && (
+                    <div className="h-[10px] w-[10px] rounded-full bg-[#2f5acf]"></div>
                   )}
                 </div>
                 <label
                   htmlFor="bank-transfer"
                   className="ml-4 flex-grow text-left text-gray-700"
                 >
-                  <p className="name-option font-josefin text-[20px] font-semibold text-[#8e8e8e] transition-colors duration-300 ease-in-out">
+                  <p
+                    className={`name-option font-josefin text-[20px] font-semibold transition-colors duration-300 ease-in-out ${
+                      selectedPayment === 1 ? "text-black" : "text-[#8e8e8e]"
+                    }`}
+                  >
                     Chuyển khoản ngân hàng:
                   </p>
-                  <span className="detail-option font-josefin text-[14px] text-[#8e8e8e] transition-colors duration-300 ease-in-out">
-                    Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng
-                    tôi.
+                  <span
+                    className={`detail-option font-josefin text-[14px] transition-colors duration-300 ease-in-out ${
+                      selectedPayment === 1 ? "text-black" : "text-[#8e8e8e]"
+                    }`}
+                  >
+                    Thực hiện thanh toán bằng ví điện tử.
                   </span>
                 </label>
               </button>
@@ -174,39 +179,45 @@ const PaymentPage = () => {
               <button
                 type="button"
                 className={`payment-option flex w-full cursor-pointer items-center rounded-2xl border p-4 transition-colors duration-300 hover:text-black ${
-                  selectedPayment === "cash-on-delivery"
-                    ? "border-[#2f5acf]"
-                    : "border-gray-300"
+                  selectedPayment === 2 ? "border-[#2f5acf]" : "border-gray-300"
                 }`}
-                onClick={() => handlePaymentOptionClick("cash-on-delivery")}
+                onClick={() => handlePaymentOptionClick(2)}
               >
                 <input
                   type="checkbox"
                   id="cash-on-delivery"
                   name="payment-method"
                   className="checkbox-method hidden"
-                  checked={selectedPayment === "cash-on-delivery"}
+                  checked={selectedPayment === 2}
                   readOnly
                 />
                 <div
                   className={`checkbox-circle relative flex h-[20px] w-[20px] items-center justify-center rounded-full border-2 bg-white transition-colors duration-300 ${
-                    selectedPayment === "cash-on-delivery"
+                    selectedPayment === 2
                       ? "border-[#2f5acf]"
                       : "border-gray-300"
                   }`}
                 >
-                  {selectedPayment === "cash-on-delivery" && (
-                    <div className="h-[10px] w-[10px] rounded-full bg-[#2f5acf]"></div> // This adds the blue circle
+                  {selectedPayment === 2 && (
+                    <div className="h-[10px] w-[10px] rounded-full bg-[#2f5acf]"></div>
                   )}
                 </div>
                 <label
                   htmlFor="cash-on-delivery"
                   className="ml-4 flex-grow text-left text-gray-700"
                 >
-                  <p className="name-option font-josefin text-[20px] font-semibold text-[#8e8e8e] transition-colors duration-300 ease-in-out">
+                  <p
+                    className={`name-option font-josefin text-[20px] font-semibold transition-colors duration-300 ease-in-out ${
+                      selectedPayment === 2 ? "text-black" : "text-[#8e8e8e]"
+                    }`}
+                  >
                     Trả tiền mặt khi nhận hàng:
                   </p>
-                  <span className="detail-option font-josefin text-[14px] text-[#8e8e8e] transition-colors duration-300 ease-in-out">
+                  <span
+                    className={`detail-option font-josefin text-[14px] transition-colors duration-300 ease-in-out ${
+                      selectedPayment === 2 ? "text-black" : "text-[#8e8e8e]"
+                    }`}
+                  >
                     Trả tiền mặt khi giao hàng.
                   </span>
                 </label>

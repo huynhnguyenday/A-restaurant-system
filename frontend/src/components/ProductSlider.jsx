@@ -68,10 +68,10 @@ const ProductSlider = () => {
       onMouseEnter={() => setShowArrows(true)}
       onMouseLeave={() => setShowArrows(false)}
     >
-      <div className="slider-title mb-2 text-center text-2xl font-bold text-[#633c02]">
+      <div className="slider-title my-6 text-center text-4xl font-bold text-[#633c02]">
         Sản phẩm bán chạy
       </div>
-      <div className="divider mx-auto mb-20 h-1 w-12 bg-[#ff4d4f]"></div>
+      <div className="divider mx-auto mb-14 h-1 w-12 bg-[#633c02]"></div>
 
       <Swiper
         ref={swiperRef}
@@ -122,15 +122,15 @@ const ProductSlider = () => {
                 {favorites[product._id] ? "♥" : "♡"}
               </div>
 
-              <div className="product-bubble absolute right-4 top-2 rounded-full bg-[#ff4d4f] px-2 py-1 text-xs text-white">
+              <div className="product-bubble absolute right-4 top-2 rounded-full bg-[#ff4d4f] px-2 py-1 font-josefin text-sm text-white">
                 HOT
               </div>
               <div className="product-info mb-12 mt-4">
-                <h6 className="product-name mb-2 text-sm font-bold text-[#333]">
+                <h6 className="product-name text-lg font-bold text-[#00561e]">
                   <Link to={`/detailfood/${product._id}`}>{product.name}</Link>
                 </h6>
                 <div className="product-price">
-                  <span className="text-sm font-bold text-[#9d6817]">
+                  <span className="text-base font-bold text-[#9d6817]">
                     {product.sell_price.toLocaleString()} đ
                   </span>
                   {product.price !== product.sell_price && (

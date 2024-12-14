@@ -18,7 +18,7 @@ const PricingContentNew = ({ closeFlyout }) => {
     navigate("/news");
   };
 
-  const overlayTitles = ["TỔ CHỨC EVENT", "ACOUSTIC", "BÓI BÀI TAROT"]; // Tiêu đề cho mỗi ảnh
+  const overlayTitles = ["TỔ CHỨC EVENT", "ACOUSTIC", "BÓI BÀI TAROT"]; 
 
   return (
     <div className="flex h-[480px] w-[1200px] bg-white shadow-xl">

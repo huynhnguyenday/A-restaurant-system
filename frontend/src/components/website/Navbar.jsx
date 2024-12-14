@@ -83,9 +83,9 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative z-10 flex items-center justify-between bg-white px-4 py-[23px] shadow-lg sm:px-8 md:px-16 lg:px-32">
+    <nav className="relative z-10 flex items-center justify-between bg-white px-4 py-[35px] shadow-lg sm:px-8 md:px-16 lg:px-32">
       {/* Brand Name */}
-      <div className="text-2xl font-bold sm:text-4xl">
+      <div className="text-3xl font-bold pl-4 sm:pl-0 sm:text-4xl">
         <span className="text-black">Bamos</span>
         <span className="text-[#c63402]">Coffee</span>
       </div>
@@ -93,13 +93,6 @@ const Navbar = () => {
       {/* Navbar Links */}
       <div className="hidden flex-grow sm:flex">
         <NavbarLink />
-      </div>
-
-      {/* Mobile Menu Toggle */}
-      <div className="flex items-center sm:hidden">
-        <button onClick={toggleMobileMenu}>
-          <FontAwesomeIcon icon={faBars} size="lg" />
-        </button>
       </div>
 
       {/* Search, Cart, and Login Icons */}
@@ -114,14 +107,14 @@ const Navbar = () => {
             <FontAwesomeIcon icon={faSearch} />
           </button>
           {isPopoverVisible && (
-            <div className="absolute right-[-7rem] top-[2rem] z-10 w-[300px] bg-white p-2 shadow-lg">
+            <div className="absolute right-[-7rem] top-[2rem] z-10 w-[260px] bg-white p-2 shadow-lg">
               <div className="flex items-center">
                 <input
                   type="text"
                   className="flex-1 border border-gray-300 p-2"
                   placeholder="Tìm kiếm..."
                 />
-                <button className="bg-black p-2 text-white transition-all duration-300 hover:bg-gray-300">
+                <button className="bg-black p-2 text-white transition-all duration-300 hover:bg-gray-300 hover:text-black">
                   <FontAwesomeIcon icon={faSearch} />
                 </button>
               </div>
@@ -132,7 +125,7 @@ const Navbar = () => {
         {/* Login */}
         <a
           href="#login"
-          className="cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-red-600"
+          className="cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-[#d88453] lg:px-4"
           onClick={handleLoginClick}
         >
           <FontAwesomeIcon icon={faUser} />
@@ -141,16 +134,25 @@ const Navbar = () => {
         {/* Cart */}
         <a
           href="#cart"
-          className="relative cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-red-600"
+          className="relative cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-[#d88453]"
           onClick={handleCartClick}
         >
           <FontAwesomeIcon icon={faShoppingCart} />
           {cartItems.length > 0 && (
-            <div className="absolute right-[-5px] top-[-3px] flex h-[15px] w-[15px] items-center justify-center rounded-full bg-[#ed4321] text-xs text-white">
+            <div className="absolute right-[-6px] top-[-6px] flex h-[17px] w-[17px] items-center justify-center rounded-full bg-[#ed4321] text-xs text-white">
               {cartItems.length}
             </div>
           )}
         </a>
+      </div>
+
+      <div className="flex item">
+        {/* Mobile Menu Toggle */}
+        <div className="flex items-end text-[27px] sm:hidden">
+          <button onClick={toggleMobileMenu}>
+            <FontAwesomeIcon icon={faBars} />
+          </button>
+        </div>
       </div>
 
       {/* Sidebar Mobile Menu */}

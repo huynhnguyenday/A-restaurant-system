@@ -14,7 +14,7 @@ import axios from "axios";
 const BannerSwiper = () => {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
-  const swiperRef = useRef(null); // Reference to the Swiper instance
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     // Fetch the banner blogs from the API
@@ -67,13 +67,13 @@ const BannerSwiper = () => {
           {blogs.map((blog) => (
             <SwiperSlide key={blog._id}>
               <div
-                className="h-full w-full cursor-pointer"
+                className="relative h-[255px] w-full cursor-pointer overflow-hidden shadow-lg lg:h-[600px]"
                 onClick={() => navigate(`/blogs/${blog._id}`)}
               >
                 <img
                   src={blog.image}
                   alt={blog.title}
-                  className="h-[500px] w-full"
+                  className="h-full w-full object-cover "
                 />
               </div>
             </SwiperSlide>

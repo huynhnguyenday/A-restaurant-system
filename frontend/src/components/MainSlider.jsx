@@ -4,7 +4,7 @@ import imgBackground from "../../../backend/assets/img_background.png"; // Đư�
 const MainSlider = () => {
   return (
     <div className="flex flex-col-reverse items-center justify-center gap-x-0 lg:flex-row">
-      <div className="content mb-20 mt-8 px-4 text-[#633c02] lg:ml-32 lg:mt-8">
+      <div className="content mb-8 mt-8 px-4 text-[#633c02] lg:ml-32 lg:mt-8">
         <h1 className="animated-title mb-3 text-4xl font-bold lg:text-5xl">
           ĐÔNG ĐẾN GIẢM 30%
         </h1>
@@ -13,7 +13,7 @@ const MainSlider = () => {
         </h4>
         <a
           href="/menu"
-          className="btn-buy rounded-lg bg-[#d88453] px-6 py-2 text-2xl text-white hover:rounded-3xl hover:bg-[#633c02]"
+          className="btn-buy rounded-lg bg-[#d88453] px-6 py-2 text-2xl text-white hover:rounded-3xl hover:bg-[#633c02] "
         >
           Mua ngay
         </a>

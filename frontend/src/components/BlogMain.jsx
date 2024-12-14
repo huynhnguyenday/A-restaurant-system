@@ -44,7 +44,7 @@ const BlogMain = () => {
           <div className="text-4xl font-bold text-[#633402]">
             Tin mới nóng hổi
           </div>
-          <div className="bg-brown-800 mx-auto my-4 h-1 w-12"></div>
+          <div className="mx-auto my-4 mb-14 h-1 w-12 bg-[#633c02]"></div>
         </div>
         <div className="flex flex-wrap justify-center gap-12" ref={ref}>
           <Swiper
@@ -68,7 +68,7 @@ const BlogMain = () => {
                   custom={index}
                   variants={cardVariants}
                 >
-                  <div className="group relative mb-12 w-full max-w-[350px]">
+                  <div className="group relative mb-12 w-full max-w-[350px] ml-4">
                     {/* The container for the image */}
                     <div className="relative h-[255px] w-full overflow-hidden shadow-lg">
                       <img

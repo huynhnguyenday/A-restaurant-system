@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ModalProduct from "./ModalProduct"; // Import ModalProduct component
-import "./Menu.css";
 import axios from "axios";
-// Import hình ảnh
+
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("TẤT CẢ");
   const [categories, setCategories] = useState(["TẤT CẢ"]); // Lưu danh sách danh mục, mặc định có "TẤT CẢ"
@@ -14,11 +13,15 @@ const Menu = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/mainPages/activeCategories"); // Thay URL phù hợp với API backend
-        const categoryData = response.data.data.map((category) => category.name); // Chỉ lấy tên danh mục
+        const response = await axios.get(
+          "http://localhost:5000/api/mainPages/activeCategories",
+        ); // Thay URL phù hợp với API backend
+        const categoryData = response.data.data.map(
+          (category) => category.name,
+        ); // Chỉ lấy tên danh mục
         setCategories(["TẤT CẢ", ...categoryData]); // Thêm "TẤT CẢ" vào đầu danh sách
       } catch (error) {
         console.error("Error fetching categories:", error.message);
@@ -32,7 +35,9 @@ const Menu = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/mainPages/activeProducts"); // Thay URL phù hợp
+        const response = await axios.get(
+          "http://localhost:5000/api/mainPages/activeProducts",
+        ); // Thay URL phù hợp
         setProducts(response.data.data);
       } catch (error) {
         console.error("Error fetching products:", error.message);
@@ -50,8 +55,10 @@ const Menu = () => {
 
   // Lọc sản phẩm theo danh mục
   const filterItems =
-    activeCategory === "TẤT CẢ" ? products.filter((item) => item.category?.isActive === 1) : products.filter((item) => item.category.name === activeCategory);
-  
+    activeCategory === "TẤT CẢ"
+      ? products.filter((item) => item.category?.isActive === 1)
+      : products.filter((item) => item.category.name === activeCategory);
+
   // Xử lý khi nhấn yêu thích
   const handleToggleFavorite = (id) => {
     setFavorites((prevFavorites) => ({
@@ -78,64 +85,84 @@ const Menu = () => {
   };
 
   return (
-    <div className="menu-wrapper">
-      <h1 className="menu-header">
-        Thực đơn Bamos<span>Coffee</span>
+    <div className="p-5 text-center">
+      <h1 className="mb-4 text-4xl font-bold">
+        Thực đơn Bamos<span className="text-[#C63402]">Coffee</span>
       </h1>
 
-      {/* Hiển thị danh mục */}
-      <div className="menu-category-wrapper">
+      <div className="mb-5 flex justify-center font-bold">
         {categories.map((category) => (
           <button
             key={category}
-            className={`menu-category-button ${activeCategory === category ? "active" : ""}`}
+            className={`mt-8 border-[0.5px] border-gray-300 px-5 py-2 text-base transition-all ease-linear ${
+              activeCategory === category
+                ? "border-[#633c02] bg-[#633c02] text-white"
+                : "bg-white text-gray-800"
+            } hover:bg-[#d88453]`}
             onClick={() => handleCategoryClick(category)}
           >
             {category}
           </button>
         ))}
       </div>
-
-      {/* Hiển thị danh sách sản phẩm */}
-      <div className="menu-items-wrapper">
-        {filterItems.map((item) => (
-          <div className="menu-item-card" key={item._id}>
-            <div className="menu-item-image">
-              <Link to={`/detailfood/${item._id}`}>
-                <img src={item.image} alt={item.name} />
-              </Link>
-            </div>
-
-            {/* Icon yêu thích */}
+      <div className="mx-auto flex max-w-7xl flex-wrap justify-start">
+        <div className="mx-auto flex flex-wrap justify-start gap-0">
+          {filterItems.map((item) => (
             <div
-              className={`favorite-icon ${favorites[item._id] ? "active" : ""}`}
-              onClick={() => handleToggleFavorite(item._id)}
+              className="group relative mt-8 flex h-[340px] w-[250px] flex-col justify-between border-l border-r border-gray-300 bg-white p-3 text-center transition-shadow ease-linear"
+              key={item._id}
             >
-              {favorites[item._id] ? "♥" : "♡"}
-            </div>
+              <div>
+                <Link to={`/detailfood/${item._id}`}>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="mx-auto h-[216px] w-[154px] transition-transform ease-linear group-hover:scale-[1.18]"
+                  />
+                </Link>
+              </div>
 
-            {/* Thông tin sản phẩm */}
-            <div className="menu-item-info">
-              <h6 className="menu-item-name">
-                <Link to={`/detailfood/${item._id}`}>{item.name}</Link>
-              </h6>
-              <div className="menu-item-price">
-                <span>{item.sell_price.toLocaleString()} đ</span>
-                {item.price !== item.sell_price && (
-                  <span className="price-old">{item.price.toLocaleString()} đ</span>
-                )}
-              </div>  
-            </div>
+              <div
+                className={`absolute left-2 top-2 cursor-pointer text-2xl transition-colors ease-linear ${
+                  favorites[item._id] ? "text-[#d88453]" : "text-black"
+                }`}
+                onClick={() => handleToggleFavorite(item._id)}
+              >
+                {favorites[item._id] ? "♥" : "♡"}
+              </div>
 
-            {/* Nút thêm vào giỏ hàng */}
-            <div className="add-to-cart-button">
-              <button onClick={() => handleAddToCart(item)}>Thêm vào giỏ hàng</button>
+              <div className="mb-12 mt-4">
+                <h6 className="mb-2 text-sm font-bold text-[#333]">
+                  <Link
+                    to={`/detailfood/${item._id}`}
+                    className="text-[#00561e]"
+                  >
+                    {item.name}
+                  </Link>
+                </h6>
+                <div className="mb-2 text-sm font-bold text-[#925802]">
+                  <span>{item.sell_price.toLocaleString()} đ</span>
+                  {item.price !== item.sell_price && (
+                    <span className="ml-2 text-xs text-gray-500 line-through">
+                      {item.price.toLocaleString()} đ
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="absolute bottom-0 left-0 w-full opacity-0 transition-opacity ease-linear group-hover:opacity-100">
+                <button
+                  className="w-full bg-[#d88453] py-3 text-sm font-medium text-white transition-colors ease-linear hover:bg-[#633c02]"
+                  onClick={() => handleAddToCart(item)}
+                >
+                  Thêm vào giỏ hàng
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      {/* Modal hiển thị sản phẩm */}
       {selectedProduct && (
         <ModalProduct
           selectedProduct={selectedProduct}
