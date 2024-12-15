@@ -70,7 +70,7 @@ const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
-        <h2 className="mb-4 text-center text-xl font-bold">Edit Blog</h2>
+        <h2 className="mb-4 text-center text-4xl font-bold">Edit Blog</h2>
         {error && <p className="mb-4 text-red-500">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -94,7 +94,7 @@ const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
                 <select
                   value={displayHot}
                   onChange={(e) => setDisplayHot(e.target.value)}
-                  className="h-12 w-full rounded-md border border-gray-300 p-2"
+                  className="h-12 w-1/2 rounded-md border border-gray-300 p-2"
                 >
                   <option value={1}>Hot</option>
                   <option value={2}>Not Hot</option>
@@ -137,17 +137,17 @@ const UpdateBlog = ({ blog, onClose, onBlogUpdated }) => {
             </div>
           </div>
 
-          <div className="flex justify-end space-x-4">
+          <div className="flex justify-center space-x-40">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-md border border-gray-300 bg-gray-300 px-4 py-2 text-white"
+              className="rounded-md border border-gray-300 bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="rounded-md bg-blue-500 px-4 py-2 text-white"
+              className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
               Update Blog
             </button>

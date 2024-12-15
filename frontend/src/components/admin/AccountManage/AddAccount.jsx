@@ -96,7 +96,7 @@ const AddAccount = ({ onAddAccount, onClose }) => {
               name="role"
               value={newAccount.role}
               onChange={handleInputChange}
-              className="w-full rounded-md border border-gray-300 p-2"
+              className="w-1/2 rounded-md border border-gray-300 p-2"
             >
               <option value="admin">Admin</option>
               <option value="staff">Staff</option>

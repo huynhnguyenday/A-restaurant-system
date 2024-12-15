@@ -157,7 +157,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
                 setNewProduct({ ...newProduct, category: e.target.value })
               }
               required
-              className="h-12 w-full rounded-md border border-gray-300 p-2"
+              className="h-12 w-1/2 rounded-md border border-gray-300 p-2"
             >
               <option value="">Select Category</option>
               {categories.map((category) => (
@@ -170,22 +170,6 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
           <div className="mb-4 flex space-x-4">
             <div className="w-1/2">
               <label className="block pb-2 text-xl font-medium">
-                Display Type
-              </label>
-              <select
-                value={newProduct.displayType}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, displayType: +e.target.value })
-                }
-                required
-                className="h-12 w-full rounded-md border border-gray-300 p-2"
-              >
-                <option value={1}>Active</option>
-                <option value={2}>InActive</option>
-              </select>
-            </div>
-            <div className="w-1/2">
-              <label className="block pb-2 text-xl font-medium">
                 Display Hot
               </label>
               <select
@@ -194,10 +178,26 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
                   setNewProduct({ ...newProduct, displayHot: +e.target.value })
                 }
                 required
-                className="h-12 w-full rounded-md border border-gray-300 p-2"
+                className="h-12 w-1/2 rounded-md border border-gray-300 p-2"
               >
                 <option value={1}>Hot</option>
                 <option value={2}>Not Hot</option>
+              </select>
+            </div>
+            <div className="w-1/2">
+              <label className="block pb-2 text-xl font-medium">
+                Display Type
+              </label>
+              <select
+                value={newProduct.displayType}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, displayType: +e.target.value })
+                }
+                required
+                className="h-12 w-1/2 rounded-md border border-gray-300 p-2"
+              >
+                <option value={1}>Active</option>
+                <option value={2}>InActive</option>
               </select>
             </div>
           </div>

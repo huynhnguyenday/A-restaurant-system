@@ -105,7 +105,7 @@ const ManageOrder = () => {
           },
           {
             product: {
-              image: imgfood6,
+              image: imgfood1,
               name: "Sản phẩm 5",
               sell_price: 300000,
             },
@@ -114,7 +114,7 @@ const ManageOrder = () => {
           },
           {
             product: {
-              image: imgfood6,
+              image: imgfood2,
               name: "Sản phẩm 6",
               sell_price: 300000,
             },

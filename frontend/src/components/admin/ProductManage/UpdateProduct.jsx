@@ -105,14 +105,14 @@ const UpdateProduct = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-full max-w-6xl rounded-lg bg-white p-6">
-        <h2 className="mb-4 flex justify-center text-4xl font-bold">
+      <div className="w-full max-w-7xl rounded-lg bg-white p-6">
+        <h2 className="mb-12 flex justify-center text-4xl font-bold">
           Update Product
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex space-x-6">
             {/* Phần Tên và Category */}
-            <div className="w-1/3">
+            <div className="w-2/3">
               <label className="block pb-2 text-xl font-medium">Name</label>
               <input
                 type="text"
@@ -130,7 +130,7 @@ const UpdateProduct = ({
                 value={updatedProduct.category}
                 name="category"
                 onChange={handleInputChange}
-                className="w-full rounded-md border border-gray-300 p-2"
+                className="w-1/2 rounded-md border border-gray-300 p-2"
                 required
               >
                 <option value="">Select Category</option>
@@ -143,7 +143,7 @@ const UpdateProduct = ({
             </div>
 
             {/* Phần Giá và Các thuộc tính */}
-            <div className="w-1/2">
+            <div className="w-2/3">
               <label className="block pb-2 text-xl font-medium">Price</label>
               <input
                 type="text"
@@ -203,7 +203,7 @@ const UpdateProduct = ({
 
             {/* Phần Ảnh */}
             {/* Hiển thị ảnh đã chọn hoặc ảnh cũ */}
-            <div className="w-2/5">
+            <div className="w-2/3">
               <label className="block pb-2 text-xl font-medium">Image</label>
               <input
                 type="file"
@@ -231,7 +231,7 @@ const UpdateProduct = ({
           </div>
 
           {/* Nút Cancel và Update */}
-          <div className="mt-6 flex justify-center">
+          <div className="mt-12 flex justify-center">
             <button
               type="button"
               onClick={() => setShowModal(false)}

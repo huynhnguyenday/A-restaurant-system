@@ -71,7 +71,7 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
                 <select
                   value={displayHot}
                   onChange={(e) => setDisplayHot(+e.target.value)}
-                  className="h-12 w-full rounded-md border border-gray-300 p-2"
+                  className="h-12 w-1/2 rounded-md border border-gray-300 p-2"
                 >
                   <option value={1}>Hot</option>
                   <option value={2}>Not Hot</option>

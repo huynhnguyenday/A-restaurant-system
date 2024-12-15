@@ -111,7 +111,7 @@ const DetailOrder = ({ order, onClose }) => {
                 name="paymentMethod"
                 value={customerInfo.paymentMethod}
                 onChange={handleInputChange}
-                className="mb-4 w-full rounded-md border border-gray-300 p-2"
+                className="mb-4 w-1/2 rounded-md border border-gray-300 p-2"
               >
                 <option value="Online Payment">Online Payment</option>
                 <option value="COD">COD</option>
