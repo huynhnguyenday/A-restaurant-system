@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Bar, Line, Pie } from "react-chartjs-2";
+import { Line, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,8 +12,7 @@ import {
   Legend,
   ArcElement,
 } from "chart.js";
-import DateTimePicker from "react-datetime-picker"; // Keep DateTimePicker for revenue chart
-import DatePicker from "react-datepicker"; // Import react-datepicker
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 // Đăng ký các thành phần của Chart.js
@@ -29,82 +28,384 @@ ChartJS.register(
   ArcElement,
 );
 
-const ManageChart = () => {
-  // State cho thời gian của các biểu đồ
-  const [timeRange, setTimeRange] = useState("month"); // Dùng cho biểu đồ doanh thu
-  const [startDateTopProducts, setStartDateTopProducts] = useState(new Date());
-  const [endDateTopProducts, setEndDateTopProducts] = useState(new Date());
-  const [startDateBottomProducts, setStartDateBottomProducts] = useState(
-    new Date(),
-  );
-  const [endDateBottomProducts, setEndDateBottomProducts] = useState(
-    new Date(),
-  );
-  const [startDateTopCustomers, setStartDateTopCustomers] = useState(
-    new Date(),
-  );
-  const [endDateTopCustomers, setEndDateTopCustomers] = useState(new Date());
+const placeholderOrders = [
+  {
+    id: "1",
+    name: "Nguyen Van A",
+    address: "123 Đường ABC, Quận 1, TP. HCM",
+    number: "0987654321",
+    email: "nguyenvana@example.com",
+    note: "Giao vào buổi tối",
+    paymentMethod: "COD",
+    cart: [
+      {
+        product: {
+          image: "imgfood3",
+          name: "Sản phẩm 7",
+          sell_price: 100000,
+        },
+        quantity: 20,
+        totalPrice: 200000,
+      },
+      {
+        product: {
+          image: "imgfood4",
+          name: "Sản phẩm 2",
+          sell_price: 150000,
+        },
+        quantity: 3,
+        totalPrice: 450000,
+      },
+    ],
+    orderDate: "2024-01-15",
+  },
+  {
+    id: "2",
+    name: "Tran Thi B",
+    address: "456 Đường XYZ, Quận 2, TP. HCM",
+    number: "0123456789",
+    email: "tranthib@example.com",
+    note: "Giao vào sáng mai",
+    paymentMethod: "Online Payment",
+    cart: [
+      {
+        product: {
+          image: "imgfood1",
+          name: "Sản phẩm 3",
+          sell_price: 200000,
+        },
+        quantity: 1,
+        totalPrice: 200000,
+      },
+      {
+        product: {
+          image: "imgfood2",
+          name: "Sản phẩm 4",
+          sell_price: 300000,
+        },
+        quantity: 2,
+        totalPrice: 600000,
+      },
+      {
+        product: {
+          image: "imgfood3",
+          name: "Sản phẩm 7",
+          sell_price: 100000,
+        },
+        quantity: 20,
+        totalPrice: 200000,
+      },
+    ],
+    orderDate: "2024-02-20",
+  },
+  {
+    id: "3",
+    name: "Tran Thi C",
+    address: "456 Đường XYZ, Quận 2, TP. HCM",
+    number: "0123456789",
+    email: "tranthicd@example.com",
+    note: "Giao vào sáng mai",
+    paymentMethod: "Online Payment",
+    cart: [
+      {
+        product: {
+          image: "imgfood5",
+          name: "Sản phẩm 5",
+          sell_price: 200000,
+        },
+        quantity: 4,
+        totalPrice: 800000,
+      },
+      {
+        product: {
+          image: "imgfood3",
+          name: "Sản phẩm 28",
+          sell_price: 100000,
+        },
+        quantity: 20,
+        totalPrice: 200000,
+      },
+      {
+        product: {
+          image: "imgfood6",
+          name: "Sản phẩm 6",
+          sell_price: 300000,
+        },
+        quantity: 2,
+        totalPrice: 600000,
+      },
+    ],
+    orderDate: "2024-03-12",
+  },
+  {
+    id: "4",
+    name: "Le Thi D",
+    address: "789 Đường 123, Quận 3, TP. HCM",
+    number: "0988123456",
+    email: "lethid@example.com",
+    note: "Giao vào chiều tối",
+    paymentMethod: "COD",
+    cart: [
+      {
+        product: {
+          image: "imgfood7",
+          name: "Sản phẩm 7",
+          sell_price: 400000,
+        },
+        quantity: 3,
+        totalPrice: 1200000,
+      },
+      {
+        product: {
+          image: "imgfood8",
+          name: "Sản phẩm 8",
+          sell_price: 250000,
+        },
+        quantity: 2,
+        totalPrice: 500000,
+      },
+      {
+        product: {
+          image: "imgfood3",
+          name: "Sản phẩm 11",
+          sell_price: 100000,
+        },
+        quantity: 10,
+        totalPrice: 200000,
+      },
+    ],
+    orderDate: "2024-02-28",
+  },
+  {
+    id: "5",
+    name: "Pham Minh E",
+    address: "101 Đường ABC, Quận 4, TP. HCM",
+    number: "0987654321",
+    email: "phamminhe@example.com",
+    note: "Giao vào sáng mai",
+    paymentMethod: "Online Payment",
+    cart: [
+      {
+        product: {
+          image: "imgfood9",
+          name: "Sản phẩm 9",
+          sell_price: 350000,
+        },
+        quantity: 5,
+        totalPrice: 1750000,
+      },
+      {
+        product: {
+          image: "imgfood10",
+          name: "Sản phẩm 10",
+          sell_price: 450000,
+        },
+        quantity: 2,
+        totalPrice: 900000,
+      },
+      {
+        product: {
+          image: "imgfood3",
+          name: "Sản phẩm 11",
+          sell_price: 100000,
+        },
+        quantity: 30,
+        totalPrice: 200000,
+      },
+      {
+        product: {
+          image: "imgfood3",
+          name: "Sản phẩm 19",
+          sell_price: 100000,
+        },
+        quantity: 20,
+        totalPrice: 200000,
+      },
+    ],
+    orderDate: "2024-04-05",
+  },
+  {
+    id: "6",
+    name: "Nguyen Thi F",
+    address: "102 Đường XYZ, Quận 5, TP. HCM",
+    number: "0987654322",
+    email: "nguyenthif@example.com",
+    note: "Giao vào cuối tuần",
+    paymentMethod: "COD",
+    cart: [
+      {
+        product: {
+          image: "imgfood11",
+          name: "Sản phẩm 11",
+          sell_price: 120000,
+        },
+        quantity: 6,
+        totalPrice: 720000,
+      },
+      {
+        product: {
+          image: "imgfood12",
+          name: "Sản phẩm 12",
+          sell_price: 220000,
+        },
+        quantity: 4,
+        totalPrice: 880000,
+      },
+    ],
+    orderDate: "2024-05-10",
+  },
+  {
+    id: "7",
+    name: "Pham Thi G",
+    address: "303 Đường 456, Quận 6, TP. HCM",
+    number: "0987654323",
+    email: "phamthig@example.com",
+    note: "Giao vào buổi sáng",
+    paymentMethod: "Online Payment",
+    cart: [
+      {
+        product: {
+          image: "imgfood13",
+          name: "Sản phẩm 13",
+          sell_price: 500000,
+        },
+        quantity: 2,
+        totalPrice: 1000000,
+      },
+      {
+        product: {
+          image: "imgfood14",
+          name: "Sản phẩm 14",
+          sell_price: 600000,
+        },
+        quantity: 3,
+        totalPrice: 1800000,
+      },
+    ],
+    orderDate: "2024-06-20",
+  },
+  {
+    id: "8",
+    name: "Pham Thi E",
+    address: "404 Đường 789, Quận 7, TP. HCM",
+    number: "0987654324",
+    email: "leminhh@example.com",
+    note: "Giao vào sáng mai",
+    paymentMethod: "COD",
+    cart: [
+      {
+        product: {
+          image: "imgfood15",
+          name: "Sản phẩm 15",
+          sell_price: 350000,
+        },
+        quantity: 2,
+        totalPrice: 700000,
+      },
+      {
+        product: {
+          image: "imgfood16",
+          name: "Sản phẩm 16",
+          sell_price: 550000,
+        },
+        quantity: 2,
+        totalPrice: 1100000,
+      },
+    ],
+    orderDate: "2024-07-15",
+  },
+  {
+    id: "9",
+    name: "Nguyen Thi I",
+    address: "505 Đường 012, Quận 8, TP. HCM",
+    number: "0987654325",
+    email: "nguyenthii@example.com",
+    note: "Giao vào buổi chiều",
+    paymentMethod: "Online Payment",
+    cart: [
+      {
+        product: {
+          image: "imgfood17",
+          name: "Sản phẩm 17",
+          sell_price: 420000,
+        },
+        quantity: 3,
+        totalPrice: 1260000,
+      },
+      {
+        product: {
+          image: "imgfood18",
+          name: "Sản phẩm 18",
+          sell_price: 350000,
+        },
+        quantity: 2,
+        totalPrice: 700000,
+      },
+    ],
+    orderDate: "2024-12-15",
+  },
+  {
+    id: "10",
+    name: "Le Thi K",
+    address: "213 Đường 456, Quận 9, TP. HCM",
+    number: "0987654326",
+    email: "lethik@example.com",
+    note: "Giao vào sáng sớm",
+    paymentMethod: "Online Payment",
+    cart: [
+      {
+        product: {
+          image: "imgfood19",
+          name: "Sản phẩm 19",
+          sell_price: 250000,
+        },
+        quantity: 6,
+        totalPrice: 1500000,
+      },
+    ],
+    orderDate: "2024-12-14",
+  },
+  {
+    id: "10",
+    name: "Le Thi KL",
+    address: "213 Đường 456, Quận 9, TP. HCM",
+    number: "0987654326",
+    email: "lethik@example.com",
+    note: "Giao vào sáng sớm",
+    paymentMethod: "Online Payment",
+    cart: [
+      {
+        product: {
+          image: "imgfood19",
+          name: "Sản phẩm 19",
+          sell_price: 250000,
+        },
+        quantity: 6,
+        totalPrice: 1500000,
+      },
+    ],
+    orderDate: "2024-9-14",
+  },
+];
 
-  // State cho dữ liệu của các biểu đồ
-  const [topProductsData, setTopProductsData] = useState({
-    labels: [],
-    datasets: [{ label: "Số lượng bán", data: [] }],
-  });
-  const [bottomProductsData, setBottomProductsData] = useState({
-    labels: [],
-    datasets: [{ label: "Số lượng bán", data: [] }],
-  });
-  const [topCustomersData, setTopCustomersData] = useState({
-    labels: [],
-    datasets: [{ label: "Tổng chi tiêu", data: [] }],
-  });
+const ManageChart = () => {
+  // Calculate yesterday's date for default pie chart filter
+  const getYesterday = () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1); // Set date to one day before
+    yesterday.setHours(0, 0, 0, 0); // Set time to 00:00 to normalize the date
+    return yesterday;
+  };
+
+  const [timeRange, setTimeRange] = useState("month");
   const [revenueData, setRevenueData] = useState({
     labels: [],
     datasets: [{ label: "Doanh thu", data: [] }],
   });
 
-  // Dữ liệu giả cho các đơn hàng
-  const placeholderOrders = [
-    {
-      id: "1",
-      name: "Nguyen Van A",
-      orderDate: "2024-01-15",
-      cart: [
-        {
-          product: { name: "Sản phẩm 7", sell_price: 100000 },
-          quantity: 20,
-          totalPrice: 200000,
-        },
-        {
-          product: { name: "Sản phẩm 2", sell_price: 150000 },
-          quantity: 3,
-          totalPrice: 450000,
-        },
-      ],
-    },
-    {
-      id: "2",
-      name: "Tran Thi B",
-      orderDate: "2024-02-20",
-      cart: [
-        {
-          product: { name: "Sản phẩm 3", sell_price: 200000 },
-          quantity: 1,
-          totalPrice: 200000,
-        },
-        {
-          product: { name: "Sản phẩm 4", sell_price: 300000 },
-          quantity: 2,
-          totalPrice: 600000,
-        },
-        {
-          product: { name: "Sản phẩm 7", sell_price: 100000 },
-          quantity: 20,
-          totalPrice: 200000,
-        },
-      ],
-    },
-  ];
+  const [pieStartDate, setPieStartDate] = useState(getYesterday()); // Default to yesterday
+  const [pieEndDate, setPieEndDate] = useState(getYesterday()); // Default to yesterday
+  const [filteredPieOrders, setFilteredPieOrders] = useState(placeholderOrders);
 
   // Hàm lấy doanh thu theo thời gian (week, month, year)
   const getRevenueByTime = (timeRange) => {
@@ -170,6 +471,55 @@ const ManageChart = () => {
     return revenueByTime[timeRange];
   };
 
+  useEffect(() => {
+    const filtered = placeholderOrders.filter((order) => {
+      const orderDate = new Date(order.orderDate);
+      // Normalize the dates by setting the time to midnight to avoid issues with time comparison
+      const normalizedStartDate = new Date(pieStartDate.setHours(0, 0, 0, 0));
+      const normalizedEndDate = new Date(pieEndDate.setHours(23, 59, 59, 999));
+
+      return orderDate >= normalizedStartDate && orderDate <= normalizedEndDate;
+    });
+
+    const sortedOrders = filtered
+      .map((order) => ({
+        ...order,
+        totalOrderValue: order.cart.reduce(
+          (sum, item) => sum + item.totalPrice,
+          0,
+        ),
+      }))
+      .sort((a, b) => b.totalOrderValue - a.totalOrderValue) // Sort by total order value in descending order
+      .slice(0, 5); // Take the top 5 customers
+
+    setFilteredPieOrders(sortedOrders);
+  }, [pieStartDate, pieEndDate]);
+
+  const pieChartData = {
+    labels: filteredPieOrders.map((order) => order.name),
+    datasets: [
+      {
+        label: "Total Order Value",
+        data: filteredPieOrders.map((order) => order.totalOrderValue),
+        backgroundColor: [
+          "rgba(75, 192, 192, 0.5)",
+          "rgba(255, 99, 132, 0.5)",
+          "rgba(54, 162, 235, 0.5)",
+          "rgba(255, 159, 64, 0.5)",
+          "rgba(153, 102, 255, 0.5)",
+        ],
+        borderColor: [
+          "rgba(75, 192, 192, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 159, 64, 1)",
+          "rgba(153, 102, 255, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   // Cập nhật các biểu đồ khi thời gian thay đổi
   useEffect(() => {
     const revenue = getRevenueByTime(timeRange);
@@ -181,175 +531,24 @@ const ManageChart = () => {
           data: revenue.data,
           backgroundColor: "rgba(75, 192, 192, 0.5)",
           borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 1,
+          borderWidth: 3,
         },
       ],
     });
-
-    // Cập nhật biểu đồ Sản phẩm bán ít nhất
-    const newBottomProductsData = {
-      labels: [],
-      datasets: [
-        {
-          label: "Số lượng bán",
-          data: [],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-            "rgba(255, 206, 86, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(153, 102, 255, 0.6)",
-            "rgba(255, 159, 64, 0.6)",
-            "rgba(201, 203, 207, 0.6)",
-          ],
-        },
-      ],
-    };
-    const productSales = {};
-    placeholderOrders.forEach((order) => {
-      order.cart.forEach((item) => {
-        const productName = item.product.name;
-        const productQuantity = item.quantity;
-        if (!productSales[productName]) {
-          productSales[productName] = productQuantity;
-        } else {
-          productSales[productName] += productQuantity;
-        }
-      });
-    });
-
-    const sortedProductSales = Object.entries(productSales).sort(
-      (a, b) => a[1] - b[1],
-    );
-    const bottomProducts = sortedProductSales.slice(0, 5);
-
-    bottomProducts.forEach(([productName, quantity]) => {
-      newBottomProductsData.labels.push(productName);
-      newBottomProductsData.datasets[0].data.push(quantity);
-    });
-    setBottomProductsData(newBottomProductsData);
-
-    // Cập nhật biểu đồ Sản phẩm bán chạy
-    const newTopProductsData = {
-      labels: [],
-      datasets: [
-        {
-          label: "Số lượng bán",
-          data: [],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-            "rgba(255, 206, 86, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(153, 102, 255, 0.6)",
-            "rgba(255, 159, 64, 0.6)",
-            "rgba(201, 203, 207, 0.6)",
-          ],
-        },
-      ],
-    };
-
-    const sortedTopProducts = Object.entries(productSales).sort(
-      (a, b) => b[1] - a[1],
-    );
-    const topProducts = sortedTopProducts.slice(0, 5);
-
-    topProducts.forEach(([productName, quantity]) => {
-      newTopProductsData.labels.push(productName);
-      newTopProductsData.datasets[0].data.push(quantity);
-    });
-    setTopProductsData(newTopProductsData);
-
-    // Cập nhật biểu đồ Khách hàng chi tiêu nhiều nhất
-    const customerSpending = {};
-    placeholderOrders.forEach((order) => {
-      const customerName = order.name;
-      const orderTotal = order.cart.reduce(
-        (sum, item) => sum + item.totalPrice,
-        0,
-      );
-      if (!customerSpending[customerName]) {
-        customerSpending[customerName] = orderTotal;
-      } else {
-        customerSpending[customerName] += orderTotal;
-      }
-    });
-
-    const newTopCustomersData = {
-      labels: [],
-      datasets: [
-        {
-          label: "Tổng chi tiêu",
-          data: [],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-            "rgba(255, 206, 86, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(153, 102, 255, 0.6)",
-            "rgba(255, 159, 64, 0.6)",
-            "rgba(201, 203, 207, 0.6)",
-          ],
-        },
-      ],
-    };
-
-    const sortedTopCustomers = Object.entries(customerSpending).sort(
-      (a, b) => b[1] - a[1],
-    );
-    const topCustomers = sortedTopCustomers.slice(0, 5);
-
-    topCustomers.forEach(([customerName, spending]) => {
-      newTopCustomersData.labels.push(customerName);
-      newTopCustomersData.datasets[0].data.push(spending);
-    });
-    setTopCustomersData(newTopCustomersData);
-  }, [
-    timeRange,
-    startDateTopProducts,
-    endDateTopProducts,
-    startDateBottomProducts,
-    endDateBottomProducts,
-    startDateTopCustomers,
-    endDateTopCustomers,
-  ]);
-
-  // Cấu hình cho các biểu đồ
-  const options = (chartType) => ({
-    responsive: true,
-    plugins: {
-      legend: { display: true },
-      title: {
-        display: true,
-        text: getChartTitle(chartType),
-        font: { size: 24, family: "Josefin sans, sans-serif", weight: "bold" },
-        color: "black",
-      },
-    },
-  });
-
-  const getChartTitle = (chartType) => {
-    switch (chartType) {
-      case "revenue":
-        return `Doanh thu theo ${timeRange === "week" ? "Tuần" : timeRange === "month" ? "Tháng" : "Năm"}`;
-      case "topProducts":
-        return "Top 5 Sản phẩm bán chạy nhất";
-      case "bottomProducts":
-        return "Top 5 Sản phẩm bán ít nhất";
-      case "topCustomers":
-        return "Khách hàng chi tiêu nhiều nhất";
-      default:
-        return "";
-    }
-  };
+  }, [timeRange]);
 
   return (
     <div className="bg-gray-50 p-6">
-      <h1 className="mb-4 text-2xl font-bold">Quản lý Biểu đồ</h1>
+      <h1 className="border-b-[3px] border-black pb-8 text-center text-4xl font-bold">
+        Quản lý Biểu đồ
+      </h1>
 
       {/* Biểu đồ Doanh thu */}
-      <div className="mb-4">
-        <label htmlFor="timeRange" className="font-medium">
+      <div className="mb-4 mt-8">
+        <h2 className="text-center font-josefin text-4xl font-bold">
+          Doanh thu cửa hàng
+        </h2>
+        <label htmlFor="timeRange" className="font-josefin text-2xl font-bold">
           Chọn Thời gian:
         </label>
         <select
@@ -364,68 +563,44 @@ const ManageChart = () => {
         </select>
       </div>
 
-      <div className="mb-10 mt-10">
-        <Line data={revenueData} options={options("revenue")} />
+      {/* Line Chart - Adjust height and margin */}
+      <div className="mb-16 w-11/12">
+        <Line data={revenueData} />
       </div>
 
-      {/* Biểu đồ Top Sản phẩm */}
-      <div className="mb-6">
-        <div className="flex gap-4">
-          <DatePicker
-            selected={startDateTopProducts}
-            onChange={(date) => setStartDateTopProducts(date)}
-            dateFormat="yyyy-MM-dd"
-            className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <DatePicker
-            selected={endDateTopProducts}
-            onChange={(date) => setEndDateTopProducts(date)}
-            dateFormat="yyyy-MM-dd"
-            className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+      <div className="flex flex-col items-center justify-center">
+        <div className="text-center">
+          <h2 className="mb-4 font-josefin text-4xl font-bold">
+            Top 5 Khách Hàng
+          </h2>
+          <div className="mb-4 flex justify-center">
+            <label className="mr-2 mt-2 font-josefin text-xl font-bold">
+              Lọc Từ Ngày:{" "}
+            </label>
+            <DatePicker
+              selected={pieStartDate}
+              onChange={(date) => setPieStartDate(date)}
+              className="border border-gray-300 p-2 text-center"
+            />
+            <span className="mx-6 mt-2 font-josefin text-xl font-bold">
+              Đến Ngày:
+            </span>
+            <DatePicker
+              selected={pieEndDate}
+              onChange={(date) => setPieEndDate(date)}
+              className="border border-gray-300 p-2 text-center"
+            />
+          </div>
         </div>
-        <Bar data={topProductsData} options={options("topProducts")} />
-      </div>
 
-      {/* Biểu đồ Sản phẩm Bán ít */}
-      <div className="mb-6">
-        <div className="flex gap-4">
-          <DatePicker
-            selected={startDateBottomProducts}
-            onChange={(date) => setStartDateBottomProducts(date)}
-            dateFormat="yyyy-MM-dd"
-            className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <DatePicker
-            selected={endDateBottomProducts}
-            onChange={(date) => setEndDateBottomProducts(date)}
-            dateFormat="yyyy-MM-dd"
-            className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        {/* Pie Chart - Adjust height and margin */}
+        <div className="mb-6 mt-4 w-full md:w-2/5">
+          <Pie data={pieChartData} />
         </div>
-        <Bar data={bottomProductsData} options={options("bottomProducts")} />
-      </div>
-
-      {/* Biểu đồ Khách hàng chi tiêu nhiều */}
-      <div className="mb-6 w-1/2">
-        <div className="flex gap-4">
-          <DatePicker
-            selected={startDateTopCustomers}
-            onChange={(date) => setStartDateTopCustomers(date)}
-            dateFormat="yyyy-MM-dd"
-            className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <DatePicker
-            selected={endDateTopCustomers}
-            onChange={(date) => setEndDateTopCustomers(date)}
-            dateFormat="yyyy-MM-dd"
-            className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <Pie data={topCustomersData} options={options("topCustomers")} />
       </div>
     </div>
   );
 };
 
 export default ManageChart;
+``;

@@ -32,7 +32,7 @@ const ModalProduct = ({
       id: selectedProduct.id,
       name: selectedProduct.name,
       price: selectedProduct.sell_price,
-      img: selectedProduct.image,
+      image: selectedProduct.image,
       quantity: quantity,
     });
     onClose();

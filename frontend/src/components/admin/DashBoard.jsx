@@ -4,8 +4,8 @@ import {
   faUser,
   faChartColumn,
   faBars,
-  faMugSaucer,
-  faNewspaper,
+  faGlassWater,
+  faFileWord,
   faRightToBracket,
   faClipboardList,
   faClipboard,
@@ -158,7 +158,7 @@ const DashBoard = () => {
             />
           )}
           <SidebarItem
-            icon={faMugSaucer}
+            icon={faGlassWater}
             label="Product"
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Product")}
@@ -172,7 +172,7 @@ const DashBoard = () => {
             isActive={activeComponent === "Category"}
           />
           <SidebarItem
-            icon={faNewspaper}
+            icon={faFileWord}
             label="Blog"
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Blog")}
