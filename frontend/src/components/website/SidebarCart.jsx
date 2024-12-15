@@ -1,14 +1,40 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const SidebarCart = ({
-  cartItems,
-  removeItem,
-  totalPrice,
-  handleCartClick,
-}) => {
+const SidebarCart = ({ handleCartClick }) => {
+  const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    // Lấy giỏ hàng từ sessionStorage khi component được mount
+    const tempCart = JSON.parse(sessionStorage.getItem("tempCart")) || [];
+    setCartItems(tempCart);
+
+    // Tính toán tổng giá trị giỏ hàng
+    const total = tempCart.reduce(
+      (total, item) => total + item.quantity * item.price,
+      0,
+    );
+    setTotalPrice(total);
+  }, []);
+
+  const removeItem = (id) => {
+    // Xóa sản phẩm khỏi giỏ hàng tạm thời
+    const updatedCart = cartItems.filter((item) => item.productId !== id);
+    setCartItems(updatedCart);
+    sessionStorage.setItem("tempCart", JSON.stringify(updatedCart));
+
+    // Cập nhật lại tổng giá trị
+    const total = updatedCart.reduce(
+      (total, item) => total + item.quantity * item.price,
+      0,
+    );
+    setTotalPrice(total);
+  };
+
+
   return (
     <div className="fixed right-0 top-0 z-[1000] flex h-full w-[350px] flex-col overflow-y-auto bg-white p-5 shadow-lg transition-transform ease-in-out">
       <button
@@ -26,7 +52,7 @@ const SidebarCart = ({
       <div className="flex-grow overflow-y-auto">
         {cartItems.map((item) => (
           <div
-            key={item.id}
+            key={item.productId}
             className="relative mb-4 flex h-[110px] w-[290px] items-start rounded-lg border border-[#ddd] p-2"
           >
             <img
@@ -44,7 +70,7 @@ const SidebarCart = ({
             </div>
             <button
               className="absolute right-3 top-[30px] cursor-pointer border-none bg-transparent text-2xl text-[#a9a8a8] hover:text-black"
-              onClick={() => removeItem(item.id)}
+              onClick={() => removeItem(item.productId)}
             >
               <FontAwesomeIcon icon={faTimes} />
             </button>
@@ -54,12 +80,7 @@ const SidebarCart = ({
 
       <div className="mt-5 flex justify-between font-bold">
         <span className="text-xl">Tổng cộng</span>
-        <span className="text-xl">
-          {cartItems
-            .reduce((total, item) => total + item.quantity * item.price, 0)
-            .toLocaleString()}{" "}
-          ₫
-        </span>
+        <span className="text-xl">{totalPrice.toLocaleString()}đ</span>
       </div>
       <Link to="/payment" state={{ cartItems, totalPrice }}>
         <button

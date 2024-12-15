@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const cartItemSchema = new mongoose.Schema(
   {
     product: {
@@ -6,10 +8,19 @@ const cartItemSchema = new mongoose.Schema(
       required: true,
     },
     quantity: { type: Number, required: true, min: 1 },
-    price: { type: Number, required: true }, // Giá của sản phẩm tại thời điểm thêm vào giỏ
+    totalPrice: { type: Number},
   },
   { timestamps: true }
 );
+
+cartItemSchema.pre("save", async function (next) {
+  const product = await mongoose.model("Product").findById(this.product);
+  if (!product) {
+    throw new Error("Product not found");
+  }
+  this.totalPrice = product.sell_price * this.quantity;
+  next();
+});
 
 const CartItem = mongoose.model("CartItem", cartItemSchema);
 

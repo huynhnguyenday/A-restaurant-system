@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faShop } from "@fortawesome/free-solid-svg-icons";
@@ -11,12 +12,21 @@ const PaymentPage = () => {
   const [selectedPayment, setSelectedPayment] = useState(1);
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [validCoupons, setValidCoupons] = useState([]); // Dữ liệu coupons từ API
 
-  const validCoupons = [
-    { id: 1, name: "30k", value: 30000 },
-    { id: 2, name: "50k", value: 50000 },
-    { id: 3, name: "100k", value: 100000 },
-  ];
+  useEffect(() => {
+    // Gọi API để lấy danh sách coupon
+    const fetchCoupons = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/coupons"); // Thay URL bằng API của bạn
+        setValidCoupons(response.data.data); // Cập nhật state từ API
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách coupon:", error);
+      }
+    };
+
+    fetchCoupons();
+  }, []);
 
   if (!cartItems || cartItems.length === 0) {
     return (
@@ -64,9 +74,9 @@ const PaymentPage = () => {
   );
 
   const handleApplyCoupon = () => {
-    const coupon = validCoupons.find((c) => c.name === couponCode);
+    const coupon = validCoupons.find((c) => c.code === couponCode);
     if (coupon) {
-      setDiscount(coupon.value);
+      setDiscount(coupon.discountValue);
     } else {
       alert("Mã coupon không hợp lệ");
       setDiscount(0);
@@ -74,7 +84,6 @@ const PaymentPage = () => {
   };
 
   const finalPrice = calculatedTotalPrice - discount;
-
   return (
     <div className="mx-auto my-10 max-w-[1200px] px-4 pb-20">
       <div className="grid grid-cols-10 gap-6 pt-12">
@@ -159,14 +168,14 @@ const PaymentPage = () => {
                   className="ml-4 flex-grow text-left text-gray-700"
                 >
                   <p
-                    className={`name-option font-josefin text-[20px] font-semibold transition-colors duration-300 ease-in-out ${
+                    className={`name-option font-josefin text-[20px] font-semibold ${
                       selectedPayment === 1 ? "text-black" : "text-[#8e8e8e]"
                     }`}
                   >
                     Chuyển khoản ngân hàng:
                   </p>
                   <span
-                    className={`detail-option font-josefin text-[14px] transition-colors duration-300 ease-in-out ${
+                    className={`detail-option font-josefin text-[14px] ${
                       selectedPayment === 1 ? "text-black" : "text-[#8e8e8e]"
                     }`}
                   >
@@ -207,14 +216,14 @@ const PaymentPage = () => {
                   className="ml-4 flex-grow text-left text-gray-700"
                 >
                   <p
-                    className={`name-option font-josefin text-[20px] font-semibold transition-colors duration-300 ease-in-out ${
+                    className={`name-option font-josefin text-[20px] font-semibold ${
                       selectedPayment === 2 ? "text-black" : "text-[#8e8e8e]"
                     }`}
                   >
                     Trả tiền mặt khi nhận hàng:
                   </p>
                   <span
-                    className={`detail-option font-josefin text-[14px] transition-colors duration-300 ease-in-out ${
+                    className={`detail-option font-josefin text-[14px] ${
                       selectedPayment === 2 ? "text-black" : "text-[#8e8e8e]"
                     }`}
                   >
@@ -223,7 +232,6 @@ const PaymentPage = () => {
                 </label>
               </button>
             </div>
-
             <button
               type="submit"
               className="mt-8 h-16 w-full rounded-2xl bg-black px-4 font-josefin text-xl font-bold text-white hover:bg-[#494949]"
@@ -232,8 +240,7 @@ const PaymentPage = () => {
             </button>
           </form>
         </div>
-
-        {/* Phần giỏ hàng và sản phẩm chiếm 4 cột */}
+        {/* Phần thông tin giỏ hàng chiếm 4 cột */}
         <div className="col-span-10 pl-8 sm:col-span-4">
           <h3 className="name-option-payment mb-4 pt-4 font-josefin text-[32px] text-xl font-bold">
             Thông tin sản phẩm

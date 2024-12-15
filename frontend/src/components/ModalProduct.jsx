@@ -7,7 +7,7 @@ const ModalProduct = ({
   quantity,
   setQuantity,
   onClose,
-  addToCart,
+  refreshCart,
 }) => {
   const handleQuantityChange = (e) => {
     const value = e.target.value;
@@ -28,13 +28,35 @@ const ModalProduct = ({
   };
 
   const handleAddToCart = () => {
-    addToCart({
-      id: selectedProduct.id,
-      name: selectedProduct.name,
-      price: selectedProduct.sell_price,
-      image: selectedProduct.image,
-      quantity: quantity,
-    });
+    // Lấy giỏ hàng tạm thời từ sessionStorage
+    const tempCart = JSON.parse(sessionStorage.getItem("tempCart")) || [];
+
+    // Kiểm tra nếu sản phẩm đã có trong giỏ
+    const existingItem = tempCart.find(
+      (item) => item.productId === selectedProduct._id,
+    );
+    if (existingItem) {
+      existingItem.quantity += quantity; // Cập nhật số lượng
+    } else {
+      // Thêm sản phẩm mới vào giỏ hàng
+      tempCart.push({
+        productId: selectedProduct._id,
+        name: selectedProduct.name,
+        img: selectedProduct.image,
+        price: selectedProduct.sell_price,
+        quantity,
+      });
+    }
+
+    // Lưu giỏ hàng vào sessionStorage
+    sessionStorage.setItem("tempCart", JSON.stringify(tempCart));
+
+    // Optional: Gọi hàm refresh giỏ hàng
+    if (refreshCart) {
+      refreshCart();
+    }
+
+    // Đóng Modal
     onClose();
   };
 
