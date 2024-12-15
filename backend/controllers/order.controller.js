@@ -1,9 +1,9 @@
-import Order from "../models/order.model.js"; // Import schema Order
-
+import Order from "../models/order.model.js";
+import Product from "../models/product.model.js";
+import { ObjectId } from "mongodb";
 // API để xử lý đơn hàng thanh toán
 export const createOrder = async (req, res) => {
   try {
-    // Nhận dữ liệu từ body gửi lên
     const {
       name,
       address,
@@ -16,7 +16,6 @@ export const createOrder = async (req, res) => {
       cart,
     } = req.body;
 
-    // Kiểm tra dữ liệu đầu vào
     if (
       !name ||
       !address ||
@@ -29,7 +28,24 @@ export const createOrder = async (req, res) => {
       return res.status(400).json({ message: "Thiếu thông tin cần thiết!" });
     }
 
-    // Tạo đơn hàng mới
+    console.log("Received order data:", req.body);
+
+    const updatedCart = await Promise.all(
+      cart.map(async (item) => {
+        const productId = new ObjectId(item.productId); // Dùng new ObjectId
+        const product = await Product.findById(productId);
+        if (!product) {
+          console.error(`Product with ID ${item.productId} not found`);
+          throw new Error("Sản phẩm không tồn tại");
+        }
+        return {
+          product: product._id,
+          quantity: item.quantity,
+          totalPrice: item.quantity * item.price,
+        };
+      })
+    );
+
     const newOrder = new Order({
       name,
       address,
@@ -39,13 +55,11 @@ export const createOrder = async (req, res) => {
       paymentMethod,
       discount: discount || 0,
       finalPrice,
-      cart,
+      cart: updatedCart,
     });
 
-    // Lưu đơn hàng vào MongoDB
     await newOrder.save();
 
-    // Phản hồi thành công
     res.status(201).json({
       message: "Đơn hàng đã được tạo thành công!",
       order: newOrder,

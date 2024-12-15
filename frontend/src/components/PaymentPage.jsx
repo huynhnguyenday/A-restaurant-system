@@ -46,26 +46,26 @@ const PaymentPage = () => {
     setSelectedPayment(paymentmethod);
   };
 
-  const decreaseQuantity = (id) => {
+  const decreaseQuantity = (productId) => {
     setCartItems(
       cartItems.map((item) =>
-        item.id === id && item.quantity > 1
+        item.productId === productId && item.quantity > 1
           ? { ...item, quantity: item.quantity - 1 }
           : item,
       ),
     );
   };
 
-  const increaseQuantity = (id) => {
+  const increaseQuantity = (productId) => {
     setCartItems(
       cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+        item.productId === productId ? { ...item, quantity: item.quantity + 1 } : item,
       ),
     );
   };
 
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+  const removeItem = (productId) => {
+    setCartItems(cartItems.filter((item) => item.productId !== productId));
   };
 
   const calculatedTotalPrice = cartItems.reduce(
@@ -83,6 +83,46 @@ const PaymentPage = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Prepare the cart data with correct product ids
+    const orderData = {
+      name: e.target.name.value,
+      address: e.target.address.value,
+      number: e.target.number.value,
+      email: e.target.email.value,
+      note: e.target.note.value,
+      paymentMethod:
+        selectedPayment === 1
+          ? "Chuyển khoản ngân hàng"
+          : "Trả tiền mặt khi nhận hàng",
+      discount: discount,
+      finalPrice: finalPrice,
+      cart: cartItems.map((item) => ({
+        productId: item.productId, // Đây là nơi bạn gửi id sản phẩm
+        quantity: item.quantity,
+        price: item.price,
+      })),
+    };
+
+    // Log toàn bộ dữ liệu orderData để kiểm tra
+    console.log("Dữ liệu gửi lên server:", orderData);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/orders",
+        orderData,
+      );
+      alert(response.data.message);
+      window.location.href = "/order-success"; // Redirect after successful order
+    } catch (error) {
+      console.error("Lỗi khi tạo đơn hàng:", error);
+      alert("Đã có lỗi xảy ra, vui lòng thử lại.");
+    }
+  };
+
+
   const finalPrice = calculatedTotalPrice - discount;
   return (
     <div className="mx-auto my-10 max-w-[1200px] px-4 pb-20">
@@ -92,32 +132,40 @@ const PaymentPage = () => {
           <h3 className="mb-4 pt-4 font-josefin text-4xl font-bold">
             Thông tin khách hàng
           </h3>
-          <form className="input-group space-y-4">
+          <form onSubmit={handleSubmit} className="input-group space-y-4">
             {/* Các trường thông tin */}
             <div className="input-payment">
               <input
                 type="text"
+                name="name"
                 className="h-16 w-full rounded-2xl border border-gray-300 p-2 font-josefin"
                 placeholder="Họ tên"
+                required
               />
             </div>
             <div className="input-payment">
               <input
                 type="text"
+                name="address"
                 className="h-16 w-full rounded-2xl border border-gray-300 p-2 pt-3 font-josefin"
                 placeholder="Địa chỉ"
+                required
               />
             </div>
             <div className="flex h-16 justify-center space-x-4 font-josefin">
               <input
                 type="tel"
+                name="number"
                 className="w-1/2 rounded-2xl border border-gray-300 p-2 font-josefin"
                 placeholder="Số điện thoại"
+                required
               />
               <input
                 type="email"
+                name="email"
                 className="w-1/2 rounded-2xl border border-gray-300 p-2 font-josefin"
                 placeholder="Email"
+                required
               />
             </div>
             <div>
@@ -126,17 +174,19 @@ const PaymentPage = () => {
               </p>
               <input
                 type="text"
+                name="note"
                 className="h-16 w-full rounded-2xl border border-gray-300 p-2 font-josefin"
                 placeholder="Ghi chú (vd: giao lúc 10 giờ)"
               />
             </div>
 
+            {/* Phương thức thanh toán */}
             <div className="payment-method">
               <h4 className="mb-4 py-3 font-josefin text-4xl font-bold">
                 Phương tiện thanh toán
               </h4>
 
-              {/* Option 1 */}
+              {/* Các lựa chọn phương thức thanh toán */}
               <button
                 type="button"
                 className={`payment-option mb-4 flex w-full cursor-pointer items-center rounded-2xl border p-4 transition-colors duration-300 hover:text-black ${
@@ -232,6 +282,7 @@ const PaymentPage = () => {
                 </label>
               </button>
             </div>
+
             <button
               type="submit"
               className="mt-8 h-16 w-full rounded-2xl bg-black px-4 font-josefin text-xl font-bold text-white hover:bg-[#494949]"
@@ -248,7 +299,7 @@ const PaymentPage = () => {
           <div className="rounded-lg bg-white p-4">
             {cartItems.map((item) => (
               <div
-                key={item.id}
+                key={item.productId}
                 className="relative mb-4 flex items-center border-b pb-4"
               >
                 <div className="w-3/12 flex-shrink-0">
@@ -264,7 +315,7 @@ const PaymentPage = () => {
                   </span>
                   <div className="mt-2 flex items-center space-x-2 pt-6">
                     <button
-                      onClick={() => decreaseQuantity(item.id)}
+                      onClick={() => decreaseQuantity(item.productId)}
                       className="rounded-full bg-gray-200 px-3 py-1 hover:bg-gray-300"
                     >
                       -
@@ -276,7 +327,7 @@ const PaymentPage = () => {
                       className="w-12 rounded border text-center"
                     />
                     <button
-                      onClick={() => increaseQuantity(item.id)}
+                      onClick={() => increaseQuantity(item.productId)}
                       className="rounded-full bg-gray-200 px-3 py-1 hover:bg-gray-300"
                     >
                       +
@@ -286,7 +337,7 @@ const PaymentPage = () => {
                 <div className="relative w-3/12 text-right">
                   <button
                     className="absolute right-0 top-0 text-2xl text-gray-400 hover:text-black"
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => removeItem(item.productId)}
                   >
                     <FontAwesomeIcon icon={faTimes} />
                   </button>

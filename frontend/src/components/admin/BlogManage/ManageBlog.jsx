@@ -121,7 +121,7 @@ const ManageBlog = () => {
       <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
         {/* Header Section */}
         <div className="mb-4 text-center text-2xl font-bold">
-          Blog Management
+          Quản lý bài viết
         </div>
 
         {/* Search and Add Blog */}
@@ -152,13 +152,13 @@ const ManageBlog = () => {
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="px-4 py-3 text-center">Image</th>
-                <th className="px-4 py-3 text-left">Title</th>
-                <th className="px-4 py-3 text-left">Content</th>
-                <th className="px-4 py-3 text-center">Date</th>
+                <th className="px-4 py-3 text-center">Ảnh</th>
+                <th className="px-4 py-3 text-left">Tiêu đề</th>
+                <th className="px-4 py-3 text-left">Nội dung</th>
+                <th className="px-4 py-3 text-center">Ngày</th>
                 <th className="px-4 py-3 text-center">Hot</th>
                 <th className="px-4 py-3 text-center">Banner</th>
-                <th className="px-4 py-3 text-center">Actions</th>
+                <th className="px-4 py-3 text-center">Hành động</th>
               </tr>
             </thead>
             <tbody>

@@ -90,13 +90,13 @@ const ManageAccount = () => {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
         <div className="mb-4 text-center text-2xl font-bold">
-          Account Management
+          Quản lý tài khoản
         </div>
 
         <div className="mb-4 flex items-center justify-between">
           <input
             type="text"
-            placeholder="Search by Username, Role or Gmail"
+            placeholder="Tìm kiếm bằng tên, email và vai trò"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-72 rounded-md border border-gray-300 p-2"
@@ -118,14 +118,14 @@ const ManageAccount = () => {
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="px-4 py-3 text-left">Username</th>
-                <th className="px-4 py-3 text-center">Number</th>
+                <th className="px-4 py-3 text-left">Tên người dùng</th>
+                <th className="px-4 py-3 text-center">Số điện thoại</th>
                 <th className="px-4 py-3 text-left">Gmail</th>
-                <th className="px-4 py-3 text-center">Role</th>
-                <th className="px-4 py-3 text-center">Date Create</th>
-                <th className="px-4 py-3 text-center">Date Update</th>
-                <th className="px-4 py-3 text-center">Active</th>
-                <th className="px-4 py-3 text-center">Edit</th>
+                <th className="px-4 py-3 text-center">Vai trò</th>
+                <th className="px-4 py-3 text-center">Ngày tạo</th>
+                <th className="px-4 py-3 text-center">Ngày cập nhật</th>
+                <th className="px-4 py-3 text-center">Hoạt động</th>
+                <th className="px-4 py-3 text-center">Chỉnh sửa</th>
               </tr>
             </thead>
             <tbody>

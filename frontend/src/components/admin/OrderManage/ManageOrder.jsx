@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import DetailOrder from "./DetailOrder"; // Import DetailOrder component
 import imgfood1 from "../../../../../backend/assets/imgfood1.png";
 import imgfood2 from "../../../../../backend/assets/imgfood2.png";
@@ -150,7 +150,7 @@ const ManageOrder = () => {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
         <div className="mb-4 text-center text-2xl font-bold">
-          Order Management
+          Quản lý đơn hàng
         </div>
 
         {/* Search box */}
@@ -169,10 +169,10 @@ const ManageOrder = () => {
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="px-4 py-3 text-center">Name</th>
+                <th className="px-4 py-3 text-center">Tên khách hàng</th>
                 <th className="px-4 py-3 text-center">Email</th>
-                <th className="px-4 py-3 text-center">Payment Method</th>
-                <th className="px-4 py-3 text-center">Edit</th>
+                <th className="px-4 py-3 text-center">Phương thức thanh toán</th>
+                <th className="px-4 py-3 text-center">Xem</th>
               </tr>
             </thead>
             <tbody>
@@ -191,7 +191,7 @@ const ManageOrder = () => {
                         onClick={() => handleShowOrderDetail(order)}
                         className="rounded-full px-3 py-1 text-blue-400 hover:bg-slate-300"
                       >
-                        <FontAwesomeIcon icon={faPen} />
+                        <FontAwesomeIcon icon={faEye} />
                       </button>
                       <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
                         Edit Category

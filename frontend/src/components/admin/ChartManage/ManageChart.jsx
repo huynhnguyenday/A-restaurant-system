@@ -407,39 +407,89 @@ const ManageChart = () => {
   const [pieEndDate, setPieEndDate] = useState(getYesterday()); // Default to yesterday
   const [filteredPieOrders, setFilteredPieOrders] = useState(placeholderOrders);
 
+  const getTopProducts = () => {
+    // Tổng hợp số lượng bán của từng sản phẩm
+    const productSales = {};
+
+    placeholderOrders.forEach((order) => {
+      order.cart.forEach((item) => {
+        const productName = item.product.name;
+        if (!productSales[productName]) {
+          productSales[productName] = 0;
+        }
+        productSales[productName] += item.quantity;
+      });
+    });
+
+    // Lấy danh sách sản phẩm, sắp xếp và lấy top 5
+    const sortedProducts = Object.entries(productSales)
+      .map(([name, quantity]) => ({ name, quantity }))
+      .sort((a, b) => b.quantity - a.quantity)
+      .slice(0, 5);
+
+    return sortedProducts;
+  };
+
+  const topProducts = getTopProducts();
+
+  const topProductsChartData = {
+    labels: topProducts.map((product) => product.name),
+    datasets: [
+      {
+        label: "Số lượng bán",
+        data: topProducts.map((product) => product.quantity),
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.5)",
+          "rgba(54, 162, 235, 0.5)",
+          "rgba(255, 206, 86, 0.5)",
+          "rgba(75, 192, 192, 0.5)",
+          "rgba(153, 102, 255, 0.5)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   // Hàm lấy doanh thu theo thời gian (week, month, year)
   const getRevenueByTime = (timeRange) => {
     const revenueByTime = {
       week: {
         labels: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday",
+          "Thứ 2",
+          "Thứ 3",
+          "Thứ 4",
+          "Thứ 5",
+          "Thứ 6",
+          "Thứ 7",
+          "Chủ Nhật",
         ],
         data: new Array(7).fill(0),
       },
       month: {
-        labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+        labels: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4"],
         data: new Array(4).fill(0),
       },
       year: {
         labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
+          "Tháng Một",
+          "Tháng Hai",
+          "Tháng Ba",
+          "Tháng Tư",
+          "Tháng Năm",
+          "Tháng Sáu",
+          "Tháng Bảy",
+          "Tháng Tám",
+          "Tháng Chín",
+          "Tháng Mười",
+          "Tháng Mười Một",
+          "Tháng Mười Hai",
         ],
         data: new Array(12).fill(0),
       },
@@ -499,7 +549,7 @@ const ManageChart = () => {
     labels: filteredPieOrders.map((order) => order.name),
     datasets: [
       {
-        label: "Total Order Value",
+        label: "Tổng chi tiêu",
         data: filteredPieOrders.map((order) => order.totalOrderValue),
         backgroundColor: [
           "rgba(75, 192, 192, 0.5)",
@@ -596,6 +646,18 @@ const ManageChart = () => {
         {/* Pie Chart - Adjust height and margin */}
         <div className="mb-6 mt-4 w-full md:w-2/5">
           <Pie data={pieChartData} />
+        </div>
+      </div>
+
+      {/* Biểu đồ Pie cho Top 5 sản phẩm bán chạy nhất */}
+      <div className="mt-8 flex flex-col items-center justify-center">
+        <div className="text-center">
+          <h2 className="mb-4 font-josefin text-4xl font-bold">
+            Top 5 Sản Phẩm Bán Chạy Nhất
+          </h2>
+        </div>
+        <div className="mb-6 mt-4 w-full md:w-2/5">
+          <Pie data={topProductsChartData} />
         </div>
       </div>
     </div>

@@ -34,6 +34,11 @@ const SidebarCart = ({ handleCartClick }) => {
     setTotalPrice(total);
   };
 
+  const handlePaymentClick = () => {
+    // In ra thông tin giỏ hàng và tổng giá trị khi nhấn thanh toán
+    console.log("Thông tin giỏ hàng:", cartItems);
+    console.log("Tổng giá trị giỏ hàng:", totalPrice);
+  };
 
   return (
     <div className="fixed right-0 top-0 z-[1000] flex h-full w-[350px] flex-col overflow-y-auto bg-white p-5 shadow-lg transition-transform ease-in-out">
@@ -85,7 +90,10 @@ const SidebarCart = ({ handleCartClick }) => {
       <Link to="/payment" state={{ cartItems, totalPrice }}>
         <button
           className="mt-4 w-full cursor-pointer border-none bg-black p-2 text-white hover:bg-[#797a79]"
-          onClick={handleCartClick}
+          onClick={() => {
+            handleCartClick();
+            handlePaymentClick();
+          }}
         >
           Thanh toán
         </button>
