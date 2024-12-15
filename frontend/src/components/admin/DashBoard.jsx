@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 import imgpersonportal from "../../../../backend/assets/imgpersonportal.png";
 import Cookies from "js-cookie";
 import ManageOrder from "./OrderManage/ManageOrder";
+import ManageChart from "./ChartManage/ManageChart";
 
 function decodeJWT(token) {
   const base64Url = token.split(".")[1]; // Lấy phần payload
@@ -56,7 +57,7 @@ const DashBoard = () => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [activeComponent, setActiveComponent] = useState("Account");
   const [isHovered, setIsHovered] = useState(false);
-  const [userRole, setUserRole] = useState(null); // Trạng thái role của người dùng
+  const [userRole, setUserRole] = useState(null);
 
   // Đọc giá trị activeComponent từ localStorage khi trang được tải lại
   useEffect(() => {
@@ -69,6 +70,12 @@ const DashBoard = () => {
       } catch (error) {
         console.error("Error decoding token", error);
       }
+    }
+
+    // Lấy activeComponent từ localStorage
+    const savedComponent = localStorage.getItem("activeComponent");
+    if (savedComponent) {
+      setActiveComponent(savedComponent);
     }
   }, []);
 
@@ -101,13 +108,8 @@ const DashBoard = () => {
         return <ManageBlog />;
       case "Order":
         return <ManageOrder />;
-      case "Settings":
-        return (
-          <div className="p-6">
-            <h2 className="text-2xl font-bold">Settings</h2>
-            <p>Configure your application preferences here.</p>
-          </div>
-        );
+      case "Chart":
+        return <ManageChart />;
       default:
         return (
           <div className="p-6">
@@ -187,8 +189,8 @@ const DashBoard = () => {
             icon={faChartColumn}
             label="Chart"
             isSidebarExpanded={isSidebarExpanded}
-            onClick={() => handleSetActiveComponent("Settings")}
-            isActive={activeComponent === "Settings"}
+            onClick={() => handleSetActiveComponent("Chart")}
+            isActive={activeComponent === "Chart"}
           />
         </ul>
       </div>

@@ -82,7 +82,7 @@ const ManageOrder = () => {
         address: "456 Đường XYZ, Quận 2, TP. HCM",
         number: "0123456789",
         email: "tranthicd@example.com",
-        note: "Giao vào sáng mai Giao vào sáng maiGiao vào sáng maiGiao vào sáng maiGiao vào sáng maiGiao vào sáng maiGiao vào sáng maiGiao vào sáng maiGiao vào sáng maiGiao vào sáng maiGiao vào sáng maiGiao vào sáng maiGiao vào sáng mai",
+        note: "Giao vào sáng mai",
         paymentMethod: "Online Payment", // Thanh toán trực tuyến
         cart: [
           {
