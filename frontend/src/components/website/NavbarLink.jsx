@@ -57,9 +57,9 @@ const FlyoutLink = ({ children, href, FlyoutContent }) => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 15 }}
-            style={{ translateX: "-50%" }}
+            style={{ translateX: "-45%" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 top-[68px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
+            className="absolute left-1/2 top-[58px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
           >
             <FlyoutContent closeFlyout={closeFlyout} />
           </motion.div>
@@ -98,9 +98,9 @@ const FlyoutLinkNews = ({ children, href, FlyoutContent }) => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 15 }}
-            style={{ translateX: "calc(-52.8% - 140px)" }}
+            style={{ translateX: "calc(-48% - 140px)" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 top-[68px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
+            className="absolute left-1/2 top-[58px] w-[1200px] rounded-3xl bg-white text-black shadow-lg"
           >
             <FlyoutContent closeFlyout={closeFlyout} />
           </motion.div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ModalProduct from "./ModalProduct"; // Import ModalProduct component
 import axios from "axios";
+import Loading from "../components/website/Loading";
 
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("TẤT CẢ");
@@ -12,6 +13,7 @@ const Menu = () => {
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -34,6 +36,7 @@ const Menu = () => {
   // Fetch sản phẩm từ API
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(
           "http://localhost:5000/api/mainPages/activeProducts",
@@ -41,6 +44,8 @@ const Menu = () => {
         setProducts(response.data.data);
       } catch (error) {
         console.error("Error fetching products:", error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -105,6 +110,11 @@ const Menu = () => {
           </button>
         ))}
       </div>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-[300px]">
+          <Loading /> {/* Component loading */}
+        </div>
+      ) : (
       <div className="mx-auto flex max-w-7xl flex-wrap justify-start">
         <div className="mx-auto flex flex-wrap justify-start gap-0">
           {filterItems.map((item) => (
@@ -135,12 +145,14 @@ const Menu = () => {
                 <h6 className="text-sm font-bold text-[#333]">
                   <Link
                     to={`/detailfood/${item._id}`}
-                    className="text-[#00561e] font-josefin font-bold text-xl"
+                    className="font-josefin text-xl font-bold text-[#00561e]"
                   >
-                    {item.name}
+                    {item.name.substring(0, 20)}
+                    {item.name.length > 20 && "..."}
                   </Link>
                 </h6>
-                <div className="mb-2 text-base font-josefin font-bold text-[#925802]">
+
+                <div className="mb-2 font-josefin text-base font-bold text-[#925802]">
                   <span>{item.sell_price.toLocaleString()} đ</span>
                   {item.price !== item.sell_price && (
                     <span className="ml-2 text-xs text-gray-500 line-through">
@@ -162,6 +174,7 @@ const Menu = () => {
           ))}
         </div>
       </div>
+      )}
 
       {selectedProduct && (
         <ModalProduct

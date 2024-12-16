@@ -69,7 +69,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative z-10 flex items-center justify-between bg-white px-4 py-[35px] shadow-lg sm:px-8 md:px-16 lg:px-32">
+    <nav className="sticky top-0 z-20 h-[90px] flex items-center justify-between bg-white px-4 py-4 shadow-lg sm:px-8 md:px-16 lg:px-32">
       {/* Brand Name */}
       <div className="pl-4 text-3xl font-bold sm:pl-0 sm:text-4xl">
         <span className="text-black">Bamos</span>
@@ -77,7 +77,7 @@ const Navbar = () => {
       </div>
 
       {/* Navbar Links */}
-      <div className="hidden flex-grow sm:flex">
+      <div className="hidden space-x-6 sm:flex">
         <NavbarLink />
       </div>
 

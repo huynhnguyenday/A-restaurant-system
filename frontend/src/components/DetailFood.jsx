@@ -98,7 +98,7 @@ const DetailFood = () => {
       {/* Center Section */}
       <div className="items-center justify-center pt-14 md:pt-16 md:px-16">
         <div className="text-center md:text-left">
-          <h1 className="pb-4 text-5xl font-bold font-josefin text-[#00561e]">
+          <h1 className="pb-4 pl-2 md:pl-0 text-5xl w-[393px] font-bold font-josefin text-[#00561e]">
             {product.name}
           </h1>
           <p>

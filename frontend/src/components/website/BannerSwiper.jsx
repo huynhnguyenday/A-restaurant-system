@@ -10,10 +10,12 @@ import {
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import Loading from "./Loading"; // Import Loading component
 
 const BannerSwiper = () => {
   const navigate = useNavigate();
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState([]); // State chứa danh sách banner
+  const [loading, setLoading] = useState(true); // Trạng thái loading cho banner
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -23,9 +25,11 @@ const BannerSwiper = () => {
         const response = await axios.get(
           "http://localhost:5000/api/blogs/bannerBlogs",
         );
-        setBlogs(response.data.data); // Store the data in the state
+        setBlogs(response.data.data); // Lưu dữ liệu vào state
       } catch (error) {
         console.error("Error fetching banner blogs:", error);
+      } finally {
+        setLoading(false); // Dừng loading khi dữ liệu đã tải xong
       }
     };
 
@@ -33,17 +37,22 @@ const BannerSwiper = () => {
   }, []);
 
   useEffect(() => {
-    // Ensure autoplay starts once data is loaded
+    // Đảm bảo autoplay bắt đầu khi dữ liệu đã được tải
     if (swiperRef.current && blogs.length > 0) {
-      swiperRef.current.swiper.autoplay.start(); // Start autoplay manually
+      swiperRef.current.swiper.autoplay.start(); // Bắt đầu autoplay thủ công
     }
-  }, [blogs]); // This will trigger when blogs data is available
+  }, [blogs]); // Trigger khi blogs data có sẵn
 
   return (
     <div className="group relative mx-auto max-h-[500px] max-w-full overflow-hidden">
-      {blogs.length > 0 && (
+      {loading ? (
+        // Hiển thị phần loading nếu dữ liệu chưa được tải
+        <div className="flex h-[255px] w-full items-center justify-center lg:h-[600px]">
+          <Loading /> {/* Hiển thị Loading khi đang tải dữ liệu */}
+        </div>
+      ) : (
         <Swiper
-          ref={swiperRef} // Add the swiperRef to get a reference of the Swiper instance
+          ref={swiperRef} // Thêm swiperRef để lấy tham chiếu của Swiper
           modules={[Navigation, Autoplay]}
           spaceBetween={0}
           slidesPerView={1}
@@ -58,7 +67,7 @@ const BannerSwiper = () => {
           }}
           loop={true}
           onAutoplayStart={(swiper) => {
-            // Ensure autoplay is always running
+            // Đảm bảo autoplay luôn chạy
             if (!swiper.autoplay.running) {
               swiper.autoplay.start();
             }
@@ -73,7 +82,7 @@ const BannerSwiper = () => {
                 <img
                   src={blog.image}
                   alt={blog.title}
-                  className="h-full w-full object-cover "
+                  className="h-full w-full object-cover"
                 />
               </div>
             </SwiperSlide>

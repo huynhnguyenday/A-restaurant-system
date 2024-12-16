@@ -126,11 +126,17 @@ const ProductSlider = () => {
                 HOT
               </div>
               <div className="product-info mb-10 mt-2">
-                <h6 className="product-name text-2xl font-bold font-josefin text-[#00561e]">
-                  <Link to={`/detailfood/${product._id}`}>{product.name}</Link>
+                <h6 className="product-name font-josefin text-xl font-bold text-[#00561e]">
+                  <Link to={`/detailfood/${product._id}`}>
+                    {product.name.split(" ").slice(0, 4).join(" ")}
+                    {/* Giới hạn 20 từ */}
+                    {product.name.split(" ").length > 4 && "..."}{" "}
+                    {/* Hiển thị ... nếu vượt quá 20 từ */}
+                  </Link>
                 </h6>
+
                 <div className="product-price">
-                  <span className="text-base font-bold font-josefin text-[#9d6817]">
+                  <span className="font-josefin text-base font-bold text-[#9d6817]">
                     {product.sell_price.toLocaleString()} đ
                   </span>
                   {product.price !== product.sell_price && (
