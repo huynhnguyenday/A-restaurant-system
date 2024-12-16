@@ -132,15 +132,15 @@ const Menu = () => {
               </div>
 
               <div className="mb-12 mt-4">
-                <h6 className="mb-2 text-sm font-bold text-[#333]">
+                <h6 className="text-sm font-bold text-[#333]">
                   <Link
                     to={`/detailfood/${item._id}`}
-                    className="text-[#00561e]"
+                    className="text-[#00561e] font-josefin font-bold text-xl"
                   >
                     {item.name}
                   </Link>
                 </h6>
-                <div className="mb-2 text-sm font-bold text-[#925802]">
+                <div className="mb-2 text-base font-josefin font-bold text-[#925802]">
                   <span>{item.sell_price.toLocaleString()} đ</span>
                   {item.price !== item.sell_price && (
                     <span className="ml-2 text-xs text-gray-500 line-through">

@@ -46,7 +46,7 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
-        <h2 className="mb-4 text-center text-xl font-bold">Add New Blog</h2>
+        <h2 className="mb-4 text-center text-4xl font-bold">Tạo bài viết</h2>
         {error && <p className="mb-4 text-red-500">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -54,7 +54,7 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
             <div>
               <div className="mb-4 mt-1">
                 <label className="mb-2 block text-xl font-medium text-gray-700">
-                  Title
+                  Tiêu đề
                 </label>
                 <input
                   type="text"
@@ -66,7 +66,7 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
               </div>
               <div className="w-1/2">
                 <label className="block pb-2 text-xl font-medium">
-                  Display Hot
+                  Đặt làm Hot
                 </label>
                 <select
                   value={displayHot}
@@ -74,12 +74,12 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
                   className="h-12 w-1/2 rounded-md border border-gray-300 p-2"
                 >
                   <option value={1}>Hot</option>
-                  <option value={2}>Not Hot</option>
+                  <option value={2}>Không Hot</option>
                 </select>
               </div>
               <div className="mb-4">
                 <label className="mb-2 block text-xl font-medium text-gray-700">
-                  Image
+                  Ảnh bài viết
                 </label>
                 <input
                   type="file"
@@ -93,7 +93,7 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
             {/* Phần Content (Quill) */}
             <div>
               <label className="mb-2 block text-xl font-medium text-gray-700">
-                Content
+                Nội dung
               </label>
               <ReactQuill
                 value={content}
@@ -116,13 +116,13 @@ const AddBlog = ({ onClose, onBlogAdded }) => {
               onClick={onClose}
               className="rounded-md bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
             >
-              Cancel
+              Hủy
             </button>
             <button
               type="submit"
               className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
-              Save Blog
+              Tạo bài viết
             </button>
           </div>
         </form>

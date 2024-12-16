@@ -194,7 +194,7 @@ const ManageOrder = () => {
                         <FontAwesomeIcon icon={faEye} />
                       </button>
                       <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Edit Category
+                        Xem chi tiết
                       </span>
                     </div>
                   </td>

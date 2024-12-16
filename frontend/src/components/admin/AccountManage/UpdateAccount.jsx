@@ -53,11 +53,11 @@ const UpdateAccount = ({ account, onClose, onUpdateAccount }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="w-full max-w-md rounded-lg bg-white p-6">
         <h2 className="mb-4 flex justify-center text-4xl font-bold">
-          Update Account
+          Chỉnh sửa tài khoản
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block pb-2 text-xl font-medium">Username</label>
+            <label className="block pb-2 text-xl font-medium">Tên tài khoản</label>
             <input
               type="text"
               name="username"
@@ -67,7 +67,7 @@ const UpdateAccount = ({ account, onClose, onUpdateAccount }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block pb-2 text-xl font-medium">Password</label>
+            <label className="block pb-2 text-xl font-medium">Mật khẩu</label>
             <input
               type="password"
               name="password"
@@ -88,7 +88,7 @@ const UpdateAccount = ({ account, onClose, onUpdateAccount }) => {
           </div>
           <div className="mb-4">
             <label className="block pb-2 text-xl font-medium">
-              Phone Number
+              Số điện thoại
             </label>
             <input
               type="text"
@@ -99,7 +99,7 @@ const UpdateAccount = ({ account, onClose, onUpdateAccount }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block pb-2 text-xl font-medium">Role</label>
+            <label className="block pb-2 text-xl font-medium">Vai trò</label>
             <select
               name="role"
               value={updatedAccount.role}
@@ -117,13 +117,13 @@ const UpdateAccount = ({ account, onClose, onUpdateAccount }) => {
               onClick={onClose}
               className="w-24 rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
             >
-              Cancel
+              Hủy
             </button>
             <button
               type="submit"
               className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
-              Update Account
+              Cập nhật 
             </button>
           </div>
         </form>

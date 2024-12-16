@@ -86,7 +86,7 @@ const DetailFood = () => {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[1200px] flex-col pb-40 md:flex-row">
+    <div className="mx-auto flex w-full max-w-[1200px] flex-col pb-16 pt-8 md:flex-row">
       {/* Left Section */}
       <div className="w-full scale-90 cursor-pointer overflow-hidden rounded-lg md:w-[300px]">
         <img
@@ -98,7 +98,7 @@ const DetailFood = () => {
       {/* Center Section */}
       <div className="items-center justify-center pt-14 md:pt-16 md:px-16">
         <div className="text-center md:text-left">
-          <h1 className="pb-8 text-4xl font-bold text-[#00561e]">
+          <h1 className="pb-4 text-5xl font-bold font-josefin text-[#00561e]">
             {product.name}
           </h1>
           <p>
@@ -109,7 +109,7 @@ const DetailFood = () => {
               {product.price.toLocaleString()}đ
             </span>
           </p>
-          <div className="mb-4 h-[1px] w-full bg-gray-300"></div>
+          <div className="mb-2 h-[1px] w-full bg-gray-300"></div>
           <span className="font-josefin-sans text-[15px] font-semibold">
             Số lượng:
           </span>
@@ -141,10 +141,10 @@ const DetailFood = () => {
       </div>
       {/* Right Section */}
       <div className="w-[400px] flex-1 pl-6 pt-14 md:w-[300px]">
-        <h3 className="font-josefin-sans text-center text-[30px] font-semibold md:text-start">
+        <h3 className="font-josefin-sans text-center text-[30px] font-bold md:text-start">
           Danh mục thực đơn
         </h3>
-        <ul className="m-0 list-none p-0 pt-8 text-center md:text-start">
+        <ul className="m-0 list-none p-0 pt-4 text-center md:text-start">
           {categories.map((category) => (
             <li
               key={category._id}

@@ -76,13 +76,13 @@ const ManageCategory = () => {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-5xl rounded-lg bg-white p-6 shadow-lg">
         <div className="mb-4 text-center text-2xl font-bold">
-          Category Management
+          Quản lý thực đơn
         </div>
 
         <div className="mb-4 flex items-center justify-between">
           <input
             type="text"
-            placeholder="Search by Name"
+            placeholder="Tìm kiếm bằng tên"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-72 rounded-md border border-gray-300 p-2"
@@ -95,7 +95,7 @@ const ManageCategory = () => {
               <FontAwesomeIcon icon={faPlus} />
             </button>
             <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-4 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-              Add Category
+              Tạo thực đơn
             </span>
           </div>
         </div>
@@ -104,11 +104,11 @@ const ManageCategory = () => {
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="px-4 py-3 text-left">Name</th>
-                <th className="px-4 py-3 text-center">Created At</th>
-                <th className="px-4 py-3 text-center">Updated At</th>
-                <th className="px-4 py-3 text-center">Active</th>
-                <th className="px-4 py-3 text-center">Edit</th>
+                <th className="px-4 py-3 text-left">Tên thực đơn</th>
+                <th className="px-4 py-3 text-center">Ngày tạo</th>
+                <th className="px-4 py-3 text-center">Ngày cập nhật</th>
+                <th className="px-4 py-3 text-center">Hoạt động</th>
+                <th className="px-4 py-3 text-center">Chỉnh sửa</th>
               </tr>
             </thead>
             <tbody>
@@ -135,7 +135,7 @@ const ManageCategory = () => {
                         onClick={() => toggleIsActive(category._id)}
                       />
                       <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Set Active Category
+                        Bật hoạt động
                       </span>
                     </div>
                   </td>
@@ -148,7 +148,7 @@ const ManageCategory = () => {
                         <FontAwesomeIcon icon={faPen} />
                       </button>
                       <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Edit Category
+                        Chỉnh sửa
                       </span>
                     </div>
                   </td>

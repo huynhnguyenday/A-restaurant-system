@@ -104,14 +104,14 @@ const ManageProduct = () => {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
         <div className="mb-4 text-center text-2xl font-bold">
-          Product Management
+          Quản lý sản phẩm
         </div>
 
         {/* Tìm kiếm sản phẩm */}
         <div className="mb-4 flex items-center justify-between">
           <input
             type="text"
-            placeholder="Search by Name or Category"
+            placeholder="Tìm kiếm bằng tên hoặc thực đơn"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-60 rounded-md border border-gray-300 p-2"
@@ -124,7 +124,7 @@ const ManageProduct = () => {
               <FontAwesomeIcon icon={faPlus} />
             </button>
             <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-4 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-              Add Product
+              Tạo sản phẩm
             </span>
           </div>
         </div>
@@ -160,15 +160,15 @@ const ManageProduct = () => {
           <table className="min-w-full table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="px-4 py-3 text-center">Image</th>
-                <th className="px-4 py-3 text-left">Product Name</th>
-                <th className="px-4 py-3 text-center">Category</th>
-                <th className="px-4 py-3 text-center">Price</th>
-                <th className="px-4 py-3 text-center">Sell Price</th>
-                <th className="px-4 py-3 text-center">Date Update</th>
+                <th className="px-4 py-3 text-center">Ảnh</th>
+                <th className="px-4 py-3 text-left">Tên sản phẩm</th>
+                <th className="px-4 py-3 text-center">Thực đơn</th>
+                <th className="px-4 py-3 text-center">Giá</th>
+                <th className="px-4 py-3 text-center">Giá giảm</th>
+                <th className="px-4 py-3 text-center">Ngày cập nhật</th>
                 <th className="px-4 py-3 text-center">Hot</th>
-                <th className="px-4 py-3 text-center">Display</th>
-                <th className="px-4 py-3 text-center">Edit</th>
+                <th className="px-4 py-3 text-center">Hoạt động</th>
+                <th className="px-4 py-3 text-center">Chỉnh sửa</th>
               </tr>
             </thead>
             <tbody>
@@ -206,7 +206,7 @@ const ManageProduct = () => {
                         onClick={() => toggleDisplayHot(product._id)}
                       />
                       <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Set Hot Product
+                        Đặt làm Hot
                       </span>
                     </div>
                   </td>
@@ -222,7 +222,7 @@ const ManageProduct = () => {
                         onClick={() => toggleDisplayType(product._id)}
                       />
                       <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Set Display Product
+                        Bật hoạt động
                       </span>
                     </div>
                   </td>
@@ -235,7 +235,7 @@ const ManageProduct = () => {
                         <FontAwesomeIcon icon={faPen} />
                       </button>
                       <span className="absolute bottom-full left-1/3 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Edit Product
+                        Chỉnh sửa
                       </span>
                     </div>
                   </td>

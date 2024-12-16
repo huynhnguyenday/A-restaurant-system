@@ -55,32 +55,38 @@ const SidebarCart = ({ handleCartClick }) => {
       <div className="mb-5 border-b-2 border-[#ccc]"></div>
 
       <div className="flex-grow overflow-y-auto">
-        {cartItems.map((item) => (
-          <div
-            key={item.productId}
-            className="relative mb-4 flex h-[110px] w-[290px] items-start rounded-lg border border-[#ddd] p-2"
-          >
-            <img
-              src={item.img}
-              alt={item.name}
-              className="mr-4 h-[85px] w-[50px] object-cover"
-            />
-            <div className="flex flex-grow flex-col">
-              <div className="my-1 h-[50px] w-[170px] font-josefin text-lg">
-                {item.name}
-              </div>
-              <div className="w-[170px] text-sm text-gray-500">
-                {item.quantity} x {item.price.toLocaleString()} ₫
-              </div>
-            </div>
-            <button
-              className="absolute right-3 top-[30px] cursor-pointer border-none bg-transparent text-2xl text-[#a9a8a8] hover:text-black"
-              onClick={() => removeItem(item.productId)}
+        {cartItems.length > 0 ? (
+          cartItems.map((item) => (
+            <div
+              key={item.productId}
+              className="relative mb-4 flex h-[110px] w-[290px] items-start rounded-lg border border-[#ddd] p-2"
             >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-          </div>
-        ))}
+              <img
+                src={item.img}
+                alt={item.name}
+                className="mr-4 h-[85px] w-[50px] object-cover"
+              />
+              <div className="flex flex-grow flex-col">
+                <div className="mt-3 h-[50px] w-[170px] font-josefin text-xl text-[#00561e] font-bold">
+                  {item.name}
+                </div>
+                <div className="w-[170px] font-josefin text-base text-black">
+                  {item.quantity} x {item.price.toLocaleString()} ₫
+                </div>
+              </div>
+              <button
+                className="absolute right-3 top-[30px] cursor-pointer border-none bg-transparent text-2xl text-[#a9a8a8] hover:text-black"
+                onClick={() => removeItem(item.productId)}
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+          ))
+        ) : (
+          <p className="text-center font-josefin text-lg font-bold text-black">
+            Bạn chưa thêm sản phẩm vào giỏ hàng
+          </p>
+        )}
       </div>
 
       <div className="mt-5 flex justify-between font-bold">

@@ -1,6 +1,4 @@
-// src/components/Navbar.js
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
@@ -11,51 +9,33 @@ import {
 import NavbarLink from "./NavbarLink";
 import ModalLogin from "./ModalLogin";
 import SidebarCart from "./SidebarCart";
-import SidebarMenu from "./SidebarMenu"; // Import SidebarMenu
-import imgfood1 from "../../../../backend/assets/imgfood1.png";
-import imgfood2 from "../../../../backend/assets/imgfood2.png";
-import imgfood3 from "../../../../backend/assets/imgfood3.png";
-import imgfood4 from "../../../../backend/assets/imgfood4.png";
-import imgfood5 from "../../../../backend/assets/imgfood5.png";
-import imgfood6 from "../../../../backend/assets/imgfood6.png";
+import SidebarMenu from "./SidebarMenu";
 
 const Navbar = () => {
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Cà Phê", price: 50000, img: imgfood1, quantity: 2 },
-    { id: 2, name: "Trà Sữa", price: 60000, img: imgfood2, quantity: 1 },
-    {
-      id: 3,
-      name: "Sinh Tố Trân Châu Đường Đen",
-      price: 40000,
-      img: imgfood3,
-      quantity: 1,
-    },
-    {
-      id: 4,
-      name: "Sinh Tố Trân Châu Đường Đen",
-      price: 40000,
-      img: imgfood4,
-      quantity: 1,
-    },
-    {
-      id: 5,
-      name: "Sinh Tố Trân Châu Đường Đen",
-      price: 40000,
-      img: imgfood5,
-      quantity: 1,
-    },
-    {
-      id: 6,
-      name: "Sinh Tố Trân Châu Đường Đen",
-      price: 40000,
-      img: imgfood6,
-      quantity: 1,
-    },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setCartVisible] = useState(false);
   const [isPopoverVisible, setPopoverVisible] = useState(false);
   const [isLoginModalVisible, setLoginModalVisible] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Lấy giỏ hàng từ sessionStorage khi load trang
+  useEffect(() => {
+    const getCartFromSession = () => {
+      const tempCart = JSON.parse(sessionStorage.getItem("tempCart")) || [];
+      setCartItems(tempCart);
+    };
+
+    // Đầu tiên lấy giỏ hàng khi load trang
+    getCartFromSession();
+
+    // Kiểm tra sự thay đổi trong sessionStorage định kỳ mỗi 1000ms
+    const intervalId = setInterval(() => {
+      getCartFromSession();
+    }, 1000);
+
+    // Dọn dẹp interval khi component unmount
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handlePopoverEnter = () => setPopoverVisible(true);
   const handlePopoverLeave = () => setPopoverVisible(false);
@@ -76,6 +56,12 @@ const Navbar = () => {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
+  // Tính tổng số lượng sản phẩm trong giỏ hàng
+  const totalItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  );
+
   const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
 
   const toggleMobileMenu = () => {
@@ -85,7 +71,7 @@ const Navbar = () => {
   return (
     <nav className="relative z-10 flex items-center justify-between bg-white px-4 py-[35px] shadow-lg sm:px-8 md:px-16 lg:px-32">
       {/* Brand Name */}
-      <div className="text-3xl font-bold pl-4 sm:pl-0 sm:text-4xl">
+      <div className="pl-4 text-3xl font-bold sm:pl-0 sm:text-4xl">
         <span className="text-black">Bamos</span>
         <span className="text-[#c63402]">Coffee</span>
       </div>
@@ -138,15 +124,15 @@ const Navbar = () => {
           onClick={handleCartClick}
         >
           <FontAwesomeIcon icon={faShoppingCart} />
-          {cartItems.length > 0 && (
+          {totalItems > 0 && (
             <div className="absolute right-[-6px] top-[-6px] flex h-[17px] w-[17px] items-center justify-center rounded-full bg-[#ed4321] text-xs text-white">
-              {cartItems.length}
+              {totalItems}
             </div>
           )}
         </a>
       </div>
 
-      <div className="flex item">
+      <div className="item flex">
         {/* Mobile Menu Toggle */}
         <div className="flex items-end text-[27px] sm:hidden">
           <button onClick={toggleMobileMenu}>

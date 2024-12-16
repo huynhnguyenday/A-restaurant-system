@@ -7,8 +7,6 @@ const generateToken = (res, id, username, role) => {
     { expiresIn: "7d" } // Thời gian token sống
   );
 
-  req.session.user = { id, username, role };
-
   // Gửi token dưới dạng cookie
   res.cookie("jwt", token, {
     httpOnly: true,

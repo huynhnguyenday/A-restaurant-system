@@ -109,7 +109,7 @@ const ManageAccount = () => {
               <FontAwesomeIcon icon={faPlus} />
             </button>
             <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-4 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-              Add Account
+              Tạo tài khoản
             </span>
           </div>
         </div>
@@ -153,7 +153,7 @@ const ManageAccount = () => {
                         onClick={() => toggleIsActive(account._id)}
                       />
                       <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Set Active Account
+                        Bật hoạt động
                       </span>
                     </div>
                   </td>
@@ -166,7 +166,7 @@ const ManageAccount = () => {
                         <FontAwesomeIcon icon={faPen} />
                       </button>
                       <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Edit Account
+                        Chỉnh sửa
                       </span>
                     </div>
                   </td>

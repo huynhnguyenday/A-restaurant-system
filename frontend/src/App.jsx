@@ -18,6 +18,7 @@ import News from "./components/News";
 import PaymentPage from "./components/PaymentPage";
 import Admin from "./components/admin/Admin";
 import "./app.css";
+import OrderSuccess from "./components/website/OrderSuccess";
 
 // Layout chung có Navbar và Footer
 const MainLayout = ({ children }) => {
@@ -110,6 +111,14 @@ const App = () => {
           element={
             <MainLayout>
               <PaymentPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/order-success"
+          element={
+            <MainLayout>
+              <OrderSuccess/>
             </MainLayout>
           }
         />

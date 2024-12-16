@@ -68,31 +68,30 @@ const BlogMain = () => {
                   custom={index}
                   variants={cardVariants}
                 >
-                  <div className="group relative mb-12 w-full max-w-[350px] ml-4">
+                  <div className="group relative mb-12 ml-4 w-full max-w-[350px]">
                     {/* The container for the image */}
-                    <div className="relative h-[255px] w-full overflow-hidden shadow-lg">
-                      <img
-                        src={blog.image}
-                        alt={blog.title}
-                        className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
-                      />
-                    </div>
+                    <Link
+                      to={`/blogs/${blog._id}`}
+                    >
+                      {/* The container for the image */}
+                      <div className="relative h-[255px] w-full overflow-hidden shadow-lg">
+                        <img
+                          src={blog.image}
+                          alt={blog.title}
+                          className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+                        />
+                      </div>
 
-                    {/* Overlay Content */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 text-center text-white opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
-                      <h4 className="mb-2 px-4 text-xl font-bold">
-                        {blog.title}
-                      </h4>
-                      <span className="mb-2 text-sm italic">
-                        {new Date(blog.updatedAt).toLocaleDateString("vi-VN")}
-                      </span>
-                      <Link
-                        className="text-sm text-white underline hover:text-red-500"
-                        to={`/blogs/${blog._id}`}
-                      >
-                        Đọc Thêm
-                      </Link>
-                    </div>
+                      {/* Overlay Content */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 text-center text-white opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
+                        <h4 className="mb-2 px-4 text-xl font-bold">
+                          {blog.title}
+                        </h4>
+                        <span className="mb-2 text-sm italic">
+                          {new Date(blog.updatedAt).toLocaleDateString("vi-VN")}
+                        </span>
+                      </div>
+                    </Link>
                   </div>
                 </motion.div>
               </SwiperSlide>

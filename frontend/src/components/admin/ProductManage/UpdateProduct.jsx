@@ -107,13 +107,13 @@ const UpdateProduct = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="w-full max-w-7xl rounded-lg bg-white p-6">
         <h2 className="mb-12 flex justify-center text-4xl font-bold">
-          Update Product
+          Chỉnh sửa thông tin sản phẩm
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex space-x-6">
             {/* Phần Tên và Category */}
             <div className="w-2/3">
-              <label className="block pb-2 text-xl font-medium">Name</label>
+              <label className="block pb-2 text-xl font-medium">Tên sản phẩm</label>
               <input
                 type="text"
                 name="name"
@@ -124,7 +124,7 @@ const UpdateProduct = ({
               />
 
               <label className="mt-4 block pb-2 text-xl font-medium">
-                Category
+                Thực đơn
               </label>
               <select
                 value={updatedProduct.category}
@@ -133,7 +133,7 @@ const UpdateProduct = ({
                 className="w-1/2 rounded-md border border-gray-300 p-2"
                 required
               >
-                <option value="">Select Category</option>
+                <option value="">Chọn thực đơn</option>
                 {categories.map((category) => (
                   <option key={category._id} value={category._id}>
                     {category.name}
@@ -144,7 +144,7 @@ const UpdateProduct = ({
 
             {/* Phần Giá và Các thuộc tính */}
             <div className="w-2/3">
-              <label className="block pb-2 text-xl font-medium">Price</label>
+              <label className="block pb-2 text-xl font-medium">Giá sản phẩm</label>
               <input
                 type="text"
                 name="price"
@@ -155,7 +155,7 @@ const UpdateProduct = ({
               />
 
               <label className="mt-4 block pb-2 text-xl font-medium">
-                Sell Price
+                Giá giảm
               </label>
               <input
                 type="text"
@@ -169,33 +169,33 @@ const UpdateProduct = ({
               <div className="mt-4 flex space-x-4">
                 <div className="w-1/2">
                   <label className="block pb-2 text-xl font-medium">
-                    Display Type
+                    Hiển thị sản phẩm
                   </label>
                   <select
                     value={updatedProduct.displayType}
                     name="displayType"
                     onChange={handleInputChange}
-                    className="w-full rounded-md border border-gray-300 p-2"
+                    className="w-2/3 rounded-md border border-gray-300 p-2"
                     required
                   >
-                    <option value={1}>Active</option>
-                    <option value={2}>Inactive</option>
+                    <option value={1}>Bật</option>
+                    <option value={2}>Tắt</option>
                   </select>
                 </div>
 
                 <div className="w-1/2">
                   <label className="block pb-2 text-xl font-medium">
-                    Display Hot
+                    Đặt làm Hot
                   </label>
                   <select
                     value={updatedProduct.displayHot}
                     name="displayHot"
                     onChange={handleInputChange}
-                    className="w-full rounded-md border border-gray-300 p-2"
+                    className="w-2/3 rounded-md border border-gray-300 p-2"
                     required
                   >
                     <option value={1}>Hot</option>
-                    <option value={2}>Not Hot</option>
+                    <option value={2}>Không Hot</option>
                   </select>
                 </div>
               </div>
@@ -204,7 +204,7 @@ const UpdateProduct = ({
             {/* Phần Ảnh */}
             {/* Hiển thị ảnh đã chọn hoặc ảnh cũ */}
             <div className="w-2/3">
-              <label className="block pb-2 text-xl font-medium">Image</label>
+              <label className="block pb-2 text-xl font-medium">Ảnh</label>
               <input
                 type="file"
                 onChange={handleImageChange}
@@ -216,7 +216,7 @@ const UpdateProduct = ({
                   <img
                     src={
                       updatedProduct.imageFile
-                        ? URL.createObjectURL(updatedProduct.imageFile) // Bản xem trước nếu có ảnh mới
+                        ? URL.createObjectURL(updatedProduct.imageFile) 
                         : updatedProduct.image.startsWith("http") ||
                             updatedProduct.image.startsWith("data")
                           ? updatedProduct.image // Đường dẫn ảnh từ server
@@ -237,13 +237,13 @@ const UpdateProduct = ({
               onClick={() => setShowModal(false)}
               className="mr-28 h-12 w-28 rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
             >
-              Cancel
+              Hủy
             </button>
             <button
               type="submit"
               className="h-12 w-36 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
             >
-              Update Product
+              Cập Nhật
             </button>
           </div>
         </form>

@@ -71,7 +71,7 @@ const DetailBlog = () => {
     <div className="mx-auto my-10 max-w-7xl px-4">
       <div className="grid grid-cols-10 gap-6">
         <div className="detail-blog col-span-10 lg:col-span-7">
-          <h1 href="/news" className="cursor-pointer">TIN TỨC BAMOS</h1>
+          <h1>TIN TỨC BAMOS</h1>
           <h2>{blog.title}</h2>
           <div className="divider"></div>
           <p className="author-date">

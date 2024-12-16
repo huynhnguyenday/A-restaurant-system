@@ -151,7 +151,7 @@ const DashBoard = () => {
           {Array.isArray(userRole) && userRole.includes("admin") && (
             <SidebarItem
               icon={faUser}
-              label="Account"
+              label="Tài khoản"
               isSidebarExpanded={isSidebarExpanded}
               onClick={() => handleSetActiveComponent("Account")}
               isActive={activeComponent === "Account"}
@@ -159,21 +159,21 @@ const DashBoard = () => {
           )}
           <SidebarItem
             icon={faGlassWater}
-            label="Product"
+            label="Sản phẩm"
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Product")}
             isActive={activeComponent === "Product"}
           />
           <SidebarItem
             icon={faClipboardList}
-            label="Category"
+            label="Thực đơn"
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Category")}
             isActive={activeComponent === "Category"}
           />
           <SidebarItem
             icon={faFileWord}
-            label="Blog"
+            label="Bài viết"
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Blog")}
             isActive={activeComponent === "Blog"}
@@ -187,7 +187,7 @@ const DashBoard = () => {
           />
           <SidebarItem
             icon={faChartColumn}
-            label="Chart"
+            label="Thống kê"
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Chart")}
             isActive={activeComponent === "Chart"}
@@ -224,7 +224,7 @@ const DashBoard = () => {
             </Link>
             {isHovered && (
               <span className="absolute -left-4 mt-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-4 py-2 text-sm text-white shadow-lg">
-                Go To HomePage
+                Đến Trang Web
               </span>
             )}
           </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import NavbarLink from "./NavbarLink";
-import { faFacebook, faFacebookF, faInstagram, faTiktok, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { faFacebookF, faInstagram, faTiktok, faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const SidebarMenu = ({ isMobileMenuOpen, toggleMobileMenu }) => {
   return (

@@ -11,7 +11,7 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Invalid username or password",
+        message: "Nhập sai tên người dùng",
       });
     }
 
@@ -20,7 +20,7 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res
         .status(401)
-        .json({ success: false, message: "Invalid username or password" });
+        .json({ success: false, message: "Mật khẩu không trùng khớp" });
     }
 
     // Tạo JWT token
@@ -29,7 +29,7 @@ export const login = async (req, res) => {
     // Trả về thông tin người dùng và token
     res.status(200).json({
       success: true,
-      message: "Login successful",
+      message: "Đăng nhập thành công",
       token, // Include the token in the response
       user: {
         id: user._id,

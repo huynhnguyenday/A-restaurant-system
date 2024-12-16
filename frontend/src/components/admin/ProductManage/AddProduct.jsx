@@ -37,14 +37,14 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
     e.preventDefault();
 
     if (parseFloat(newProduct.sell_price) > parseFloat(newProduct.price)) {
-      setError("Sell price must be less than or equal to price.");
+      setError("Giá giảm phải thấp hơn giá");
       return;
     }
 
     setError("");
 
     if (!newProduct.image) {
-      alert("Please select an image for the product.");
+      alert("Hãy chọn ảnh");
       return;
     }
 
@@ -67,7 +67,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
           },
         },
       );
-      console.log("Product added successfully", response.data);
+      console.log("Tạo sản phẩm thành công", response.data);
     } catch (error) {
       if (error.response) {
         console.error("Error adding product", error.response.data); // Kiểm tra error.response
@@ -92,11 +92,11 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="h-auto w-full max-w-xl rounded-lg bg-white p-6">
         <h2 className="mb-4 flex justify-center text-4xl font-bold">
-          Create Product
+          Tạo sản phẩm
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block pb-2 text-xl font-medium">Name</label>
+            <label className="block pb-2 text-xl font-medium">Tên sản phẩm</label>
             <input
               type="text"
               value={newProduct.name}
@@ -108,7 +108,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block pb-2 text-xl font-medium">Image</label>
+            <label className="block pb-2 text-xl font-medium">Ảnh sản phẩm</label>
             <input
               type="file"
               onChange={(e) =>
@@ -121,7 +121,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
           </div>
           <div className="mb-4 flex space-x-4">
             <div className="w-1/2">
-              <label className="block pb-2 text-xl font-medium">Price</label>
+              <label className="block pb-2 text-xl font-medium">Giá sản phẩm</label>
               <input
                 type="text"
                 value={newProduct.price}
@@ -132,7 +132,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
             </div>
             <div className="w-1/2">
               <label className="block pb-2 text-xl font-medium">
-                Sell Price
+                Giá Giảm
               </label>
               <input
                 type="text"
@@ -150,7 +150,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
             </div>
           </div>
           <div className="mb-4">
-            <label className="block pb-2 text-xl font-medium">Category</label>
+            <label className="block pb-2 text-xl font-medium">Thực đơn</label>
             <select
               value={newProduct.category}
               onChange={(e) =>
@@ -159,7 +159,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
               required
               className="h-12 w-1/2 rounded-md border border-gray-300 p-2"
             >
-              <option value="">Select Category</option>
+              <option value="">Chọn thực đơn</option>
               {categories.map((category) => (
                 <option key={category._id} value={category._id}>
                   {category.name}
@@ -170,7 +170,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
           <div className="mb-4 flex space-x-4">
             <div className="w-1/2">
               <label className="block pb-2 text-xl font-medium">
-                Display Hot
+                Đặt làm Hot
               </label>
               <select
                 value={newProduct.displayHot}
@@ -181,12 +181,12 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
                 className="h-12 w-1/2 rounded-md border border-gray-300 p-2"
               >
                 <option value={1}>Hot</option>
-                <option value={2}>Not Hot</option>
+                <option value={2}>Không Hot</option>
               </select>
             </div>
             <div className="w-1/2">
               <label className="block pb-2 text-xl font-medium">
-                Display Type
+                Hiển thị sản phẩm
               </label>
               <select
                 value={newProduct.displayType}
@@ -196,8 +196,8 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
                 required
                 className="h-12 w-1/2 rounded-md border border-gray-300 p-2"
               >
-                <option value={1}>Active</option>
-                <option value={2}>InActive</option>
+                <option value={1}>Bật</option>
+                <option value={2}>Tắt</option>
               </select>
             </div>
           </div>
@@ -207,13 +207,13 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
               onClick={() => setShowModal(false)}
               className="h-12 w-32 rounded-md bg-gray-300 px-4 py-2 text-black hover:bg-gray-400"
             >
-              Cancel
+              Hủy
             </button>
             <button
               type="submit"
               className="h-12 w-36 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-800"
             >
-              Create Product
+              Tạo sản phẩm
             </button>
           </div>
         </form>

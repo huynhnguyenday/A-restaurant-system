@@ -44,8 +44,7 @@ const ManageBlog = () => {
 
   const filteredBlogs = blogList.filter((blog) => {
     return (
-      blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      formatDate(blog.createdAt).includes(searchTerm)
+      blog.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
@@ -128,10 +127,10 @@ const ManageBlog = () => {
         <div className="mb-4 flex items-center justify-between">
           <input
             type="text"
-            placeholder="Search by Title or Date"
+            placeholder="Tìm kiếm bằng tiêu đề "
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-72 rounded-md border border-gray-300 p-2"
+            className="w-60 rounded-md border border-gray-300 p-2"
           />
           {/* Tooltip và nút Plus */}
           <div className="group relative">
@@ -142,7 +141,7 @@ const ManageBlog = () => {
               <FontAwesomeIcon icon={faPlus} />
             </button>
             <span className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-4 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-              Add Blog
+              Tạo bài viết
             </span>
           </div>
         </div>
@@ -195,7 +194,7 @@ const ManageBlog = () => {
                         onClick={() => toggleDisplayHot(blog._id)}
                       />
                       <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Set Hot Blog
+                        Đặt làm Hot
                       </span>
                     </div>
                   </td>
@@ -211,7 +210,7 @@ const ManageBlog = () => {
                         onClick={() => toggleDisplayBanner(blog._id)}
                       />
                       <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Set Banner Blog
+                        Đặt làm Banner
                       </span>
                     </div>
                   </td>
@@ -225,7 +224,7 @@ const ManageBlog = () => {
                           <FontAwesomeIcon icon={faPen} />
                         </button>
                         <span className="absolute bottom-full left-1/2 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                          Edit Blog
+                          Chỉnh sửa
                         </span>
                       </div>
                       <div className="group relative">
@@ -233,7 +232,7 @@ const ManageBlog = () => {
                           <FontAwesomeIcon icon={faTrash} />
                         </button>
                         <span className="absolute bottom-full left-1/3 mb-4 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                          Delete Blog
+                          Xóa bài
                         </span>
                       </div>
                     </div>

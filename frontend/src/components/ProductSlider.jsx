@@ -111,7 +111,7 @@ const ProductSlider = () => {
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="mx-auto h-[223px] w-[154px] transform transition-transform duration-300 ease-in-out group-hover:scale-105"
+                    className="mx-auto h-[223px] w-[154px] transform transition-transform duration-300 ease-in-out group-hover:scale-110"
                   />
                 </Link>
               </div>
@@ -125,12 +125,12 @@ const ProductSlider = () => {
               <div className="product-bubble absolute right-4 top-2 rounded-full bg-[#ff4d4f] px-2 py-1 font-josefin text-sm text-white">
                 HOT
               </div>
-              <div className="product-info mb-12 mt-4">
-                <h6 className="product-name text-lg font-bold text-[#00561e]">
+              <div className="product-info mb-10 mt-2">
+                <h6 className="product-name text-2xl font-bold font-josefin text-[#00561e]">
                   <Link to={`/detailfood/${product._id}`}>{product.name}</Link>
                 </h6>
                 <div className="product-price">
-                  <span className="text-base font-bold text-[#9d6817]">
+                  <span className="text-base font-bold font-josefin text-[#9d6817]">
                     {product.sell_price.toLocaleString()} đ
                   </span>
                   {product.price !== product.sell_price && (

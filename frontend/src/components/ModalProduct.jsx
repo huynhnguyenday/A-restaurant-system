@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faBasketShopping } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 const ModalProduct = ({
   selectedProduct,
@@ -46,6 +47,7 @@ const ModalProduct = ({
         price: selectedProduct.sell_price,
         quantity,
       });
+      toast.success("Thêm vào giỏ hàng thành công");
     }
 
     // Lưu giỏ hàng vào sessionStorage

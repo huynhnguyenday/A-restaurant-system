@@ -3,6 +3,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faShop } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 const PaymentPage = () => {
   const location = useLocation();
@@ -59,7 +60,9 @@ const PaymentPage = () => {
   const increaseQuantity = (productId) => {
     setCartItems(
       cartItems.map((item) =>
-        item.productId === productId ? { ...item, quantity: item.quantity + 1 } : item,
+        item.productId === productId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
       ),
     );
   };
@@ -93,10 +96,7 @@ const PaymentPage = () => {
       number: e.target.number.value,
       email: e.target.email.value,
       note: e.target.note.value,
-      paymentMethod:
-        selectedPayment === 1
-          ? "Chuyển khoản ngân hàng"
-          : "Trả tiền mặt khi nhận hàng",
+      paymentMethod: selectedPayment === 1 ? "Online Payment" : "COD",
       discount: discount,
       finalPrice: finalPrice,
       cart: cartItems.map((item) => ({
@@ -114,7 +114,8 @@ const PaymentPage = () => {
         "http://localhost:5000/api/orders",
         orderData,
       );
-      alert(response.data.message);
+      toast(response.data.message);
+      sessionStorage.removeItem("tempCart"); //làm trống giỏ hàng
       window.location.href = "/order-success"; // Redirect after successful order
     } catch (error) {
       console.error("Lỗi khi tạo đơn hàng:", error);
@@ -122,13 +123,12 @@ const PaymentPage = () => {
     }
   };
 
-
   const finalPrice = calculatedTotalPrice - discount;
   return (
     <div className="mx-auto my-10 max-w-[1200px] px-4 pb-20">
-      <div className="grid grid-cols-10 gap-6 pt-12">
+      <div className="grid grid-cols-1 gap-6 pt-12 sm:grid-cols-10">
         {/* Phần thông tin khách hàng chiếm 6 cột */}
-        <div className="payment-left col-span-10 sm:col-span-6">
+        <div className="payment-left order-2 col-span-10 sm:order-1 sm:col-span-6">
           <h3 className="mb-4 pt-4 font-josefin text-4xl font-bold">
             Thông tin khách hàng
           </h3>
@@ -292,7 +292,7 @@ const PaymentPage = () => {
           </form>
         </div>
         {/* Phần thông tin giỏ hàng chiếm 4 cột */}
-        <div className="col-span-10 pl-8 sm:col-span-4">
+        <div className="order-1 col-span-10 sm:order-2 sm:col-span-4">
           <h3 className="name-option-payment mb-4 pt-4 font-josefin text-[32px] text-xl font-bold">
             Thông tin sản phẩm
           </h3>
