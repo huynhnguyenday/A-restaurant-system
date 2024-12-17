@@ -9,6 +9,8 @@ import {
   faRightToBracket,
   faClipboardList,
   faClipboard,
+  faReceipt,
+  faTicket,
 } from "@fortawesome/free-solid-svg-icons";
 import ManageProduct from "./ProductManage/ManageProduct";
 import ManageBlog from "./BlogManage/ManageBlog";
@@ -19,6 +21,7 @@ import imgpersonportal from "../../../../backend/assets/imgpersonportal.png";
 import Cookies from "js-cookie";
 import ManageOrder from "./OrderManage/ManageOrder";
 import ManageChart from "./ChartManage/ManageChart";
+import ManageCoupon from "./CouponManage/ManageCoupon";
 
 function decodeJWT(token) {
   const base64Url = token.split(".")[1]; // Lấy phần payload
@@ -110,6 +113,8 @@ const DashBoard = () => {
         return <ManageOrder />;
       case "Chart":
         return <ManageChart />;
+      case "Coupon":
+        return <ManageCoupon />;
       default:
         return (
           <div className="p-6">
@@ -179,7 +184,7 @@ const DashBoard = () => {
             isActive={activeComponent === "Blog"}
           />
           <SidebarItem
-            icon={faClipboard}
+            icon={faReceipt}
             label="Đơn Hàng"
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Order")}
@@ -191,6 +196,13 @@ const DashBoard = () => {
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Chart")}
             isActive={activeComponent === "Chart"}
+          />
+          <SidebarItem
+            icon={faTicket}
+            label="Mã giảm giá"
+            isSidebarExpanded={isSidebarExpanded}
+            onClick={() => handleSetActiveComponent("Coupon")}
+            isActive={activeComponent === "Coupon"}
           />
         </ul>
       </div>
