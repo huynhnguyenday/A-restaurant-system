@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const DetailFood = () => {
   const [quantity, setQuantity] = useState(1);
@@ -112,7 +113,7 @@ const DetailFood = () => {
     sessionStorage.setItem("tempCart", JSON.stringify(tempCart));
 
     // Hiển thị thông báo (tuỳ chọn)
-    alert("Sản phẩm đã được thêm vào giỏ hàng!");
+    toast.success("Thêm vào giỏ hàng thành công");
   };
 
   return (

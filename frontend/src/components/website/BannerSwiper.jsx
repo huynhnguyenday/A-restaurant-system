@@ -47,7 +47,7 @@ const BannerSwiper = () => {
     <div className="group relative mx-auto max-h-[500px] max-w-full overflow-hidden">
       {loading ? (
         // Hiển thị phần loading nếu dữ liệu chưa được tải
-        <div className="flex h-[255px] w-full items-center justify-center lg:h-[600px]">
+        <div className="flex h-[255px] w-full items-center justify-center lg:h-[500px]">
           <Loading /> {/* Hiển thị Loading khi đang tải dữ liệu */}
         </div>
       ) : (

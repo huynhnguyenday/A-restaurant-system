@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import ModalProduct from "./ModalProduct"; // Import ModalProduct component
 import axios from "axios";
 import Loading from "../components/website/Loading";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSliders } from "@fortawesome/free-solid-svg-icons";
 
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("TẤT CẢ");
@@ -14,6 +16,8 @@ const Menu = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("Menu");
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -64,6 +68,12 @@ const Menu = () => {
       ? products.filter((item) => item.category?.isActive === 1)
       : products.filter((item) => item.category.name === activeCategory);
 
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    handleCategoryClick(category); // Gọi hàm xử lý từ props
+    setIsMenuOpen(false); // Đóng menu sau khi chọn
+  };
+
   // Xử lý khi nhấn yêu thích
   const handleToggleFavorite = (id) => {
     setFavorites((prevFavorites) => ({
@@ -94,86 +104,118 @@ const Menu = () => {
       <h1 className="mb-4 text-4xl font-bold">
         Thực đơn Bamos<span className="text-[#C63402]">Coffee</span>
       </h1>
-
-      <div className="mb-5 flex justify-center font-bold">
-        {categories.map((category) => (
+      <div className="relative mb-5">
+        {/* Navbar cho Mobile */}
+        <div className="flex items-center justify-center px-4 pt-2 md:hidden">
           <button
-            key={category}
-            className={`mt-8 border-[0.5px] border-gray-300 px-5 py-2 text-base transition-all ease-linear ${
-              activeCategory === category
-                ? "border-[#633c02] bg-[#633c02] text-white"
-                : "bg-white text-gray-800"
-            } hover:bg-[#d88453]`}
-            onClick={() => handleCategoryClick(category)}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className="flex items-center gap-2 text-lg font-bold text-gray-800"
           >
-            {category}
+            <FontAwesomeIcon icon={faSliders} />
+            <span>{selectedCategory}</span>
           </button>
-        ))}
-      </div>
-      {isLoading ? (
-        <div className="flex justify-center items-center h-[300px]">
-          <Loading /> {/* Component loading */}
         </div>
-      ) : (
-      <div className="mx-auto flex max-w-7xl flex-wrap justify-start">
-        <div className="mx-auto flex flex-wrap justify-start gap-0">
-          {filterItems.map((item) => (
-            <div
-              className="group relative mt-8 flex h-[340px] w-[250px] flex-col justify-between border-l border-r border-gray-300 bg-white p-3 text-center transition-shadow ease-linear"
-              key={item._id}
-            >
-              <div>
-                <Link to={`/detailfood/${item._id}`}>
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="mx-auto h-[216px] w-[154px] transition-transform ease-linear group-hover:scale-[1.18]"
-                  />
-                </Link>
-              </div>
 
-              <div
-                className={`absolute left-2 top-2 cursor-pointer text-2xl transition-colors ease-linear ${
-                  favorites[item._id] ? "text-[#d88453]" : "text-black"
+        {/* Menu Dropdown */}
+        {isMenuOpen && (
+          <div className="absolute left-0 top-full z-10 w-full bg-white shadow-lg">
+            {categories.map((category) => (
+              <button
+                key={category}
+                className={`w-full px-4 py-2 text-left transition-all ease-linear ${
+                  activeCategory === category
+                    ? "bg-[#633c02] text-white"
+                    : "text-gray-800 hover:bg-[#d88453]"
                 }`}
-                onClick={() => handleToggleFavorite(item._id)}
+                onClick={() => handleCategorySelect(category)}
               >
-                {favorites[item._id] ? "♥" : "♡"}
-              </div>
+                {category}
+              </button>
+            ))}
+          </div>
+        )}
 
-              <div className="mb-12 mt-4">
-                <h6 className="text-sm font-bold text-[#333]">
-                  <Link
-                    to={`/detailfood/${item._id}`}
-                    className="font-josefin text-xl font-bold text-[#00561e]"
-                  >
-                    {item.name.substring(0, 20)}
-                    {item.name.length > 20 && "..."}
-                  </Link>
-                </h6>
-
-                <div className="mb-2 font-josefin text-base font-bold text-[#925802]">
-                  <span>{item.sell_price.toLocaleString()} đ</span>
-                  {item.price !== item.sell_price && (
-                    <span className="ml-2 text-xs text-gray-500 line-through">
-                      {item.price.toLocaleString()} đ
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="absolute bottom-0 left-0 w-full opacity-0 transition-opacity ease-linear group-hover:opacity-100">
-                <button
-                  className="w-full bg-[#d88453] py-3 text-sm font-medium text-white transition-colors ease-linear hover:bg-[#633c02]"
-                  onClick={() => handleAddToCart(item)}
-                >
-                  Thêm vào giỏ hàng
-                </button>
-              </div>
-            </div>
+        {/* Menu cho Desktop */}
+        <div className="hidden justify-center font-bold md:flex">
+          {categories.map((category) => (
+            <button
+              key={category}
+              className={`mt-8 border-[0.5px] border-gray-300 px-5 py-2 text-base transition-all ease-linear ${
+                activeCategory === category
+                  ? "border-[#633c02] bg-[#633c02] text-white"
+                  : "bg-white text-gray-800"
+              } hover:bg-[#d88453]`}
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </button>
           ))}
         </div>
       </div>
+      {isLoading ? (
+        <div className="flex h-[300px] items-center justify-center">
+          <Loading /> {/* Component loading */}
+        </div>
+      ) : (
+        <div className="mx-auto flex max-w-7xl flex-wrap justify-center">
+          <div className="mx-auto flex flex-wrap justify-start gap-0">
+            {filterItems.map((item) => (
+              <div
+                className="group relative mt-8 flex h-[340px] w-[190px] flex-col justify-between border-l border-r border-gray-300 bg-white p-3 text-center transition-shadow ease-linear lg:h-[340px] lg:w-[250px]"
+                key={item._id}
+              >
+                <div>
+                  <Link to={`/detailfood/${item._id}`}>
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="mx-auto h-[216px] w-[154px] transition-transform ease-linear group-hover:scale-[1.18]"
+                    />
+                  </Link>
+                </div>
+
+                <div
+                  className={`absolute left-2 top-2 cursor-pointer text-2xl transition-colors ease-linear ${
+                    favorites[item._id] ? "text-[#d88453]" : "text-black"
+                  }`}
+                  onClick={() => handleToggleFavorite(item._id)}
+                >
+                  {favorites[item._id] ? "♥" : "♡"}
+                </div>
+
+                <div className="mb-12 mt-4">
+                  <h6 className="text-sm font-bold text-[#333]">
+                    <Link
+                      to={`/detailfood/${item._id}`}
+                      className="font-josefin text-xl font-bold text-[#00561e]"
+                    >
+                      {item.name.substring(0, 20)}
+                      {item.name.length > 20 && "..."}
+                    </Link>
+                  </h6>
+
+                  <div className="mb-2 font-josefin text-base font-bold text-[#925802]">
+                    <span>{item.sell_price.toLocaleString()} đ</span>
+                    {item.price !== item.sell_price && (
+                      <span className="ml-2 text-xs text-gray-500 line-through">
+                        {item.price.toLocaleString()} đ
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="absolute bottom-0 left-0 w-full opacity-0 transition-opacity ease-linear group-hover:opacity-100">
+                  <button
+                    className="w-full bg-[#d88453] py-3 text-sm font-medium text-white transition-colors ease-linear hover:bg-[#633c02]"
+                    onClick={() => handleAddToCart(item)}
+                  >
+                    Thêm vào giỏ hàng
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
 
       {selectedProduct && (

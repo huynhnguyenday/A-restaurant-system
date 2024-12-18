@@ -114,7 +114,7 @@ const ManageProduct = () => {
             placeholder="Tìm kiếm bằng tên hoặc thực đơn"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-60 rounded-md border border-gray-300 p-2"
+            className="w-72 rounded-md border border-gray-300 p-2"
           />
           <div className="group relative">
             <button

@@ -67,7 +67,7 @@ const SidebarCart = ({ handleCartClick }) => {
                 className="mr-4 h-[85px] w-[50px] object-cover"
               />
               <div className="flex flex-grow flex-col">
-                <div className="mt-3 h-[50px] w-[170px] font-josefin text-xl text-[#00561e] font-bold">
+                <div className="mt-3 h-[50px] w-[170px] font-josefin text-xl font-bold text-[#00561e]">
                   {item.name}
                 </div>
                 <div className="w-[170px] font-josefin text-base text-black">

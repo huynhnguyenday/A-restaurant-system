@@ -8,7 +8,6 @@ import {
   faFileWord,
   faRightToBracket,
   faClipboardList,
-  faClipboard,
   faReceipt,
   faTicket,
 } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +21,7 @@ import Cookies from "js-cookie";
 import ManageOrder from "./OrderManage/ManageOrder";
 import ManageChart from "./ChartManage/ManageChart";
 import ManageCoupon from "./CouponManage/ManageCoupon";
+
 
 function decodeJWT(token) {
   const base64Url = token.split(".")[1]; // Lấy phần payload
@@ -86,6 +86,12 @@ const DashBoard = () => {
   const handleSetActiveComponent = (component) => {
     setActiveComponent(component);
     localStorage.setItem("activeComponent", component); // Lưu vào localStorage
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
   };
 
   const renderContent = () => {
@@ -184,6 +190,13 @@ const DashBoard = () => {
             isActive={activeComponent === "Blog"}
           />
           <SidebarItem
+            icon={faTicket}
+            label="Mã giảm giá"
+            isSidebarExpanded={isSidebarExpanded}
+            onClick={() => handleSetActiveComponent("Coupon")}
+            isActive={activeComponent === "Coupon"}
+          />
+          <SidebarItem
             icon={faReceipt}
             label="Đơn Hàng"
             isSidebarExpanded={isSidebarExpanded}
@@ -197,13 +210,6 @@ const DashBoard = () => {
             onClick={() => handleSetActiveComponent("Chart")}
             isActive={activeComponent === "Chart"}
           />
-          <SidebarItem
-            icon={faTicket}
-            label="Mã giảm giá"
-            isSidebarExpanded={isSidebarExpanded}
-            onClick={() => handleSetActiveComponent("Coupon")}
-            isActive={activeComponent === "Coupon"}
-          />
         </ul>
       </div>
       {/* Main Content */}
@@ -214,7 +220,30 @@ const DashBoard = () => {
       >
         {/* Navbar */}
         <div className="flex justify-between bg-white p-4 shadow-md">
-          <h1 className="text-2xl font-bold"></h1>
+          <div
+            className="ml-16 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black"
+            onMouseEnter={toggleDropdown}
+            onMouseLeave={toggleDropdown}
+          >
+            <span className="text-white">
+              <FontAwesomeIcon icon={faUser} />
+            </span>
+          </div>
+
+          {/* Dropdown Menu */}
+          {isOpen && (
+            <div
+              className="absolute top-[56px] w-[180px] bg-white text-black shadow-lg"
+              onMouseEnter={() => setIsOpen(true)}
+              onMouseLeave={() => setIsOpen(false)}
+            >
+              <ul className="pt-1">
+                <li className="cursor-pointer rounded-xl border-2 border-black px-4 py-3 hover:bg-gray-100">
+                  Thông tin cá nhân
+                </li>
+              </ul>
+            </div>
+          )}
           <div
             className="relative pr-8"
             onMouseEnter={() => setIsHovered(true)}

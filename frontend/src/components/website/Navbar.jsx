@@ -56,11 +56,8 @@ const Navbar = () => {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
-  // Tính tổng số lượng sản phẩm trong giỏ hàng
-  const totalItems = cartItems.reduce(
-    (total, item) => total + item.quantity,
-    0,
-  );
+  // Tính tổng số loại sản phẩm trong giỏ hàng
+  const totalItems = cartItems.length;
 
   const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
 
@@ -69,7 +66,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-20 h-[90px] flex items-center justify-between bg-white px-4 py-4 shadow-lg sm:px-8 md:px-16 lg:px-32">
+    <nav className="sticky top-0 z-20 flex h-[90px] items-center justify-between bg-white px-4 py-4 shadow-lg sm:px-8 md:px-16 lg:px-32">
       {/* Brand Name */}
       <div className="pl-4 text-3xl font-bold sm:pl-0 sm:text-4xl">
         <span className="text-black">Bamos</span>
