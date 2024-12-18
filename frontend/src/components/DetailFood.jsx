@@ -85,6 +85,36 @@ const DetailFood = () => {
     }
   };
 
+  const handleAddToCart = () => {
+    // Lấy giỏ hàng hiện tại từ sessionStorage
+    const tempCart = JSON.parse(sessionStorage.getItem("tempCart")) || [];
+
+    // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+    const existingItemIndex = tempCart.findIndex(
+      (item) => item.productId === product._id,
+    );
+
+    if (existingItemIndex > -1) {
+      // Nếu đã tồn tại, tăng số lượng
+      tempCart[existingItemIndex].quantity += quantity;
+    } else {
+      // Nếu chưa, thêm sản phẩm mới
+      tempCart.push({
+        productId: product._id,
+        name: product.name,
+        img: product.image,
+        price: product.sell_price,
+        quantity,
+      });
+    }
+
+    // Lưu lại giỏ hàng vào sessionStorage
+    sessionStorage.setItem("tempCart", JSON.stringify(tempCart));
+
+    // Hiển thị thông báo (tuỳ chọn)
+    alert("Sản phẩm đã được thêm vào giỏ hàng!");
+  };
+
   return (
     <div className="mx-auto flex w-full max-w-[1200px] flex-col pb-16 pt-8 md:flex-row">
       {/* Left Section */}
@@ -96,9 +126,9 @@ const DetailFood = () => {
         />
       </div>
       {/* Center Section */}
-      <div className="items-center justify-center pt-14 md:pt-16 md:px-16">
+      <div className="items-center justify-center pt-14 md:px-16 md:pt-16">
         <div className="text-center md:text-left">
-          <h1 className="pb-4 pl-2 md:pl-0 text-5xl w-[393px] font-bold font-josefin text-[#00561e]">
+          <h1 className="w-[393px] pb-4 pl-2 font-josefin text-5xl font-bold text-[#00561e] md:pl-0">
             {product.name}
           </h1>
           <p>
@@ -134,7 +164,10 @@ const DetailFood = () => {
               +
             </button>
           </div>
-          <button className="font-josefin-sans mt-4 h-[56px] w-[393px] cursor-pointer rounded-full bg-gradient-to-r from-[#00864a] to-[#925802] text-[28px] font-bold text-white transition-colors hover:from-[#006635] hover:to-[#7a3e01]">
+          <button
+            className="font-josefin-sans mt-4 h-[56px] w-[393px] cursor-pointer rounded-full bg-gradient-to-r from-[#00864a] to-[#925802] text-[28px] font-bold text-white transition-colors hover:from-[#006635] hover:to-[#7a3e01]"
+            onClick={handleAddToCart}
+          >
             <FontAwesomeIcon icon={faBasketShopping} /> Thêm vào giỏ
           </button>
         </div>
