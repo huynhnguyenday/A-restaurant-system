@@ -12,6 +12,16 @@ const couponSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    currentUsage: {
+      type: Number,
+      default: 0, // Số lần sử dụng hiện tại, mặc định là 0
+      min: 0,
+    },
+    maxUsage: {
+      type: Number,
+      required: true, // Số lần tối đa coupon có thể sử dụng
+      min: 1,
+    },
   },
   { timestamps: true } // Tự động tạo `createdAt` và `updatedAt`
 );

@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const UpdateCoupon = ({ coupon, onClose }) => {
+const UpdateCoupon = ({ coupon, onClose, onUpdateSuccess }) => {
   const [updatedCoupon, setUpdatedCoupon] = useState(coupon);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setUpdatedCoupon(coupon); // Update the form whenever the coupon prop changes
@@ -17,10 +20,28 @@ const UpdateCoupon = ({ coupon, onClose }) => {
     }));
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    console.log("Updated Coupon Data:", updatedCoupon);
-    onClose(); // Close the modal after saving
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/coupons/${updatedCoupon._id}`,
+        updatedCoupon,
+      );
+
+      if (response.status === 200) {
+        onUpdateSuccess(); // Gọi để reload lại danh sách coupon
+        onClose(); // Đóng modal
+      } else {
+        throw new Error("Cập nhật thất bại. Vui lòng thử lại.");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Đã xảy ra lỗi khi cập nhật.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -61,11 +82,13 @@ const UpdateCoupon = ({ coupon, onClose }) => {
           </div>
 
           <div className="mb-4">
-            <label className="mb-2 block text-lg font-medium">Số lượng</label>
+            <label className="mb-2 block text-lg font-medium">
+              Tổng Số lượng
+            </label>
             <input
               type="number"
-              name="quantity"
-              value={updatedCoupon.quantity}
+              name="maxUsage"
+              value={updatedCoupon.maxUsage}
               onChange={handleChange}
               className="w-full rounded-md border-gray-300 p-2"
               placeholder="Nhập số lượng coupon"
@@ -82,9 +105,18 @@ const UpdateCoupon = ({ coupon, onClose }) => {
             </button>
             <button
               type="submit"
-              className="flex items-center rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              className={`flex items-center rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 ${
+                loading ? "cursor-not-allowed opacity-50" : ""
+              }`}
+              disabled={loading}
             >
-              <FontAwesomeIcon icon={faSave} /> Lưu
+              {loading ? (
+                <span>Đang lưu...</span>
+              ) : (
+                <>
+                  <FontAwesomeIcon icon={faSave} /> Lưu
+                </>
+              )}
             </button>
           </div>
         </form>

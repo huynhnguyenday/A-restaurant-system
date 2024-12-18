@@ -5,6 +5,7 @@ import {
   updateCoupon,
   deleteCoupon,
   getCouponById,
+  useCoupon,
 } from "../controllers/coupon.controller.js";
 
 const router = express.Router();
@@ -13,6 +14,7 @@ const router = express.Router();
 router.get("/", getAllCoupons); // Lấy danh sách coupon
 router.get("/:id", getCouponById); // Lấy coupon theo code
 router.post("/", createCoupon); // Tạo coupon mới
+router.put("/use", useCoupon);
 router.put("/:id", updateCoupon); // Cập nhật coupon
 router.delete("/:id", deleteCoupon); // Xóa coupon
 

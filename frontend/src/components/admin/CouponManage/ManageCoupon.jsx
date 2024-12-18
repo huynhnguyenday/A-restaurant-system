@@ -1,29 +1,39 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEye } from "@fortawesome/free-solid-svg-icons";
-import UpdateCoupon from "./UpdateCoupon"; // Import the UpdateCoupon form
+import UpdateCoupon from "./UpdateCoupon";
 
 const ManageCoupon = () => {
-  const [coupons, setCoupons] = useState([]);
+  const [coupons, setCoupons] = useState([]); // Đảm bảo giá trị mặc định là mảng rỗng
   const [searchTerm, setSearchTerm] = useState("");
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
 
-  // Placeholder coupons data
-  useEffect(() => {
-    const placeholderCoupons = [
-      { id: "C001", code: "10k", discountValue: 10000, quantity: 10 },
-      { id: "C002", code: "20k", discountValue: 20000, quantity: 10 },
-      { id: "C003", code: "30k", discountValue: 30000, quantity: 10 },
-    ];
+  const fetchCoupons = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/coupons/"); // Thay bằng endpoint API thực tế
+      if (response.data && Array.isArray(response.data.data)) {
+        setCoupons(response.data.data);
+      } else {
+        setCoupons([]);
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách coupon:", error);
+      setCoupons([]);
+    }
+  };
 
-    setCoupons(placeholderCoupons);
+  useEffect(() => {
+    fetchCoupons();
   }, []);
 
-  // Filter coupons based on search term
-  const filteredCoupons = coupons.filter((coupon) =>
-    coupon.code.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  // Kiểm tra trước khi filter
+  const filteredCoupons = Array.isArray(coupons)
+    ? coupons.filter((coupon) =>
+        coupon.code.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
+    : [];
 
   const handleCloseDetailModal = () => {
     setShowDetailModal(false);
@@ -65,18 +75,22 @@ const ManageCoupon = () => {
               <tr className="bg-gray-100">
                 <th className="px-4 py-3 text-center">Mã Coupon</th>
                 <th className="px-4 py-3 text-center">Giá trị giảm</th>
-                <th className="px-4 py-3 text-center">Số lượng</th>
+                <th className="px-4 py-3 text-center">Tổng số lượng</th>
+                <th className="px-4 py-3 text-center">Còn lại</th>
                 <th className="px-4 py-3 text-center">Chỉnh sửa</th>
               </tr>
             </thead>
             <tbody>
               {filteredCoupons.map((coupon) => (
-                <tr key={coupon.id} className="bg-white">
+                <tr key={coupon._id} className="bg-white">
                   <td className="px-4 py-6 text-center">{coupon.code}</td>
                   <td className="px-4 py-6 text-center">
                     {coupon.discountValue}
                   </td>
-                  <td className="px-4 py-6 text-center">{coupon.quantity}</td>
+                  <td className="px-4 py-6 text-center">{coupon.maxUsage}</td>
+                  <td className="px-4 py-6 text-center">
+                    {coupon.maxUsage - coupon.currentUsage}
+                  </td>
                   <td className="px-4 py-6 text-center text-xl">
                     <button
                       onClick={() => handleShowCouponDetail(coupon)}
@@ -96,6 +110,7 @@ const ManageCoupon = () => {
           <UpdateCoupon
             coupon={selectedCoupon}
             onClose={handleCloseDetailModal}
+            onUpdateSuccess={fetchCoupons}
           />
         )}
       </div>
