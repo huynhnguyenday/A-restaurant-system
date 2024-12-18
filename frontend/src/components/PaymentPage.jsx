@@ -99,6 +99,7 @@ const PaymentPage = () => {
       paymentMethod: selectedPayment === 1 ? "Online Payment" : "COD",
       discount: discount,
       finalPrice: finalPrice,
+      couponCode: couponCode || null,
       cart: cartItems.map((item) => ({
         productId: item.productId, // Đây là nơi bạn gửi id sản phẩm
         quantity: item.quantity,
