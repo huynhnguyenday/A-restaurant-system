@@ -682,7 +682,7 @@ const ManageChart = () => {
     <div className="bg-gray-50 p-6">
 
       {/* Biểu đồ Doanh thu */}
-      <div className="mb-4 mt-4">
+      <div className="mb-4">
         <h2 className="text-center font-josefin text-4xl font-bold">
           Doanh thu cửa hàng
         </h2>

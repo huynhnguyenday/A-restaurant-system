@@ -10,6 +10,7 @@ const DetailOrder = ({ order, onClose }) => {
     email: "",
     paymentMethod: "",
     note: "",
+    discount:"",
   });
 
   // Lấy thông tin đơn hàng vào state khi đơn hàng thay đổi
@@ -22,6 +23,7 @@ const DetailOrder = ({ order, onClose }) => {
         email: order.email || "",
         paymentMethod: order.paymentMethod || "",
         note: order.note || "",
+        discount: order.discount || "",
       });
     }
   }, [order]);
@@ -34,12 +36,6 @@ const DetailOrder = ({ order, onClose }) => {
       [name]: value,
     }));
   };
-
-  // Tính tổng giá trị đơn hàng
-  const totalOrderPrice = order.cart.reduce(
-    (total, item) => total + item.totalPrice,
-    0,
-  );
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -147,8 +143,7 @@ const DetailOrder = ({ order, onClose }) => {
                       </p>
                       <div className="mt-5 flex justify-between">
                         <p className="font-josefin">
-                          {item.quantity} x{" "}
-                          {item.product.sell_price.toLocaleString()} ₫
+                          số lượng: {item.quantity}
                         </p>
                         <p className="font-josefin">
                           {item.totalPrice.toLocaleString()} ₫
@@ -158,13 +153,17 @@ const DetailOrder = ({ order, onClose }) => {
                   </div>
                 ))}
               </div>
-              {/* Total Price */}
               <div className="mt-5 flex justify-between font-bold">
-                <span className="font-josefin text-xl">
-                  Tổng cộng:
+                <span className="font-josefin text-lg">Giảm giá:</span>
+                <span className="font-josefin text-lg">
+                  <p>{order.discount.toLocaleString()} ₫</p>
                 </span>
+              </div>
+              {/* Total Price */}
+              <div className="mt-2 flex justify-between font-bold">
+                <span className="font-josefin text-xl">Tổng cộng:</span>
                 <span className="font-josefin text-xl">
-                  <p>{totalOrderPrice.toLocaleString()} ₫</p>
+                  <p>{order.finalPrice.toLocaleString()} ₫</p>
                 </span>
               </div>
             </div>

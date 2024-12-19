@@ -122,7 +122,7 @@ const Menu = () => {
             {categories.map((category) => (
               <button
                 key={category}
-                className={`w-full px-4 py-2 text-left transition-all ease-linear ${
+                className={`w-full px-4 py-2 text-left font-josefin text-xl font-bold transition-all ease-linear border border-b-2 ${
                   activeCategory === category
                     ? "bg-[#633c02] text-white"
                     : "text-gray-800 hover:bg-[#d88453]"

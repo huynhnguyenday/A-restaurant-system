@@ -28,11 +28,11 @@ const News = () => {
   }, []);
 
   return (
-    <div className="container mx-auto my-10 px-4">
+    <div className="container mx-auto px-4">
       <div className="text-center">
         {/* Phần hiển thị tiêu đề tin tức */}
-        <h1 className="py-8 text-4xl font-bold text-[#633402]">
-          TẤT CẢ TIN TỨC BAMOS
+        <h1 className=" text-4xl mt-10 mb-16 font-bold text-[#633402]">
+          Tin tức Bamos<span className="text-[#C63402]">Coffee</span>
         </h1>
       </div>
       <div className="grid grid-cols-1 justify-items-center gap-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">

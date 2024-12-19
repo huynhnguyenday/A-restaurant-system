@@ -25,7 +25,9 @@ const ManageOrder = () => {
         number: "0987654321",
         email: "nguyenvana@example.com",
         note: "Giao vào buổi tối",
-        paymentMethod: "COD", // Cash on delivery
+        paymentMethod: "COD", 
+        discount: 30000,
+        finalPrice: 300000,
         cart: [
           {
             product: {
@@ -55,6 +57,8 @@ const ManageOrder = () => {
         email: "tranthib@example.com",
         note: "Giao vào sáng mai",
         paymentMethod: "Online Payment", // Thanh toán trực tuyến
+        discount: 30000,
+        finalPrice: 300000,
         cart: [
           {
             product: {
@@ -84,6 +88,8 @@ const ManageOrder = () => {
         email: "tranthicd@example.com",
         note: "Giao vào sáng mai",
         paymentMethod: "Online Payment", // Thanh toán trực tuyến
+        discount: 30000,
+        finalPrice: 300000,
         cart: [
           {
             product: {

@@ -5,12 +5,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import ModalForgotPassword from "./ModalForgotPassword";
+
 const ModalLogin = ({ isLoginModalVisible, onClose }) => {
   const [isRegisterMode, setRegisterMode] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const [isForgotPasswordVisible, setForgotPasswordVisible] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,7 +30,7 @@ const ModalLogin = ({ isLoginModalVisible, onClose }) => {
       if (response.data.success) {
         // Đăng nhập thành công
         toast.success("Đăng nhập thành công!");
-
+        
         // Lưu token vào Local Storage
         const token = response.data.token;
         console.log("Extracted token:", token);
@@ -75,7 +78,7 @@ const ModalLogin = ({ isLoginModalVisible, onClose }) => {
         >
           <FontAwesomeIcon icon={faTimes} />
         </button>
-
+        
         {isRegisterMode ? (
           <div>
             <h2 className="mb-4 text-3xl font-bold">Đăng Ký</h2>
@@ -95,6 +98,12 @@ const ModalLogin = ({ isLoginModalVisible, onClose }) => {
               <input
                 type="password"
                 placeholder="Mật khẩu"
+                required
+                className="mb-4 w-full rounded border border-gray-300 p-2"
+              />
+              <input
+                type="password"
+                placeholder="Nhập lại mật khẩu"
                 required
                 className="mb-4 w-full rounded border border-gray-300 p-2"
               />
@@ -149,6 +158,10 @@ const ModalLogin = ({ isLoginModalVisible, onClose }) => {
               <a
                 href="#forgot-password"
                 className="text-lg text-gray-500 hover:text-black"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setForgotPasswordVisible(true);
+                }}
               >
                 Bạn quên mật khẩu?
               </a>
@@ -160,6 +173,11 @@ const ModalLogin = ({ isLoginModalVisible, onClose }) => {
                 Đăng ký
               </a>
             </div>
+
+            <ModalForgotPassword
+              isVisible={isForgotPasswordVisible}
+              onClose={() => setForgotPasswordVisible(false)}
+            />
           </div>
         )}
       </div>
