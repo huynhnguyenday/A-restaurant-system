@@ -2,7 +2,38 @@ import Order from "../models/order.model.js";
 import Product from "../models/product.model.js";
 import Coupon from "../models/coupon.model.js";
 import { ObjectId } from "mongodb";
-// API để xử lý đơn hàng thanh toán
+
+export const getOrder = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate({
+        path: "cart.product",
+        select: "name image",
+      })
+      .sort({ createdAt: -1 })
+      .lean(); // Sử dụng lean để đảm bảo trả về plain objects
+
+    const ordersWithFullImagePath = orders.map((order) => ({
+      ...order,
+      cart: order.cart.map((item) => ({
+        ...item,
+        product: {
+          ...item.product,
+          image: `http://localhost:5000/assets/${item.product.image}`,
+        },
+      })),
+    }));
+
+    res.status(200).json({
+      message: "Lấy danh sách đơn hàng thành công!",
+      data: ordersWithFullImagePath,
+    });
+  } catch (error) {
+    console.log("Lỗi khi lấy danh sách đơn hàng: ", error);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
 export const createOrder = async (req, res) => {
   try {
     const {
@@ -35,7 +66,7 @@ export const createOrder = async (req, res) => {
     // Xử lý cart và kiểm tra sản phẩm
     const updatedCart = await Promise.all(
       cart.map(async (item) => {
-        const productId = new ObjectId(item.productId); // Dùng new ObjectId
+        const productId = new ObjectId(item.productId);
         const product = await Product.findById(productId);
         if (!product) {
           console.error(`Product with ID ${item.productId} not found`);
@@ -91,10 +122,53 @@ export const createOrder = async (req, res) => {
 
     res.status(201).json({
       message: "Đơn hàng đã được tạo thành công!",
-      order: newOrder,
+      data: newOrder,
     });
   } catch (error) {
     console.error("Lỗi tạo đơn hàng:", error);
     res.status(500).json({ message: "Lỗi server khi tạo đơn hàng!" });
+  }
+};
+
+export const updateOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, address, number, email, note, paymentMethod } = req.body;
+
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({ message: "Không tìm thấy đơn hàng!" });
+    }
+
+    if (name) order.name = name;
+    if (address) order.address = address;
+    if (number) order.number = number;
+    if (email) order.email = email;
+    if (note) order.note = note;
+    if (paymentMethod) order.paymentMethod = paymentMethod;
+
+    const updatedOrder = await order.save();
+    res.status(200).json({
+      message: "Cập nhật đơn hàng thành công!",
+      data: updatedOrder,
+    });
+  } catch (error) {
+    console.log("Lỗi khi cập nhật đơn hàng: ", error);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
+export const getSpecificOrder = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .select("name email payMethod")
+      .sort({ createAt: -1 });
+
+    res
+      .status(200)
+      .json({ message: "Lấy danh sách đơn hàng thành công!", orders });
+  } catch (error) {
+    console.log("Lỗi khi lấy danh sách đơn hàng: ", error);
+    res.status(500).json({ message: "Lỗi server" });
   }
 };

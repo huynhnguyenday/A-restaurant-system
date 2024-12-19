@@ -1,137 +1,34 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 import DetailOrder from "./DetailOrder"; // Import DetailOrder component
-import imgfood1 from "../../../../../backend/assets/imgfood1.png";
-import imgfood2 from "../../../../../backend/assets/imgfood2.png";
-import imgfood3 from "../../../../../backend/assets/imgfood3.png";
-import imgfood4 from "../../../../../backend/assets/imgfood4.png";
-import imgfood5 from "../../../../../backend/assets/imgfood5.png";
-import imgfood6 from "../../../../../backend/assets/imgfood6.png";
 
 const ManageOrder = () => {
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [loading, setLoading] = useState(false); // State để hiển thị trạng thái loading
+  const [error, setError] = useState(null);
 
   // Placeholder orders data
   useEffect(() => {
-    const placeholderOrders = [
-      {
-        id: "1",
-        name: "Nguyen Van A",
-        address: "123 Đường ABC, Quận 1, TP. HCM",
-        number: "0987654321",
-        email: "nguyenvana@example.com",
-        note: "Giao vào buổi tối",
-        paymentMethod: "COD", 
-        discount: 30000,
-        finalPrice: 300000,
-        cart: [
-          {
-            product: {
-              image: imgfood3,
-              name: "Sản phẩm 1",
-              sell_price: 100000,
-            },
-            quantity: 2,
-            totalPrice: 200000,
-          },
-          {
-            product: {
-              image: imgfood4,
-              name: "Sản phẩm 2",
-              sell_price: 150000,
-            },
-            quantity: 1,
-            totalPrice: 150000,
-          },
-        ],
-      },
-      {
-        id: "2",
-        name: "Tran Thi B",
-        address: "456 Đường XYZ, Quận 2, TP. HCM",
-        number: "0123456789",
-        email: "tranthib@example.com",
-        note: "Giao vào sáng mai",
-        paymentMethod: "Online Payment", // Thanh toán trực tuyến
-        discount: 30000,
-        finalPrice: 300000,
-        cart: [
-          {
-            product: {
-              image: imgfood1,
-              name: "Sản phẩm 3",
-              sell_price: 200000,
-            },
-            quantity: 1,
-            totalPrice: 200000,
-          },
-          {
-            product: {
-              image: imgfood2,
-              name: "Sản phẩm 4",
-              sell_price: 300000,
-            },
-            quantity: 1,
-            totalPrice: 300000,
-          },
-        ],
-      },
-      {
-        id: "3",
-        name: "Tran Thi C",
-        address: "456 Đường XYZ, Quận 2, TP. HCM",
-        number: "0123456789",
-        email: "tranthicd@example.com",
-        note: "Giao vào sáng mai",
-        paymentMethod: "Online Payment", // Thanh toán trực tuyến
-        discount: 30000,
-        finalPrice: 300000,
-        cart: [
-          {
-            product: {
-              image: imgfood5,
-              name: "Sản phẩm 3",
-              sell_price: 200000,
-            },
-            quantity: 1,
-            totalPrice: 200000,
-          },
-          {
-            product: {
-              image: imgfood6,
-              name: "Sản phẩm 4",
-              sell_price: 300000,
-            },
-            quantity: 2,
-            totalPrice: 300000,
-          },
-          {
-            product: {
-              image: imgfood1,
-              name: "Sản phẩm 5",
-              sell_price: 300000,
-            },
-            quantity: 1,
-            totalPrice: 300000,
-          },
-          {
-            product: {
-              image: imgfood2,
-              name: "Sản phẩm 6",
-              sell_price: 300000,
-            },
-            quantity: 1,
-            totalPrice: 300000,
-          },
-        ],
-      },
-    ];
+    const fetchOrders = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get("http://localhost:5000/api/orders");
+        setOrders(response.data.data); // Cập nhật danh sách đơn hàng từ API
+        setError(null); // Xóa lỗi nếu có
+      } catch (err) {
+        console.error("Lỗi khi lấy danh sách đơn hàng: ", err);
+        setError("Không thể tải danh sách đơn hàng. Vui lòng thử lại!"); // Cập nhật lỗi
+      } finally {
+        setLoading(false); // Tắt trạng thái loading
+      }
+    };
 
-    setOrders(placeholderOrders);
+    fetchOrders(); // Gọi hàm lấy dữ liệu
   }, []);
 
   // Filter orders based on search term
@@ -177,7 +74,9 @@ const ManageOrder = () => {
               <tr className="bg-gray-100">
                 <th className="px-4 py-3 text-center">Tên khách hàng</th>
                 <th className="px-4 py-3 text-center">Email</th>
-                <th className="px-4 py-3 text-center">Phương thức thanh toán</th>
+                <th className="px-4 py-3 text-center">
+                  Phương thức thanh toán
+                </th>
                 <th className="px-4 py-3 text-center">Xem</th>
               </tr>
             </thead>
