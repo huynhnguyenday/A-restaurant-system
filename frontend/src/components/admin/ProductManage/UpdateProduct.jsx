@@ -113,7 +113,9 @@ const UpdateProduct = ({
           <div className="mb-4 flex space-x-6">
             {/* Phần Tên và Category */}
             <div className="w-2/3">
-              <label className="block pb-2 text-xl font-medium">Tên sản phẩm</label>
+              <label className="block pb-2 text-xl font-medium">
+                Tên sản phẩm
+              </label>
               <input
                 type="text"
                 name="name"
@@ -144,7 +146,9 @@ const UpdateProduct = ({
 
             {/* Phần Giá và Các thuộc tính */}
             <div className="w-2/3">
-              <label className="block pb-2 text-xl font-medium">Giá sản phẩm</label>
+              <label className="block pb-2 text-xl font-medium">
+                Giá sản phẩm
+              </label>
               <input
                 type="text"
                 name="price"
@@ -216,7 +220,7 @@ const UpdateProduct = ({
                   <img
                     src={
                       updatedProduct.imageFile
-                        ? URL.createObjectURL(updatedProduct.imageFile) 
+                        ? URL.createObjectURL(updatedProduct.imageFile)
                         : updatedProduct.image.startsWith("http") ||
                             updatedProduct.image.startsWith("data")
                           ? updatedProduct.image // Đường dẫn ảnh từ server

@@ -1,73 +1,41 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
-
-const ModalForgotPassword = ({ isVisible, onClose }) => {
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const handleForgotPassword = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setMessage("");
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/forgot-password",
-        {
-          email,
-        },
-      );
-
-      if (response.data.success) {
-        toast.success("Yêu cầu khôi phục mật khẩu đã được gửi!");
-        setMessage("Hãy kiểm tra email của bạn để đặt lại mật khẩu.");
-      } else {
-        toast.error("Đã xảy ra lỗi.");
-        setMessage("Không thể gửi yêu cầu. Vui lòng thử lại.");
-      }
-    } catch (error) {
-      toast.error("Đã xảy ra lỗi.");
-      setMessage("Không thể gửi yêu cầu. Vui lòng thử lại.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (!isVisible) return null;
-
+const ModalForgotPassword = () => {
   return (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-      <div className="relative w-full max-w-3xl h-96 rounded-lg bg-white p-8 text-center shadow-lg">
-        <button
-          className="absolute right-4 top-2 cursor-pointer border-none bg-none text-3xl text-gray-400 hover:text-black"
-          onClick={onClose}
-        >
-          <FontAwesomeIcon icon={faTimes} />
-        </button>
-
-        <h2 className="mb-4 text-3xl font-bold">Quên Mật Khẩu</h2>
-        <form onSubmit={handleForgotPassword}>
-          <input
-            type="email"
-            placeholder="Nhập email của bạn"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="mb-4 w-full rounded border border-gray-300 p-2"
-          />
-          <button
-            type="submit"
-            className="w-full rounded bg-black py-2 text-white hover:bg-gray-600"
-            disabled={isLoading}
+    <div className="mt-10 flex min-h-[65%] justify-center bg-white">
+      <div className="w-full max-w-2xl rounded-lg bg-white p-8 text-center">
+        <div className="mb-6 flex justify-center">
+          <h2
+            className={`cursor-pointer px-4 py-2 font-josefin text-4xl font-bold`}
           >
-            {isLoading ? "Đang gửi..." : "Gửi yêu cầu"}
-          </button>
-        </form>
-        {message && <p className="mt-4 text-sm text-gray-500">{message}</p>}
+            Quên mật khẩu
+          </h2>
+        </div>
+        <div className="relative z-[21] mb-4">
+          <input
+            type="text"
+            id="register_username"
+            className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
+            placeholder=" "
+            required
+          />
+          <label
+            htmlFor="register_username"
+            className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+          >
+            Nhập email
+          </label>
+        </div>
+        <button
+          type="submit"
+          className="mt-3 w-full rounded-lg bg-black py-3 mb-2 text-xl font-josefin text-white hover:bg-gray-600"
+        >
+          Đặt lại mật khẩu
+        </button>
+        <a
+          href="/login"
+          className="text-lg text-gray-500 hover:text-black"
+        >
+          Quay lại đăng nhập?
+        </a>
       </div>
     </div>
   );

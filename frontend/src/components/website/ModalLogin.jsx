@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import ModalForgotPassword from "./ModalForgotPassword";
 
-const ModalLogin = ({ isLoginModalVisible, onClose }) => {
+const LoginPage = () => {
   const [isRegisterMode, setRegisterMode] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const [isForgotPasswordVisible, setForgotPasswordVisible] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -28,29 +26,16 @@ const ModalLogin = ({ isLoginModalVisible, onClose }) => {
       );
 
       if (response.data.success) {
-        // Đăng nhập thành công
         toast.success("Đăng nhập thành công!");
-        
-        // Lưu token vào Local Storage
-        const token = response.data.token;
-        console.log("Extracted token:", token);
 
+        const token = response.data.token;
         if (token) {
-          // Lưu token vào cookies (cookie sẽ hết hạn sau 7 ngày)
           Cookies.set("jwtToken", token, { expires: 7, path: "/" });
-          console.log("JWT Token saved to cookies:", Cookies.get("jwtToken"));
-        } else {
-          console.error("Token not received from server.");
         }
 
-        // Đóng modal
-        onClose();
-
-        // Điều hướng đến trang admin
         navigate("/admin");
       }
     } catch (error) {
-      // Xử lý lỗi
       if (error.response && error.response.data) {
         setErrorMessage(error.response.data.message);
       } else {
@@ -59,130 +44,186 @@ const ModalLogin = ({ isLoginModalVisible, onClose }) => {
     }
   };
 
-  // Xử lý chuyển đổi giữa đăng nhập và đăng ký
-  const toggleMode = (e, mode) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    setRegisterMode(mode);
-    setErrorMessage(""); // Xóa thông báo lỗi khi chuyển chế độ
+    if (password !== confirmPassword) {
+      setErrorMessage("Mật khẩu không khớp!");
+      return;
+    }
+    // Registration logic here
+    toast.success("Đăng ký thành công!");
   };
 
-  if (!isLoginModalVisible) return null;
-
   return (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-      <div className="relative w-96 rounded-lg bg-white p-8 text-center shadow-lg">
-        {/* Nút đóng */}
-        <button
-          className="absolute right-4 top-2 cursor-pointer border-none bg-none text-3xl text-gray-400 hover:text-black"
-          onClick={onClose}
-        >
-          <FontAwesomeIcon icon={faTimes} />
-        </button>
-        
+    <div className="mt-10 flex min-h-[85%] justify-center bg-white">
+      <div className="w-full max-w-md rounded-lg bg-white p-8 text-center">
+        <div className="mb-6 flex justify-center">
+          <h2
+            className={`w-1/2 cursor-pointer px-4 py-2 font-josefin text-2xl font-bold ${!isRegisterMode ? "border-b-2 border-black" : "text-gray-500"}`}
+            onClick={() => setRegisterMode(false)}
+          >
+            Đăng Nhập
+          </h2>
+          <h2
+            className={`w-1/2 cursor-pointer px-4 py-2 font-josefin text-2xl font-bold ${isRegisterMode ? "border-b-2 border-black" : "text-gray-500"}`}
+            onClick={() => setRegisterMode(true)}
+          >
+            Đăng Ký
+          </h2>
+        </div>
+
         {isRegisterMode ? (
-          <div>
-            <h2 className="mb-4 text-3xl font-bold">Đăng Ký</h2>
-            <form>
+          <form onSubmit={handleRegister}>
+            <h3 className="font-josefin text-gray-600">Hãy tạo tài khoản để có thể xem lại lịch sử đơn hàng và sản phẩm yêu thích</h3>
+            <h4 className="pb-4 font-josefin text-gray-600">
+              Vui lòng nhập đầy đủ thông tin!
+            </h4>
+            <div className="relative z-0 mb-4">
               <input
                 type="text"
-                placeholder="Tên đăng nhập"
-                required
-                className="mb-4 w-full rounded border border-gray-300 p-2"
-              />
-              <input
-                type="email"
-                placeholder="Nhập Gmail"
-                required
-                className="mb-4 w-full rounded border border-gray-300 p-2"
-              />
-              <input
-                type="password"
-                placeholder="Mật khẩu"
-                required
-                className="mb-4 w-full rounded border border-gray-300 p-2"
-              />
-              <input
-                type="password"
-                placeholder="Nhập lại mật khẩu"
-                required
-                className="mb-4 w-full rounded border border-gray-300 p-2"
-              />
-              <button
-                type="submit"
-                className="w-full rounded bg-black py-2 text-white hover:bg-gray-600"
-              >
-                Đăng Ký
-              </button>
-            </form>
-            <div className="mt-4">
-              <a
-                href="/admin"
-                className="text-gray-500 hover:text-black"
-                onClick={(e) => toggleMode(e, false)}
-              >
-                Đã có tài khoản?
-              </a>
-            </div>
-          </div>
-        ) : (
-          <div>
-            <h2 className="mb-4 w-full text-3xl font-bold">Đăng Nhập</h2>
-            <form onSubmit={handleLogin}>
-              <input
-                type="text"
-                placeholder="Tên đăng nhập"
+                id="register_username"
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
+                placeholder=" "
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="mb-4 w-full rounded border border-gray-300 p-2"
               />
+              <label
+                htmlFor="register_username"
+                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+              >
+                Tên đăng nhập
+              </label>
+            </div>
+            <div className="relative z-0 mb-4">
+              <input
+                type="email"
+                id="register_email"
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
+                placeholder=" "
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <label
+                htmlFor="register_email"
+                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+              >
+                Nhập Email
+              </label>
+            </div>
+            <div className="relative z-0 mb-4">
               <input
                 type="password"
-                placeholder="Mật khẩu"
+                id="register_password"
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
+                placeholder=" "
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="mb-4 w-full rounded border border-gray-300 p-2"
               />
-              {errorMessage && (
-                <p className="mb-4 text-red-500">{errorMessage}</p>
-              )}
-              <button
-                type="submit"
-                className="w-full rounded bg-black py-2 text-white hover:bg-gray-600"
+              <label
+                htmlFor="register_password"
+                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
               >
-                Đăng Nhập
-              </button>
-            </form>
-            <div className="mt-4 flex justify-between">
-              <a
-                href="#forgot-password"
-                className="text-lg text-gray-500 hover:text-black"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setForgotPasswordVisible(true);
-                }}
-              >
-                Bạn quên mật khẩu?
-              </a>
-              <a
-                href="#register"
-                className="text-lg text-gray-500 hover:text-black"
-                onClick={(e) => toggleMode(e, true)}
-              >
-                Đăng ký
-              </a>
+                Mật khẩu
+              </label>
             </div>
-
-            <ModalForgotPassword
-              isVisible={isForgotPasswordVisible}
-              onClose={() => setForgotPasswordVisible(false)}
-            />
-          </div>
+            <div className="relative z-0 mb-4">
+              <input
+                type="password"
+                id="register_confirm_password"
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
+                placeholder=" "
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <label
+                htmlFor="register_confirm_password"
+                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+              >
+                Nhập lại mật khẩu
+              </label>
+            </div>
+            {errorMessage && (
+              <p className="mb-4 text-red-500">{errorMessage}</p>
+            )}
+            <button
+              type="submit"
+              className="w-full mt-3 rounded font-josefin bg-black py-3 text-white hover:bg-gray-600"
+            >
+              Đăng Ký
+            </button>
+            <button
+                className="text-lg mt-2 text-gray-500 hover:text-black"
+              onClick={() => setRegisterMode(false)}
+            >
+              Đã có tài khoản?
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleLogin}>
+            <h3 className="font-josefin text-gray-600">
+              Chào mừng quay trở lại
+            </h3>
+            <h4 className="mb-2 pb-4 font-josefin text-gray-600">
+              Đăng nhập bằng tên đăng nhập và mật khẩu
+            </h4>
+            <div className="relative z-0 mb-4">
+              <input
+                type="text"
+                id="login_username"
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
+                placeholder=" "
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+              <label
+                htmlFor="login_username"
+                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+              >
+                Tên đăng nhập hoặc email
+              </label>
+            </div>
+            <div className="relative z-0 mb-4">
+              <input
+                type="password"
+                id="login_password"
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
+                placeholder=" "
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <label
+                htmlFor="login_password"
+                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+              >
+                Mật khẩu
+              </label>
+            </div>
+            {errorMessage && (
+              <p className="mb-4 text-red-500">{errorMessage}</p>
+            )}
+            <button
+              type="submit"
+              className="w-full mt-3 mb-2 rounded bg-black py-3 text-white hover:bg-gray-600"
+            >
+              Đăng Nhập
+            </button>
+            <a
+              href="/forgotpassword"
+              className="text-lg text-gray-500 hover:text-black"
+            >
+              Bạn quên mật khẩu?
+            </a>
+          </form>
         )}
       </div>
     </div>
   );
 };
 
-export default ModalLogin;
+export default LoginPage;

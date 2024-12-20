@@ -19,6 +19,8 @@ import PaymentPage from "./components/PaymentPage";
 import Admin from "./components/admin/Admin";
 import "./app.css";
 import OrderSuccess from "./components/website/OrderSuccess";
+import ModalLogin from "./components/website/ModalLogin";
+import ModalForgotPassword from "./components/website/ModalForgotPassword"
 
 // Layout chung có Navbar và Footer
 const MainLayout = ({ children }) => {
@@ -118,7 +120,23 @@ const App = () => {
           path="/order-success"
           element={
             <MainLayout>
-              <OrderSuccess/>
+              <OrderSuccess />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <MainLayout>
+              <ModalLogin />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/forgotpassword"
+          element={
+            <MainLayout>
+              <ModalForgotPassword/>
             </MainLayout>
           }
         />

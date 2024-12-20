@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,10 +14,9 @@ import UpdateProduct from "./UpdateProduct"; // Import UpdateProduct component
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showAddModal, setShowAddModal] = useState(false); 
-  const [showUpdateModal, setShowUpdateModal] = useState(false); 
-  const [selectedProduct, setSelectedProduct] = useState(null); 
-  
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   // Tách riêng hàm fetchProducts để tái sử dụng
   const fetchProducts = async () => {
@@ -96,8 +95,8 @@ const ManageProduct = () => {
   };
 
   const handleEditProduct = (product) => {
-    setSelectedProduct(product); 
-    setShowUpdateModal(true); 
+    setSelectedProduct(product);
+    setShowUpdateModal(true);
   };
 
   return (
@@ -230,7 +229,7 @@ const ManageProduct = () => {
                     <div className="group relative">
                       <button
                         className="rounded-full px-3 py-1 text-blue-400 hover:bg-slate-300"
-                        onClick={() => handleEditProduct(product)} 
+                        onClick={() => handleEditProduct(product)}
                       >
                         <FontAwesomeIcon icon={faPen} />
                       </button>

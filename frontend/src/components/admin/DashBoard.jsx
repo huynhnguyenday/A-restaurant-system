@@ -21,6 +21,7 @@ import Cookies from "js-cookie";
 import ManageOrder from "./OrderManage/ManageOrder";
 import ManageChart from "./ChartManage/ManageChart";
 import ManageCoupon from "./CouponManage/ManageCoupon";
+import ProfileAdmin from "./ProfileAdmin";
 
 
 function decodeJWT(token) {
@@ -121,6 +122,8 @@ const DashBoard = () => {
         return <ManageChart />;
       case "Coupon":
         return <ManageCoupon />;
+      case "ProfileAdmin":
+        return <ProfileAdmin />;
       default:
         return (
           <div className="p-6">
@@ -233,17 +236,19 @@ const DashBoard = () => {
           {/* Dropdown Menu */}
           {isOpen && (
             <div
-              className="absolute top-[56px] w-[180px] bg-white text-black shadow-lg"
+              className="absolute top-[56px] w-[180px] rounded-xl bg-white text-black shadow-lg"
               onMouseEnter={() => setIsOpen(true)}
               onMouseLeave={() => setIsOpen(false)}
             >
-              <ul className="pt-1">
-                <li className="cursor-pointer rounded-xl border-2 border-black px-4 py-3 hover:bg-gray-100">
-                  Thông tin cá nhân
-                </li>
+              <ul
+                className="cursor-pointer rounded-xl border-2 border-black px-4 py-3 hover:bg-gray-100"
+                onClick={() => handleSetActiveComponent("ProfileAdmin")}
+              >
+                Thông tin cá nhân
               </ul>
             </div>
           )}
+
           <div
             className="relative pr-8"
             onMouseEnter={() => setIsHovered(true)}

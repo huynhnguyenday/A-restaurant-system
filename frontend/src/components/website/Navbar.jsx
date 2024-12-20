@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
@@ -7,7 +7,6 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import NavbarLink from "./NavbarLink";
-import ModalLogin from "./ModalLogin";
 import SidebarCart from "./SidebarCart";
 import SidebarMenu from "./SidebarMenu";
 
@@ -15,7 +14,6 @@ const Navbar = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setCartVisible] = useState(false);
   const [isPopoverVisible, setPopoverVisible] = useState(false);
-  const [isLoginModalVisible, setLoginModalVisible] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Lấy giỏ hàng từ sessionStorage khi load trang
@@ -42,14 +40,6 @@ const Navbar = () => {
 
   const handleCartClick = () => {
     setCartVisible(!isCartVisible);
-  };
-
-  const handleLoginClick = () => {
-    setLoginModalVisible(true);
-  };
-
-  const handleLoginClose = () => {
-    setLoginModalVisible(false);
   };
 
   const removeItem = (id) => {
@@ -107,9 +97,8 @@ const Navbar = () => {
 
         {/* Login */}
         <a
-          href="#login"
+          href="/login"
           className="cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-[#d88453] lg:px-4"
-          onClick={handleLoginClick}
         >
           <FontAwesomeIcon icon={faUser} />
         </a>
@@ -142,11 +131,6 @@ const Navbar = () => {
       <SidebarMenu
         isMobileMenuOpen={isMobileMenuOpen}
         toggleMobileMenu={toggleMobileMenu}
-      />
-
-      <ModalLogin
-        isLoginModalVisible={isLoginModalVisible}
-        onClose={handleLoginClose}
       />
 
       {/* Overlay */}
