@@ -241,7 +241,7 @@ const DashBoard = () => {
               onMouseLeave={() => setIsOpen(false)}
             >
               <ul
-                className="cursor-pointer rounded-xl border-2 border-black px-4 py-3 hover:bg-gray-100"
+                className="cursor-pointer rounded-xl border-2 border-black px-4 py-3 hover:bg-black hover:text-white"
                 onClick={() => handleSetActiveComponent("ProfileAdmin")}
               >
                 Thông tin cá nhân

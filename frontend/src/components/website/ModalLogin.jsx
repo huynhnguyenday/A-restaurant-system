@@ -74,7 +74,10 @@ const LoginPage = () => {
 
         {isRegisterMode ? (
           <form onSubmit={handleRegister}>
-            <h3 className="font-josefin text-gray-600">Hãy tạo tài khoản để có thể xem lại lịch sử đơn hàng và sản phẩm yêu thích</h3>
+            <h3 className="font-josefin text-gray-600">
+              Hãy tạo tài khoản để có thể xem lại lịch sử đơn hàng và sản phẩm
+              yêu thích
+            </h3>
             <h4 className="pb-4 font-josefin text-gray-600">
               Vui lòng nhập đầy đủ thông tin!
             </h4>
@@ -151,12 +154,12 @@ const LoginPage = () => {
             )}
             <button
               type="submit"
-              className="w-full mt-3 rounded font-josefin bg-black py-3 text-white hover:bg-gray-600"
+              className="mt-3 w-full rounded bg-black py-3 font-josefin text-white hover:bg-gray-600"
             >
               Đăng Ký
             </button>
             <button
-                className="text-lg mt-2 text-gray-500 hover:text-black"
+              className="mt-2 text-lg text-gray-500 hover:text-black"
               onClick={() => setRegisterMode(false)}
             >
               Đã có tài khoản?
@@ -182,11 +185,12 @@ const LoginPage = () => {
               />
               <label
                 htmlFor="login_username"
-                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+                className="absolute top-1 z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:z-0 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:z-10 peer-focus:-translate-y-6 peer-focus:scale-75"
               >
                 Tên đăng nhập hoặc email
               </label>
             </div>
+
             <div className="relative z-0 mb-4">
               <input
                 type="password"
@@ -209,7 +213,7 @@ const LoginPage = () => {
             )}
             <button
               type="submit"
-              className="w-full mt-3 mb-2 rounded bg-black py-3 text-white hover:bg-gray-600"
+              className="mb-2 mt-3 w-full rounded bg-black py-3 text-white hover:bg-gray-600"
             >
               Đăng Nhập
             </button>

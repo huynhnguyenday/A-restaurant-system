@@ -1,14 +1,14 @@
 const ProfileAdmin = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
-      <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
+    <div className="flex items-center justify-center bg-gray-50 p-6">
+      <div className="w-full max-w-4xl rounded-lg bg-white p-6 shadow-lg">
         <div className="mb-4 text-center text-2xl font-bold">Trang cá nhân</div>
 
-        <div className="mb-4 flex space-x-6 max-w-4xl">
+        <div className="mb-4 flex max-w-4xl space-x-6">
           {/* Phần Tên và Category */}
-          <div className="w-2/3">
+          <div className="w-1/2">
             <label className="block pb-2 text-xl font-medium">
-              Tên sản phẩm
+              Tên người dùng
             </label>
             <input
               type="text"
@@ -16,9 +16,7 @@ const ProfileAdmin = () => {
               className="w-full rounded-md border border-gray-300 p-2"
               required
             />
-            <label className="block pb-2 text-xl font-medium">
-              Giá sản phẩm
-            </label>
+            <label className="block pb-2 text-xl font-medium">Mật khẩu</label>
             <input
               type="text"
               name="price"
@@ -26,15 +24,23 @@ const ProfileAdmin = () => {
               required
             />
 
-            <label className="mt-4 block pb-2 text-xl font-medium">
-              Giá giảm
-            </label>
+            <label className="mt-4 block pb-2 text-xl font-medium">Email</label>
             <input
               type="text"
               name="sell_price"
               className="w-full rounded-md border border-gray-300 p-2"
               required
             />
+            <div className="mb-4">
+              <label className="block pb-2 text-xl font-medium">
+                Số điện thoại
+              </label>
+              <input
+                type="text"
+                name="numbers"
+                className="w-full rounded-md border border-gray-300 p-2"
+              />
+            </div>
           </div>
 
           {/* Hiển thị ảnh đã chọn hoặc ảnh cũ */}
