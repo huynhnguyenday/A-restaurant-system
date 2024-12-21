@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import imgnews1 from "../../../../backend/assets/imgnews1.png";
 import imgnews2 from "../../../../backend/assets/imgnews2.png";

@@ -21,7 +21,7 @@ import Cookies from "js-cookie";
 import ManageOrder from "./OrderManage/ManageOrder";
 import ManageChart from "./ChartManage/ManageChart";
 import ManageCoupon from "./CouponManage/ManageCoupon";
-import ProfileAdmin from "./ProfileAdmin";
+import ProfileAdmin from "./ManageProfile/ProfileAdmin";
 
 
 function decodeJWT(token) {
