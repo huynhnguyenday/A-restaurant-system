@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const AddAccount = ({ onAddAccount, onClose }) => {
   const [newAccount, setNewAccount] = useState({

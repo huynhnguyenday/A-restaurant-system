@@ -7,21 +7,26 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules"; // Import Navigation module
 import "swiper/css";
 import "swiper/css/navigation";
+import Loading from "../components/website/Loading";
 
 const BlogMain = () => {
   const [blogs, setBlogs] = useState([]); // State lưu trữ dữ liệu blogs
   const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: false });
+  const [loading, setLoading] = useState(true);
 
   // Fetch blogs từ API
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
+        setLoading(true);
         const response = await axios.get("http://localhost:5000/api/blogs"); // Đường dẫn đến API
         if (response.data.success) {
           setBlogs(response.data.data); // Lưu data vào state
         }
       } catch (error) {
         console.error("Error fetching blogs:", error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -46,6 +51,12 @@ const BlogMain = () => {
           </div>
           <div className="mx-auto my-4 mb-14 h-1 w-12 bg-[#633c02]"></div>
         </div>
+        {loading ? (
+        // Hiển thị phần loading nếu dữ liệu chưa được tải
+        <div className="flex h-[255px] w-full items-center justify-center lg:h-[400px]">
+          <Loading /> {/* Hiển thị Loading khi đang tải dữ liệu */}
+        </div>
+      ) : (
         <div className="flex flex-wrap justify-center gap-12" ref={ref}>
           <Swiper
             modules={[Navigation]}
@@ -98,6 +109,7 @@ const BlogMain = () => {
             ))}
           </Swiper>
         </div>
+      )}
       </div>
     </div>
   );

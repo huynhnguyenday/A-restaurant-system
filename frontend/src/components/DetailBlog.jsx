@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./DetailBlog.css"; // Vẫn sử dụng CSS riêng cho styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
+import Loading from "../components/website/Loading";
 
 const DetailBlog = () => {
   const { id } = useParams(); // Lấy id từ URL
@@ -50,7 +51,7 @@ const DetailBlog = () => {
   }, [id, navigate]);
 
   if (loading) {
-    return <div className="loading">Đang tải...</div>;
+    return <div className="loading min-h-screen flex  w-full"><Loading/></div>;
   }
 
   if (!blog) {

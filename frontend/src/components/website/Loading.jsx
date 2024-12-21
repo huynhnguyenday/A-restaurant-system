@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const Example = () => {
   return (
-    <div className="grid place-content-center bg-white mx-auto my-auto">
+    <div className="grid place-content-center bg-transparent mx-auto my-auto">
       <BarLoader />
     </div>
   );

@@ -95,7 +95,7 @@ const SidebarCart = ({ handleCartClick }) => {
       </div>
       <Link to="/payment" state={{ cartItems, totalPrice }}>
         <button
-          className="mt-4 w-full cursor-pointer border-none bg-black p-2 text-white hover:bg-[#797a79]"
+          className="mt-4 w-full cursor-pointer border-none bg-black p-2 text-white transition-transform duration-200 hover:scale-95"
           onClick={() => {
             handleCartClick();
             handlePaymentClick();

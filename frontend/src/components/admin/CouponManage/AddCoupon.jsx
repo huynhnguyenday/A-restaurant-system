@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Loading from "../../website/Loading";
 
-const UpdateCoupon = ({ coupon, onClose, onUpdateSuccess }) => {
-  const [updatedCoupon, setUpdatedCoupon] = useState(coupon);
+const AddCoupon = ({ onClose, onAddSuccess }) => {
+  const [newCoupon, setNewCoupon] = useState({
+    code: "",
+    discountValue: "",
+    maxUsage: "",
+  });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setUpdatedCoupon(coupon); // Update the form whenever the coupon prop changes
-  }, [coupon]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedCoupon((prevCoupon) => ({
+    setNewCoupon((prevCoupon) => ({
       ...prevCoupon,
       [name]: value,
     }));
@@ -25,19 +25,19 @@ const UpdateCoupon = ({ coupon, onClose, onUpdateSuccess }) => {
     setError("");
 
     try {
-      const response = await axios.put(
-        `http://localhost:5000/api/coupons/${updatedCoupon._id}`,
-        updatedCoupon,
+      const response = await axios.post(
+        "http://localhost:5000/api/coupons",
+        newCoupon,
       );
 
-      if (response.status === 200) {
-        onUpdateSuccess(); // Gọi để reload lại danh sách coupon
+      if (response.status === 201) {
+        onAddSuccess(); // Gọi để reload lại danh sách coupon
         onClose(); // Đóng modal
       } else {
-        throw new Error("Cập nhật thất bại. Vui lòng thử lại.");
+        throw new Error("Thêm coupon thất bại. Vui lòng thử lại.");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Đã xảy ra lỗi khi cập nhật.");
+      setError(err.response?.data?.message || "Đã xảy ra lỗi khi thêm coupon.");
     } finally {
       setLoading(false);
     }
@@ -50,16 +50,14 @@ const UpdateCoupon = ({ coupon, onClose, onUpdateSuccess }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-        <div className="mb-4 text-center text-2xl font-bold">
-          Chỉnh sửa Coupon
-        </div>
+        <div className="mb-4 text-center text-2xl font-bold">Thêm Coupon</div>
         <form onSubmit={handleSave}>
           <div className="mb-4">
             <label className="mb-2 block text-lg font-medium">Mã Coupon</label>
             <input
               type="text"
               name="code"
-              value={updatedCoupon.code}
+              value={newCoupon.code}
               onChange={handleChange}
               className="w-full rounded-md border border-gray-300 p-2"
               placeholder="Nhập mã coupon"
@@ -73,7 +71,7 @@ const UpdateCoupon = ({ coupon, onClose, onUpdateSuccess }) => {
             <input
               type="text"
               name="discountValue"
-              value={updatedCoupon.discountValue}
+              value={newCoupon.discountValue}
               onChange={handleChange}
               className="w-full rounded-md border border-gray-300 p-2"
               placeholder="Nhập giá trị giảm"
@@ -87,14 +85,16 @@ const UpdateCoupon = ({ coupon, onClose, onUpdateSuccess }) => {
             <input
               type="text"
               name="maxUsage"
-              value={updatedCoupon.maxUsage}
+              value={newCoupon.maxUsage}
               onChange={handleChange}
               className="w-full rounded-md border border-gray-300 p-2"
               placeholder="Nhập số lượng coupon"
             />
           </div>
 
-          <div className="flex justify-center space-x-40 mt-8">
+          {error && <div className="mb-4 text-red-500">{error}</div>}
+
+          <div className="mt-8 flex justify-center space-x-40">
             <button
               type="button"
               onClick={handleCancel}
@@ -109,7 +109,7 @@ const UpdateCoupon = ({ coupon, onClose, onUpdateSuccess }) => {
               }`}
               disabled={loading}
             >
-              {loading ? <Loading /> : <> Cập nhật</>}
+              {loading ? <Loading /> : <>Thêm</>}
             </button>
           </div>
         </form>
@@ -118,4 +118,4 @@ const UpdateCoupon = ({ coupon, onClose, onUpdateSuccess }) => {
   );
 };
 
-export default UpdateCoupon;
+export default AddCoupon;

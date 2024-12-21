@@ -1,4 +1,3 @@
-import React from "react";
 import imgBackground from "../../../backend/assets/img_background.png"; // Đường dẫn tới ảnh
 
 const MainSlider = () => {
@@ -13,7 +12,7 @@ const MainSlider = () => {
         </h4>
         <a
           href="/menu"
-          className="btn-buy rounded-lg bg-[#d88453] px-6 py-2 text-2xl text-white hover:rounded-3xl hover:bg-[#633c02] "
+          className="btn-buy rounded-lg bg-[#d88453] px-6 font-josefin py-3 text-2xl text-white hover:rounded-3xl hover:bg-[#633c02] "
         >
           Mua ngay
         </a>

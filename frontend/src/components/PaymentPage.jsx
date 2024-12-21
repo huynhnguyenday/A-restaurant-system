@@ -286,7 +286,7 @@ const PaymentPage = () => {
 
             <button
               type="submit"
-              className="mt-8 h-16 w-full rounded-2xl bg-black px-4 font-josefin text-xl font-bold text-white hover:bg-[#494949]"
+              className="mt-8 h-16 w-full rounded-2xl bg-black px-4 font-josefin text-xl font-bold text-white transition-transform duration-200 hover:scale-95"
             >
               ĐẶT NGAY {finalPrice.toLocaleString()}₫
             </button>
@@ -359,7 +359,7 @@ const PaymentPage = () => {
             />
             <button
               type="button"
-              className="apply-coupon-btn h-12 w-1/3 rounded-full bg-black text-white"
+              className="apply-coupon-btn h-12 w-1/3 rounded-full bg-black text-white transition-transform duration-200 hover:scale-95"
               onClick={handleApplyCoupon}
             >
               Apply coupon

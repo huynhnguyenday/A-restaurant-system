@@ -154,7 +154,7 @@ const LoginPage = () => {
             )}
             <button
               type="submit"
-              className="mt-3 w-full rounded bg-black py-3 font-josefin text-white hover:bg-gray-600"
+              className="mt-3 w-full rounded bg-black py-3 font-josefin text-white transition-transform duration-200 hover:scale-95"
             >
               Đăng Ký
             </button>
@@ -213,7 +213,7 @@ const LoginPage = () => {
             )}
             <button
               type="submit"
-              className="mb-2 mt-3 w-full rounded bg-black py-3 text-white hover:bg-gray-600"
+              className="mb-2 mt-3 w-full font-josefin text-base rounded bg-black py-3 text-white transition-transform duration-200 hover:scale-95"
             >
               Đăng Nhập
             </button>

@@ -146,7 +146,7 @@ const DetailOrder = ({ order, onClose }) => {
                           số lượng: {item.quantity}
                         </p>
                         <p className="font-josefin">
-                          {item.totalPrice.toLocaleString()} ₫
+                          Tổng: {item.totalPrice.toLocaleString()} ₫
                         </p>
                       </div>
                     </div>

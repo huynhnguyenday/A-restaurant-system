@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import AddBlog from "./AddBlog";
 import UpdateBlog from "./UpdateBlog";
+import Loading from "../../website/Loading";
 
 const ManageBlog = () => {
   const [blogList, setBlogList] = useState([]);
@@ -17,15 +18,19 @@ const ManageBlog = () => {
   const [isAddFormVisible, setAddFormVisible] = useState(false);
   const [isEditFormVisible, setEditFormVisible] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Lọc blog dựa trên từ khóa tìm kiếm
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
+        setLoading(true);
         const response = await axios.get("http://localhost:5000/api/blogs");
         setBlogList(response.data.data);
       } catch (error) {
         console.error("Error fetching blogs:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -145,8 +150,12 @@ const ManageBlog = () => {
             </span>
           </div>
         </div>
-
-        {/* Blog Table */}
+        {loading ? (
+        // Hiển thị phần loading nếu dữ liệu chưa được tải
+        <div className="flex h-[255px] w-full items-center justify-center lg:h-[200px]">
+          <Loading /> {/* Hiển thị Loading khi đang tải dữ liệu */}
+        </div>
+      ) : (
         <div className="overflow-x-auto rounded-lg shadow-md">
           <table className="min-w-full table-auto">
             <thead>
@@ -242,6 +251,7 @@ const ManageBlog = () => {
             </tbody>
           </table>
         </div>
+      )}
       </div>
 
       {isAddFormVisible && (

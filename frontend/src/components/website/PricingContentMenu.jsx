@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import imgdropdown1 from "../../../../backend/assets/imgdropdown1.png";
 import imgdropdown2 from "../../../../backend/assets/imgdropdown2.png";
 import imgdropdown3 from "../../../../backend/assets/imgdropdown3.png";
+import Loading from "./Loading";
 
 const PricingContentMenu = ({ closeFlyout }) => {
   const [categories, setCategories] = useState([]); // Default categories
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           "http://localhost:5000/api/mainPages/activeCategories",
         );
@@ -22,6 +25,8 @@ const PricingContentMenu = ({ closeFlyout }) => {
         setCategories(categoryData); // Set fetched categories
       } catch (error) {
         console.error("Error fetching categories:", error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -43,17 +48,24 @@ const PricingContentMenu = ({ closeFlyout }) => {
       <div className="w-[400px] bg-[#2385a3] p-6 pr-4">
         <div className="mb-3 space-y-3">
           <h3 className="pb-4 text-3xl font-bold text-white">THỰC ĐƠN</h3>
-          <div className="space-y-4 pb-4">
-            {categories.map((category) => (
-              <a
-                key={category}
-                onClick={() => handleNavigate(category)}
-                className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-base !text-white hover:!text-slate-400"
-              >
-                + {category}
-              </a>
-            ))}
-          </div>
+          {loading ? (
+            // Hiển thị phần loading nếu dữ liệu chưa được tải
+            <div className="flex h-[255px] w-full items-center justify-center lg:h-[50px]">
+              <Loading /> {/* Hiển thị Loading khi đang tải dữ liệu */}
+            </div>
+          ) : (
+            <div className="space-y-4 pb-4">
+              {categories.map((category) => (
+                <a
+                  key={category}
+                  onClick={() => handleNavigate(category)}
+                  className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-base !text-white hover:!text-slate-400"
+                >
+                  + {category}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
         <button
           onClick={handleNavigateToMenu}

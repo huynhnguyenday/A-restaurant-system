@@ -26,14 +26,11 @@ const ModalForgotPassword = () => {
         </div>
         <button
           type="submit"
-          className="mt-3 w-full rounded-lg bg-black py-3 mb-2 text-xl font-josefin text-white hover:bg-gray-600"
+          className="mb-2 mt-3 w-full rounded-lg bg-black py-3 font-josefin text-xl text-white transition-transform duration-200 hover:scale-90"
         >
           Đặt lại mật khẩu
         </button>
-        <a
-          href="/login"
-          className="text-lg text-gray-500 hover:text-black"
-        >
+        <a href="/login" className="text-lg text-gray-500 hover:text-black">
           Quay lại đăng nhập?
         </a>
       </div>

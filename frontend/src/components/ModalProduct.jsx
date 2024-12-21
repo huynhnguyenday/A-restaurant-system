@@ -1,4 +1,3 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
@@ -115,7 +114,7 @@ const ModalProduct = ({
             </div>
           </div>
           <button
-            className="mt-4 h-14 w-full rounded-full bg-gradient-to-r from-[#00864a] to-[#925802] text-2xl font-bold text-white transition hover:from-[#006635] hover:to-[#7a3e01]"
+            className="mt-4 h-14 w-full rounded-full bg-gradient-to-r from-[#00864a] to-[#925802] text-2xl font-bold text-white transition-transform duration-200 hover:scale-95 hover:text-3xl"
             onClick={handleAddToCart}
           >
             <FontAwesomeIcon icon={faBasketShopping} /> Thêm vào giỏ

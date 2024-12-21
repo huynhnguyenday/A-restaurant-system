@@ -1,5 +1,3 @@
-import React from "react";
-
 const Newsletter = () => {
   return (
     <div className="bg-[#f2f2f2] p-5">

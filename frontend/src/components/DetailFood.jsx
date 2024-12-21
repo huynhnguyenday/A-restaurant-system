@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Loading from "../components/website/Loading";
 
 const DetailFood = () => {
   const [quantity, setQuantity] = useState(1);
@@ -55,11 +56,24 @@ const DetailFood = () => {
   }, []);
 
   if (loading) {
-    return <div>Đang tải dữ liệu...</div>;
+    return (
+      <div className="flex h-[255px] w-full items-center justify-center lg:h-[550px]">
+        <Loading />
+      </div>
+    );
   }
 
   if (!product) {
-    return <div>Sản phẩm không tồn tại.</div>;
+    return (
+      <button
+        type="button"
+        className="mx-auto mb-20 mt-20 flex h-24 w-1/3 items-center justify-center rounded-full bg-black text-2xl text-white"
+      >
+        <a href="/menu" className="flex items-center space-x-2">
+          <span className="text-xl">QUAY TRỞ LẠI THỰC ĐƠN</span>
+        </a>
+      </button>
+    );
   }
 
   const activeCategory = product.category.name; // Đảm bảo sản phẩm có thuộc tính category
@@ -166,7 +180,7 @@ const DetailFood = () => {
             </button>
           </div>
           <button
-            className="font-josefin-sans mt-4 h-[56px] w-[393px] cursor-pointer rounded-full bg-gradient-to-r from-[#00864a] to-[#925802] text-[28px] font-bold text-white transition-colors hover:from-[#006635] hover:to-[#7a3e01]"
+            className="font-josefin-sans mt-4 h-[56px] w-[393px] cursor-pointer rounded-full bg-gradient-to-r from-[#00864a] to-[#925802] text-[28px] font-bold text-white transition-transform duration-200 hover:scale-95"
             onClick={handleAddToCart}
           >
             <FontAwesomeIcon icon={faBasketShopping} /> Thêm vào giỏ

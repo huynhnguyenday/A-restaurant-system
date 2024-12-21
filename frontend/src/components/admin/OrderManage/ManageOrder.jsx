@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import DetailOrder from "./DetailOrder"; // Import DetailOrder component
+import DetailOrder from "./DetailOrder";
+import Loading from "../../website/Loading";
 
 const ManageOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -67,47 +68,53 @@ const ManageOrder = () => {
           />
         </div>
 
-        {/* Orders Table */}
-        <div className="overflow-x-auto rounded-lg shadow-md">
-          <table className="min-w-full table-auto">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="px-4 py-3 text-center">Tên khách hàng</th>
-                <th className="px-4 py-3 text-center">Email</th>
-                <th className="px-4 py-3 text-center">
-                  Phương thức thanh toán
-                </th>
-                <th className="px-4 py-3 text-center">Xem</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredOrders.map((order) => (
-                <tr key={order.id} className="border-b">
-                  <td className="px-4 py-6 text-center font-bold">
-                    {order.name}
-                  </td>
-                  <td className="px-4 py-6 text-center">{order.email}</td>
-                  <td className="px-4 py-6 text-center">
-                    {order.paymentMethod}
-                  </td>
-                  <td className="px-4 py-6 text-center text-xl">
-                    <div className="group relative">
-                      <button
-                        onClick={() => handleShowOrderDetail(order)}
-                        className="rounded-full px-3 py-1 text-blue-400 hover:bg-slate-300"
-                      >
-                        <FontAwesomeIcon icon={faEye} />
-                      </button>
-                      <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                        Xem chi tiết
-                      </span>
-                    </div>
-                  </td>
+        {loading ? (
+          // Hiển thị phần loading nếu dữ liệu chưa được tải
+          <div className="flex h-[255px] w-full items-center justify-center lg:h-[500px]">
+            <Loading /> {/* Hiển thị Loading khi đang tải dữ liệu */}
+          </div>
+        ) : (
+          <div className="overflow-x-auto rounded-lg shadow-md">
+            <table className="min-w-full table-auto">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-3 text-center">Tên khách hàng</th>
+                  <th className="px-4 py-3 text-center">Email</th>
+                  <th className="px-4 py-3 text-center">
+                    Phương thức thanh toán
+                  </th>
+                  <th className="px-4 py-3 text-center">Xem</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filteredOrders.map((order) => (
+                  <tr key={order.id} className="border-b">
+                    <td className="px-4 py-6 text-center font-bold">
+                      {order.name}
+                    </td>
+                    <td className="px-4 py-6 text-center">{order.email}</td>
+                    <td className="px-4 py-6 text-center">
+                      {order.paymentMethod}
+                    </td>
+                    <td className="px-4 py-6 text-center text-xl">
+                      <div className="group relative">
+                        <button
+                          onClick={() => handleShowOrderDetail(order)}
+                          className="rounded-full px-3 py-1 text-blue-400 hover:bg-slate-300"
+                        >
+                          <FontAwesomeIcon icon={faEye} />
+                        </button>
+                        <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-sm text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                          Xem chi tiết
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         {/* Show Order Detail Modal */}
         {showDetailModal && (
