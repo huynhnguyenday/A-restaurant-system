@@ -23,7 +23,6 @@ import ManageChart from "./ChartManage/ManageChart";
 import ManageCoupon from "./CouponManage/ManageCoupon";
 import ProfileAdmin from "./ManageProfile/ProfileAdmin";
 
-
 function decodeJWT(token) {
   const base64Url = token.split(".")[1]; // Lấy phần payload
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/"); // Đổi ký tự '-' và '_' về '+', '/'
@@ -236,15 +235,25 @@ const DashBoard = () => {
           {/* Dropdown Menu */}
           {isOpen && (
             <div
-              className="absolute top-[56px] w-[180px] rounded-xl bg-white text-black shadow-lg"
+              className="absolute top-[56px] w-[180px] border-black border-2 rounded-xl bg-white text-black shadow-lg"
               onMouseEnter={() => setIsOpen(true)}
               onMouseLeave={() => setIsOpen(false)}
             >
-              <ul
-                className="cursor-pointer rounded-xl border-2 border-black px-4 py-3 hover:bg-black hover:text-white"
-                onClick={() => handleSetActiveComponent("ProfileAdmin")}
-              >
-                Thông tin cá nhân
+              <ul>
+                <li
+                  className="cursor-pointer rounded-t-lg border-black border-b-2 px-4 py-3 hover:bg-black hover:text-white"
+                  onClick={() => handleSetActiveComponent("ProfileAdmin")}
+                >
+                  Thông tin cá nhân
+                </li>
+                <li>
+                  <a
+                    className="block cursor-pointer rounded-b-lg px-4 py-3 text-center hover:bg-black hover:text-white"
+                    href="/"
+                  >
+                    Đăng xuất
+                  </a>
+                </li>
               </ul>
             </div>
           )}
