@@ -70,7 +70,8 @@ const ManageChart = () => {
     return yesterday;
   };
 
-  const [timeRange, setTimeRange] = useState("month");
+  const [revenueStartDate, setRevenueStartDate] = useState(getYesterday());
+  const [revenueEndDate, setRevenueEndDate] = useState(getYesterday());
   const [revenueData, setRevenueData] = useState({
     labels: [],
     datasets: [{ label: "Doanh thu", data: [] }],
@@ -85,6 +86,56 @@ const ManageChart = () => {
     useState(getYesterday()); // Default to yesterday
   const [pieEndDateLessProucts, setPieEndDateLessProucts] =
     useState(getYesterday());
+
+  const calculateRevenueData = () => {
+    const filteredOrders = placeholderOrders.filter((order) => {
+      const orderDate = new Date(order.orderDate);
+      const normalizedStartDate = new Date(revenueStartDate);
+      normalizedStartDate.setHours(0, 0, 0, 0);
+
+      const normalizedEndDate = new Date(revenueEndDate);
+      normalizedEndDate.setHours(23, 59, 59, 999);
+
+      return orderDate >= normalizedStartDate && orderDate <= normalizedEndDate;
+    });
+
+    const labels = [];
+    const revenue = [];
+
+    filteredOrders.forEach((order) => {
+      const orderDate = order.orderDate;
+      const dateLabel = new Date(orderDate).toLocaleDateString("vi-VN");
+      const orderRevenue = order.cart.reduce(
+        (sum, item) => sum + item.totalPrice,
+        0,
+      );
+
+      const existingIndex = labels.indexOf(dateLabel);
+      if (existingIndex >= 0) {
+        revenue[existingIndex] += orderRevenue;
+      } else {
+        labels.push(dateLabel);
+        revenue.push(orderRevenue);
+      }
+    });
+
+    setRevenueData({
+      labels,
+      datasets: [
+        {
+          label: "Doanh thu",
+          data: revenue,
+          backgroundColor: "rgba(75, 192, 192, 0.5)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 3,
+        },
+      ],
+    });
+  };
+
+  useEffect(() => {
+    calculateRevenueData();
+  }, [revenueStartDate, revenueEndDate]);
 
   const getTopProducts = () => {
     const productSales = {};
@@ -149,87 +200,6 @@ const ManageChart = () => {
       },
     ],
   };
-
-  // Hàm lấy doanh thu theo thời gian (week, month, year)
-  const getRevenueByTime = (timeRange) => {
-    const revenueByTime = {
-      week: {
-        labels: [
-          "Thứ 2",
-          "Thứ 3",
-          "Thứ 4",
-          "Thứ 5",
-          "Thứ 6",
-          "Thứ 7",
-          "Chủ Nhật",
-        ],
-        data: new Array(7).fill(0),
-      },
-      month: {
-        labels: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4"],
-        data: new Array(4).fill(0),
-      },
-      year: {
-        labels: [
-          "Tháng Một",
-          "Tháng Hai",
-          "Tháng Ba",
-          "Tháng Tư",
-          "Tháng Năm",
-          "Tháng Sáu",
-          "Tháng Bảy",
-          "Tháng Tám",
-          "Tháng Chín",
-          "Tháng Mười",
-          "Tháng Mười Một",
-          "Tháng Mười Hai",
-        ],
-        data: new Array(12).fill(0),
-      },
-    };
-
-    placeholderOrders.forEach((order) => {
-      const orderDate = new Date(order.orderDate);
-      const orderRevenue = order.cart.reduce(
-        (sum, item) => sum + item.totalPrice,
-        0,
-      );
-
-      if (timeRange === "week") {
-        const dayOfWeek = orderDate.getDay();
-        revenueByTime.week.data[dayOfWeek] += orderRevenue;
-      }
-
-      if (timeRange === "month") {
-        const weekOfMonth = Math.floor(orderDate.getDate() / 7);
-        revenueByTime.month.data[weekOfMonth] += orderRevenue;
-      }
-
-      if (timeRange === "year") {
-        const month = orderDate.getMonth();
-        revenueByTime.year.data[month] += orderRevenue;
-      }
-    });
-
-    return revenueByTime[timeRange];
-  };
-
-  // Cập nhật các biểu đồ khi thời gian thay đổi
-  useEffect(() => {
-    const revenue = getRevenueByTime(timeRange);
-    setRevenueData({
-      labels: revenue.labels,
-      datasets: [
-        {
-          label: "Doanh thu",
-          data: revenue.data,
-          backgroundColor: "rgba(75, 192, 192, 0.5)",
-          borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 3,
-        },
-      ],
-    });
-  }, [timeRange]);
 
   const getBottomProducts = () => {
     const productSales = {};
@@ -302,22 +272,27 @@ const ManageChart = () => {
         <h2 className="text-center font-josefin text-4xl font-bold">
           Doanh thu cửa hàng
         </h2>
-        <label htmlFor="timeRange" className="font-josefin text-2xl font-bold">
-          Chọn Thời gian:
-        </label>
-        <select
-          id="timeRange"
-          value={timeRange}
-          onChange={(e) => setTimeRange(e.target.value)}
-          className="ml-2 rounded-md border border-gray-300 p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="week">Tuần</option>
-          <option value="month">Tháng</option>
-          <option value="year">Năm</option>
-        </select>
+        <div className="mb-4 flex justify-center">
+          <label className="mr-2 mt-2 font-josefin text-xl font-bold">
+            Lọc Từ Ngày:{" "}
+          </label>
+          <DatePicker
+            selected={revenueStartDate}
+            onChange={(date) => setRevenueStartDate(date)}
+            className="border border-gray-300 p-2 text-center"
+          />
+          <span className="mx-6 mt-2 font-josefin text-xl font-bold">
+            Đến Ngày:
+          </span>
+          <DatePicker
+            selected={revenueEndDate}
+            onChange={(date) => setRevenueEndDate(date)}
+            className="border border-gray-300 p-2 text-center"
+          />
+        </div>
       </div>
 
-      {/* Line Chart - Adjust height and margin */}
+      {/* Line Chart */}
       <div className="mb-16 w-11/12">
         <Line data={revenueData} />
       </div>
