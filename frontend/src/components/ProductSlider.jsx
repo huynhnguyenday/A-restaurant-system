@@ -121,7 +121,7 @@ const ProductSlider = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="mx-auto h-[223px] w-[154px] transform transition-transform duration-300 ease-in-out group-hover:scale-110"
+                      className="mx-auto h-[223px] transform transition-transform duration-300 ease-in-out group-hover:scale-110"
                     />
                   </Link>
                 </div>

@@ -235,13 +235,13 @@ const DashBoard = () => {
           {/* Dropdown Menu */}
           {isOpen && (
             <div
-              className="absolute top-[56px] w-[180px] border-black border-2 rounded-xl bg-white text-black shadow-lg"
+              className="absolute top-[56px] w-[180px] rounded-xl border-2 border-black bg-white text-black shadow-lg"
               onMouseEnter={() => setIsOpen(true)}
               onMouseLeave={() => setIsOpen(false)}
             >
               <ul>
                 <li
-                  className="cursor-pointer rounded-t-lg border-black border-b-2 px-4 py-3 hover:bg-black hover:text-white"
+                  className="cursor-pointer rounded-t-lg border-b-2 border-black px-4 py-3 hover:bg-black hover:text-white"
                   onClick={() => handleSetActiveComponent("ProfileAdmin")}
                 >
                   Thông tin cá nhân

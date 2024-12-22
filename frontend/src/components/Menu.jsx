@@ -164,12 +164,12 @@ const Menu = () => {
                 className="group relative mt-8 flex h-[340px] w-[190px] flex-col justify-between border-l border-r border-gray-300 bg-white p-3 text-center transition-shadow ease-linear lg:h-[340px] lg:w-[250px]"
                 key={item._id}
               >
-                <div>
+                <div className="">
                   <Link to={`/detailfood/${item._id}`}>
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="mx-auto h-[216px] w-[154px] transition-transform ease-linear group-hover:scale-[1.18]"
+                      className="mx-auto h-[216px] transition-transform ease-linear group-hover:scale-[1.18]"
                     />
                   </Link>
                 </div>
