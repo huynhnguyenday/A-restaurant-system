@@ -53,6 +53,17 @@ export const resetPassword = async (req, res) => {
   res.status(200).json({ success: true, message: "Register user" });
 };
 
-export const logout = async (req, res) => {
-  res.status(200).json({ success: true, message: "Register user" });
+export const logout = (req, res) => {
+  // Xóa JWT token trong cookie
+  try {
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Bảo đảm token chỉ bị xóa trong môi trường bảo mật
+      sameSite: "strict",
+    });
+
+    res.status(200).json({ success: true, message: "Đăng xuất thành công" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Đăng xuất thất bại" });
+  }
 };

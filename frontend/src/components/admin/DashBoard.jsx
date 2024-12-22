@@ -22,7 +22,10 @@ import ManageOrder from "./OrderManage/ManageOrder";
 import ManageChart from "./ChartManage/ManageChart";
 import ManageCoupon from "./CouponManage/ManageCoupon";
 import ProfileAdmin from "./ManageProfile/ProfileAdmin";
+import axios from "axios";
+import { toast } from "react-toastify";
 
+//Do Decode bị lỗi
 function decodeJWT(token) {
   const base64Url = token.split(".")[1]; // Lấy phần payload
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/"); // Đổi ký tự '-' và '_' về '+', '/'
@@ -92,6 +95,29 @@ const DashBoard = () => {
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = async () => {
+    // Xóa cookie chứa JWT token
+    try {
+      // Gửi yêu cầu logout tới backend (xóa JWT cookie ở server)
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/logout",
+        {},
+        { withCredentials: true },
+      );
+
+      if (response.data.success) {
+        // Xóa JWT token từ cookies ở frontend
+        Cookies.remove("jwtToken");
+
+        // Điều hướng đến trang login hoặc trang chính
+        window.location.href = "/login";
+        toast.success("Đăng xuất thành công!");
+      }
+    } catch (error) {
+      toast.error("Lỗi đăng xuất:", error);
+    }
   };
 
   const renderContent = () => {
@@ -249,7 +275,7 @@ const DashBoard = () => {
                 <li>
                   <a
                     className="block cursor-pointer rounded-b-lg px-4 py-3 text-center hover:bg-black hover:text-white"
-                    href="/"
+                    onClick={handleLogout}
                   >
                     Đăng xuất
                   </a>

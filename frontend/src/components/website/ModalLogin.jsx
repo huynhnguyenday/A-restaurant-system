@@ -213,7 +213,7 @@ const LoginPage = () => {
             )}
             <button
               type="submit"
-              className="mb-2 mt-3 w-full font-josefin text-base rounded bg-black py-3 text-white transition-transform duration-200 hover:scale-95"
+              className="mb-2 mt-3 w-full rounded bg-black py-3 font-josefin text-base text-white transition-transform duration-200 hover:scale-95"
             >
               Đăng Nhập
             </button>
