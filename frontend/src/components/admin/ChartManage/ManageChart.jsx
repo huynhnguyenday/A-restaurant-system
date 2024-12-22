@@ -73,7 +73,7 @@ const ManageChart = () => {
 
   const calculateRevenueData = () => {
     const filteredOrders = orders.filter((order) => {
-      const orderDate = new Date(order.orderDate);
+      const orderDate = new Date(order.createdAt); // Sử dụng createdAt
       const normalizedStartDate = new Date(revenueStartDate);
       normalizedStartDate.setHours(0, 0, 0, 0);
 
@@ -87,7 +87,7 @@ const ManageChart = () => {
     const revenue = [];
 
     filteredOrders.forEach((order) => {
-      const orderDate = order.orderDate;
+      const orderDate = order.createdAt; // Sử dụng createdAt
       const dateLabel = new Date(orderDate).toLocaleDateString("vi-VN");
       const orderRevenue = order.cart.reduce(
         (sum, item) => sum + item.totalPrice,
@@ -121,7 +121,7 @@ const ManageChart = () => {
     const productSales = {};
 
     const filteredOrders = orders.filter((order) => {
-      const orderDate = new Date(order.orderDate);
+      const orderDate = new Date(order.createdAt); // Sử dụng createdAt
       const normalizedStartDate = new Date(
         pieStartDateTopProducts.setHours(0, 0, 0, 0),
       );
@@ -178,7 +178,7 @@ const ManageChart = () => {
     const productSales = {};
 
     const filteredOrders = orders.filter((order) => {
-      const orderDate = new Date(order.orderDate);
+      const orderDate = new Date(order.createdAt); // Sử dụng createdAt
       const normalizedStartDate = new Date(pieStartDateLessProucts);
       normalizedStartDate.setHours(0, 0, 0, 0);
 
@@ -257,6 +257,7 @@ const ManageChart = () => {
           <DatePicker
             selected={revenueStartDate}
             onChange={(date) => setRevenueStartDate(date)}
+            dateFormat="dd/MM/yyyy"
             className="border border-gray-300 p-2 text-center"
           />
           <span className="mx-6 mt-2 font-josefin text-xl font-bold">
@@ -265,13 +266,14 @@ const ManageChart = () => {
           <DatePicker
             selected={revenueEndDate}
             onChange={(date) => setRevenueEndDate(date)}
+            dateFormat="dd/MM/yyyy"
             className="border border-gray-300 p-2 text-center"
           />
         </div>
       </div>
 
       {/* Line Chart */}
-      <div className="mb-16 w-11/12">
+      <div className="mb-16 w-full">
         <Line data={revenueData} />
       </div>
 
@@ -289,6 +291,7 @@ const ManageChart = () => {
           <DatePicker
             selected={pieStartDateTopProducts}
             onChange={(date) => setPieStartDateTopProducts(date)}
+            dateFormat="dd/MM/yyyy"
             className="border border-gray-300 p-2 text-center"
           />
           <span className="mx-6 mt-2 font-josefin text-xl font-bold">
@@ -297,12 +300,13 @@ const ManageChart = () => {
           <DatePicker
             selected={pieEndDateTopProducts}
             onChange={(date) => setPieEndDateTopProducts(date)}
+            dateFormat="dd/MM/yyyy"
             className="border border-gray-300 p-2 text-center"
           />
         </div>
 
         {/* Pie Chart for Top 5 Products */}
-        <div className="mb-6 mt-4 w-full md:w-4/5">
+        <div className="mb-6 mt-4 h-5/6 w-full">
           <Bar data={topProductsChartData} />
         </div>
       </div>
@@ -320,6 +324,7 @@ const ManageChart = () => {
           <DatePicker
             selected={pieStartDateLessProucts}
             onChange={(date) => setPieStartDateLessProucts(date)}
+            dateFormat="dd/MM/yyyy"
             className="border border-gray-300 p-2 text-center"
           />
           <span className="mx-6 mt-2 font-josefin text-xl font-bold">
@@ -328,12 +333,13 @@ const ManageChart = () => {
           <DatePicker
             selected={pieEndDateLessProucts}
             onChange={(date) => setPieEndDateLessProucts(date)}
+            dateFormat="dd/MM/yyyy"
             className="border border-gray-300 p-2 text-center"
           />
         </div>
 
         {/* Pie Chart for Top 5 Products */}
-        <div className="mb-6 mt-4 w-full md:w-4/5">
+        <div className="mb-6 mt-4 w-full">
           <Bar data={bottomProductsChartData} />
         </div>
       </div>

@@ -69,7 +69,7 @@ const ModalProduct = ({
           <img
             src={selectedProduct.image}
             alt={selectedProduct.name}
-            className="max-h-[300px] max-w-full object-contain"
+            className="max-h-[400px] max-w-full object-contain"
           />
         </div>
 

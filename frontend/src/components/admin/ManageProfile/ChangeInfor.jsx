@@ -8,10 +8,6 @@ const ChangeInfor = ({ onClose }) => {
         {/* Nội dung form */}
         <form>
           <label className="mb-2 mt-8 block font-josefin text-2xl font-bold">
-            Tên tài khoản
-          </label>
-          <input type="text" className="h-11 w-full rounded border-2 p-2" />
-          <label className="mb-2 mt-8 block font-josefin text-2xl font-bold">
             Email
           </label>
           <input type="email" className="h-11 w-full rounded border-2 p-2" />

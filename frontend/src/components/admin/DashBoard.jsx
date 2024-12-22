@@ -43,7 +43,7 @@ const SidebarItem = ({ icon, label, isSidebarExpanded, onClick, isActive }) => (
     className={`flex cursor-pointer items-center px-4 py-6 ${
       isActive
         ? "ml-2 mr-2 flex items-center justify-center rounded-2xl bg-black text-white"
-        : "hover:bg-gray-100"
+        : "hover:bg-gray-100 hover:rounded-xl hover:mx-2"
     }`}
     onClick={onClick}
   >
