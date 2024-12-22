@@ -157,18 +157,3 @@ export const updateOrder = async (req, res) => {
     res.status(500).json({ message: "Lỗi server" });
   }
 };
-
-export const getSpecificOrder = async (req, res) => {
-  try {
-    const orders = await Order.find()
-      .select("name email payMethod")
-      .sort({ createAt: -1 });
-
-    res
-      .status(200)
-      .json({ message: "Lấy danh sách đơn hàng thành công!", orders });
-  } catch (error) {
-    console.log("Lỗi khi lấy danh sách đơn hàng: ", error);
-    res.status(500).json({ message: "Lỗi server" });
-  }
-};

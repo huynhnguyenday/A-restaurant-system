@@ -14,6 +14,7 @@ import {
 } from "chart.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
 
 // Đăng ký các thành phần của Chart.js
 ChartJS.register(
@@ -28,67 +29,50 @@ ChartJS.register(
   ArcElement,
 );
 
-const placeholderOrders = [
-  {
-    id: "1",
-    name: "Nguyen Van A",
-    address: "123 Đường ABC, Quận 1, TP. HCM",
-    number: "0987654321",
-    email: "nguyenvana@example.com",
-    note: "Giao vào buổi tối",
-    paymentMethod: "COD",
-    cart: [
-      {
-        product: {
-          image: "imgfood3",
-          name: "Sản phẩm 7",
-          sell_price: 100000,
-        },
-        quantity: 20,
-        totalPrice: 200000,
-      },
-      {
-        product: {
-          image: "imgfood4",
-          name: "Sản phẩm 2",
-          sell_price: 150000,
-        },
-        quantity: 3,
-        totalPrice: 450000,
-      },
-    ],
-    orderDate: "2024-01-15",
-  },
-];
-
 const ManageChart = () => {
-  // Calculate yesterday's date for default pie chart filter
-  const getYesterday = () => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1); // Set date to one day before
-    yesterday.setHours(0, 0, 0, 0); // Set time to 00:00 to normalize the date
-    return yesterday;
-  };
-
-  const [revenueStartDate, setRevenueStartDate] = useState(getYesterday());
-  const [revenueEndDate, setRevenueEndDate] = useState(getYesterday());
+  const [orders, setOrders] = useState([]); // Dữ liệu thực từ API
   const [revenueData, setRevenueData] = useState({
     labels: [],
     datasets: [{ label: "Doanh thu", data: [] }],
   });
   const [filteredTopProducts, setFilteredTopProducts] = useState([]);
-  const [pieStartDateTopProducts, setPieStartDateTopProducts] =
-    useState(getYesterday()); // Default to yesterday
-  const [pieEndDateTopProducts, setPieEndDateTopProducts] =
-    useState(getYesterday()); // Default to yesterday
   const [filteredBottomProducts, setFilteredBottomProducts] = useState([]);
+
+  const getYesterday = () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(0, 0, 0, 0);
+    return yesterday;
+  };
+
+  const [revenueStartDate, setRevenueStartDate] = useState(getYesterday());
+  const [revenueEndDate, setRevenueEndDate] = useState(getYesterday());
+  const [pieStartDateTopProducts, setPieStartDateTopProducts] =
+    useState(getYesterday());
+  const [pieEndDateTopProducts, setPieEndDateTopProducts] =
+    useState(getYesterday());
   const [pieStartDateLessProucts, setPieStartDateLessProucts] =
-    useState(getYesterday()); // Default to yesterday
+    useState(getYesterday());
   const [pieEndDateLessProucts, setPieEndDateLessProucts] =
     useState(getYesterday());
 
+  // Hàm gọi API để lấy dữ liệu đơn hàng
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/orders");
+      console.log("Dữ liệu từ API:", response.data.data);
+      setOrders(response.data.data);
+    } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu đơn hàng:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders(); // Gọi API khi component được render lần đầu
+  }, []);
+
   const calculateRevenueData = () => {
-    const filteredOrders = placeholderOrders.filter((order) => {
+    const filteredOrders = orders.filter((order) => {
       const orderDate = new Date(order.orderDate);
       const normalizedStartDate = new Date(revenueStartDate);
       normalizedStartDate.setHours(0, 0, 0, 0);
@@ -133,15 +117,10 @@ const ManageChart = () => {
     });
   };
 
-  useEffect(() => {
-    calculateRevenueData();
-  }, [revenueStartDate, revenueEndDate]);
-
   const getTopProducts = () => {
     const productSales = {};
 
-    // Filter orders based on the date range (using pieStartDate and pieEndDate)
-    const filteredOrders = placeholderOrders.filter((order) => {
+    const filteredOrders = orders.filter((order) => {
       const orderDate = new Date(order.orderDate);
       const normalizedStartDate = new Date(
         pieStartDateTopProducts.setHours(0, 0, 0, 0),
@@ -152,7 +131,6 @@ const ManageChart = () => {
       return orderDate >= normalizedStartDate && orderDate <= normalizedEndDate;
     });
 
-    // Aggregate sales for each product
     filteredOrders.forEach((order) => {
       order.cart.forEach((item) => {
         const productName = item.product.name;
@@ -163,7 +141,6 @@ const ManageChart = () => {
       });
     });
 
-    // Sort products by quantity sold and get the top 5
     const sortedProducts = Object.entries(productSales)
       .map(([name, quantity]) => ({ name, quantity }))
       .sort((a, b) => b.quantity - a.quantity)
@@ -171,10 +148,6 @@ const ManageChart = () => {
 
     setFilteredTopProducts(sortedProducts);
   };
-
-  useEffect(() => {
-    getTopProducts();
-  }, [pieStartDateTopProducts, pieEndDateTopProducts]);
 
   const topProductsChartData = {
     labels: filteredTopProducts.map((product) => product.name),
@@ -204,19 +177,17 @@ const ManageChart = () => {
   const getBottomProducts = () => {
     const productSales = {};
 
-    // Filter orders based on the date range (using pieStartDateLessProucts and pieEndDateLessProucts)
-    const filteredOrders = placeholderOrders.filter((order) => {
+    const filteredOrders = orders.filter((order) => {
       const orderDate = new Date(order.orderDate);
       const normalizedStartDate = new Date(pieStartDateLessProucts);
-      normalizedStartDate.setHours(0, 0, 0, 0); // Normalize start date to midnight
+      normalizedStartDate.setHours(0, 0, 0, 0);
 
       const normalizedEndDate = new Date(pieEndDateLessProucts);
-      normalizedEndDate.setHours(23, 59, 59, 999); // Normalize end date to the end of the day
+      normalizedEndDate.setHours(23, 59, 59, 999);
 
       return orderDate >= normalizedStartDate && orderDate <= normalizedEndDate;
     });
 
-    // Aggregate sales for each product
     filteredOrders.forEach((order) => {
       order.cart.forEach((item) => {
         const productName = item.product.name;
@@ -227,18 +198,25 @@ const ManageChart = () => {
       });
     });
 
-    // Sort products by quantity sold and get the bottom 5
     const sortedProducts = Object.entries(productSales)
       .map(([name, quantity]) => ({ name, quantity }))
-      .sort((a, b) => a.quantity - b.quantity) // Sort in ascending order
+      .sort((a, b) => a.quantity - b.quantity)
       .slice(0, 5);
 
     setFilteredBottomProducts(sortedProducts);
   };
 
   useEffect(() => {
-    getBottomProducts(); // Fetch bottom products when date range changes
-  }, [pieStartDateLessProucts, pieEndDateLessProucts]);
+    calculateRevenueData();
+  }, [revenueStartDate, revenueEndDate, orders]);
+
+  useEffect(() => {
+    getTopProducts();
+  }, [pieStartDateTopProducts, pieEndDateTopProducts, orders]);
+
+  useEffect(() => {
+    getBottomProducts();
+  }, [pieStartDateLessProucts, pieEndDateLessProucts, orders]);
 
   const bottomProductsChartData = {
     labels: filteredBottomProducts.map((product) => product.name),
