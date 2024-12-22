@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import { decodeJWT } from "../utils/jwtUtils";
 
 const LoginPage = () => {
   const [isRegisterMode, setRegisterMode] = useState(false);
@@ -31,9 +32,22 @@ const LoginPage = () => {
         const token = response.data.token;
         if (token) {
           Cookies.set("jwtToken", token, { expires: 7, path: "/" });
-        }
 
-        navigate("/admin");
+          const decoded = decodeJWT(token);
+          console.log("Decoded Token:", decoded);
+
+          // Điều hướng dựa trên role
+          if (
+            decoded.role.includes("admin") ||
+            decoded.role.includes("staff")
+          ) {
+            navigate("/admin");
+          } else if (decoded.role.includes("customer")) {
+            navigate("/");
+          } else {
+            toast.error("Vai trò không hợp lệ!");
+          }
+        }
       }
     } catch (error) {
       if (error.response && error.response.data) {
