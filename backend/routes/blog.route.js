@@ -8,6 +8,7 @@ import {
   getBannerBlogs,
   getHotBlogs,
   getBlogById,
+  getLatestBlogs,
 } from "../controllers/blog.controller.js";
 
 const router = express.Router();
@@ -15,6 +16,8 @@ const router = express.Router();
 router.get("/bannerBlogs", getBannerBlogs);
 
 router.get("/hotBlogs", getHotBlogs);
+
+router.get("/latestBlogs", getLatestBlogs);
 
 // Lấy tất cả blogs
 router.get("/", getBlogs);

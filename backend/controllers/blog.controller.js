@@ -214,3 +214,21 @@ export const getBannerBlogs = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
+export const getLatestBlogs = async (req, res) => {
+  try {
+    // Lấy 5 blog mới nhất (sắp xếp theo createdAt giảm dần)
+    const latestBlogs = await Blog.find()
+      .sort({ createdAt: -1 }) // Sắp xếp giảm dần theo createdAt
+      .limit(5) // Lấy tối đa 5 blog
+      .select("title");
+
+    res.status(200).json({
+      success: true,
+      data: latestBlogs,
+    });
+  } catch (error) {
+    console.error("Error in fetching latest blogs:", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};

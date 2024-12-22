@@ -1,11 +1,30 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import imgnews1 from "../../../../backend/assets/imgnews1.png";
 import imgnews2 from "../../../../backend/assets/imgnews2.png";
 import imgnews3 from "../../../../backend/assets/imgnews3.png";
 
 const PricingContentNew = ({ closeFlyout }) => {
-  const blogs = ["Giảm giá sốc mùa noel", "Trà sữa nay đã có nhiều lựa chọn", "Trà lạnh mùa hè thích hợp cả vào mùa đông"];
+  const [latestBlogs, setLatestBlogs] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchLatestBlogs = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/blogs/latestBlogs",
+        );
+        if (response.data.success) {
+          setLatestBlogs(response.data.data); // Cập nhật danh sách blogs
+        }
+      } catch (error) {
+        console.error("Error fetching latest blogs:", error.message);
+      }
+    };
+
+    fetchLatestBlogs();
+  }, []);
 
   const handleNavigate = (blogTitle) => {
     closeFlyout();
@@ -17,7 +36,7 @@ const PricingContentNew = ({ closeFlyout }) => {
     navigate("/news");
   };
 
-  const overlayTitles = ["TỔ CHỨC EVENT", "ACOUSTIC", "BÓI BÀI TAROT"]; 
+  const overlayTitles = ["TỔ CHỨC EVENT", "ACOUSTIC", "BÓI BÀI TAROT"];
 
   return (
     <div className="flex h-[480px] w-[1200px] bg-white shadow-xl">
@@ -25,13 +44,16 @@ const PricingContentNew = ({ closeFlyout }) => {
         <div className="mb-3 space-y-3">
           <h3 className="pb-4 text-3xl font-bold text-white">TIN TỨC</h3>
           <div className="space-y-4 pb-4">
-            {blogs.map((blog) => (
+            {latestBlogs.map((blog) => (
               <a
-                key={blog}
+                key={blog._id}
                 onClick={() => handleNavigate(blog)}
                 className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-base !text-white hover:!text-slate-400"
               >
-                + {blog}
+                +{" "}
+                {blog.title.length > 50
+                  ? `${blog.title.substring(0, 50)}...`
+                  : blog.title}
               </a>
             ))}
           </div>
@@ -52,7 +74,7 @@ const PricingContentNew = ({ closeFlyout }) => {
               className="group relative w-1/3 px-4 py-4 text-start"
             >
               {/* Tiêu đề overlay */}
-              <div className="absolute left-5 bottom-6 z-10 rounded-md px-3 py-1 text-2xl font-bold text-white">
+              <div className="absolute bottom-6 left-5 z-10 rounded-md px-3 py-1 text-2xl font-bold text-white">
                 {overlayTitles[index]}
               </div>
               {/* Ảnh */}
