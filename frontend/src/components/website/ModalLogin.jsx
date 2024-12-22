@@ -43,7 +43,7 @@ const LoginPage = () => {
           ) {
             navigate("/admin");
           } else if (decoded.role.includes("customer")) {
-            navigate("/");
+            navigate("/customerprofile");
           } else {
             toast.error("Vai trò không hợp lệ!");
           }
