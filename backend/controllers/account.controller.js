@@ -72,6 +72,57 @@ export const createAccount = async (req, res) => {
   }
 };
 
+export const createCustomerAccount = async (req, res) => {
+  const { username, password, numbers, gmail } = req.body; // Bỏ role từ req.body
+
+  const missingFields = [];
+  if (!username) missingFields.push("username");
+  if (!password) missingFields.push("password");
+  if (!numbers) missingFields.push("numbers");
+  if (!gmail) missingFields.push("gmail");
+
+  if (missingFields.length > 0) {
+    return res.status(400).json({
+      success: false,
+      message: `Missing fields: ${missingFields.join(", ")}`,
+    });
+  }
+
+  try {
+    // Tạo tài khoản mới với role mặc định là "customer"
+    const newAccount = new Account({
+      username,
+      password,
+      gmail,
+      numbers,
+      role: "customer", // Đặt mặc định role là "customer"
+    });
+    const savedAccount = await newAccount.save();
+
+    // Tạo JWT token
+    const token = jwt.sign(
+      {
+        id: savedAccount._id,
+        username: savedAccount.username,
+        role: savedAccount.role,
+      },
+      process.env.JWT_SECRET, // Bí mật được lưu trong biến môi trường
+      { expiresIn: "1h" } // Thời gian sống của token (1 giờ)
+    );
+
+    // Trả về thông tin tài khoản và token
+    res.status(201).json({
+      success: true,
+      data: savedAccount,
+      token, // Token được trả về
+    });
+  } catch (error) {
+    console.error("Error creating customer account:", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+
 export const updateAccount = async (req, res) => {
   const { id } = req.params;
 

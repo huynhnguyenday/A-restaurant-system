@@ -9,7 +9,7 @@ const ModalForgotPassword = () => {
             Quên mật khẩu
           </h2>
         </div>
-        <div className="relative z-[21] mb-4">
+        <div className="relative z-0 mb-4">
           <input
             type="text"
             id="register_username"
@@ -19,7 +19,7 @@ const ModalForgotPassword = () => {
           />
           <label
             htmlFor="register_username"
-            className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+            className="absolute top-1 z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:z-0 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:z-10 peer-focus:-translate-y-6 peer-focus:scale-75"
           >
             Nhập email
           </label>

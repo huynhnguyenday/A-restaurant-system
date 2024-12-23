@@ -5,6 +5,7 @@ import {
   getAccountsById,
   updateAccount,
   updateGmailAndNumbers,
+  createCustomerAccount,
 } from "../controllers/account.controller.js";
 import { protect } from "../middleware/protect.js"; // Import middleware protect
 import { checkRoles } from "../middleware/checkRoles.js";
@@ -15,6 +16,7 @@ router.get("/", protect, checkRoles("admin"), getAccounts); // Chỉ admin hoặ
 router.get("/:id", getAccountsById);
 router.post("/", protect, checkRoles("admin"), createAccount); // Chỉ admin mới được tạo account mới
 router.put("/update-gmail-numbers/:id", updateGmailAndNumbers);
-router.put("/:id", protect, checkRoles("admin"), updateAccount); // Chỉ admin hoặc staff mới được cập nhật thông tin account
+router.put("/:id", protect, checkRoles("admin"), updateAccount); // Chỉ admin hoặc staff mới được cập nhật thông tin 
+router.post("/register-customer", createCustomerAccount);
 
 export default router;

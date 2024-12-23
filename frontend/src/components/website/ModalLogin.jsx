@@ -10,6 +10,7 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [numbers, setNumbers] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
@@ -58,18 +59,41 @@ const LoginPage = () => {
     }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
       setErrorMessage("Mật khẩu không khớp!");
       return;
     }
-    // Registration logic here
-    toast.success("Đăng ký thành công!");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/accounts/register-customer",
+        {
+          username,
+          password,
+          gmail: email,
+          numbers, // số điện thoại từ input
+        },
+      );
+
+      if (response.data.success) {
+        toast.success("Đăng ký thành công!");
+        setRegisterMode(false); // Chuyển về chế độ đăng nhập
+      } else {
+        setErrorMessage(response.data.message || "Đăng ký thất bại!");
+      }
+    } catch (error) {
+      setErrorMessage(
+        error.response?.data?.message || "Có lỗi xảy ra. Vui lòng thử lại.",
+      );
+    }
   };
 
+
   return (
-    <div className="mt-10 flex min-h-[85%] justify-center bg-white">
+    <div className="mt-2 flex min-h-[85%] justify-center bg-white">
       <div className="w-full max-w-md rounded-lg bg-white p-8 text-center">
         <div className="mb-6 flex justify-center">
           <h2
@@ -107,9 +131,26 @@ const LoginPage = () => {
               />
               <label
                 htmlFor="register_username"
-                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+                className="absolute top-1 z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:z-0 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:z-10 peer-focus:-translate-y-6 peer-focus:scale-75"
               >
                 Tên đăng nhập
+              </label>
+            </div>
+            <div className="relative z-0 mb-4">
+              <input
+                type="text"
+                id="register_numbers"
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
+                placeholder=" "
+                value={numbers}
+                onChange={(e) => setNumbers(e.target.value)}
+                required
+              />
+              <label
+                htmlFor="register_numbers"
+                className="absolute top-1 z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:z-0 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:z-10 peer-focus:-translate-y-6 peer-focus:scale-75"
+              >
+                Nhập số điện thoại
               </label>
             </div>
             <div className="relative z-0 mb-4">
@@ -124,7 +165,7 @@ const LoginPage = () => {
               />
               <label
                 htmlFor="register_email"
-                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+                className="absolute top-1 z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:z-0 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:z-10 peer-focus:-translate-y-6 peer-focus:scale-75"
               >
                 Nhập Email
               </label>
@@ -141,7 +182,7 @@ const LoginPage = () => {
               />
               <label
                 htmlFor="register_password"
-                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+                className="absolute top-1 z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:z-0 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:z-10 peer-focus:-translate-y-6 peer-focus:scale-75"
               >
                 Mật khẩu
               </label>
@@ -158,7 +199,7 @@ const LoginPage = () => {
               />
               <label
                 htmlFor="register_confirm_password"
-                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+                className="absolute top-1 z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:z-0 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:z-10 peer-focus:-translate-y-6 peer-focus:scale-75"
               >
                 Nhập lại mật khẩu
               </label>
@@ -217,7 +258,7 @@ const LoginPage = () => {
               />
               <label
                 htmlFor="login_password"
-                className="absolute top-3 -z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75"
+                className="absolute top-1 z-10 flex origin-[0] -translate-y-6 scale-75 transform items-start font-josefin text-lg text-gray-500 duration-300 peer-placeholder-shown:z-0 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:z-10 peer-focus:-translate-y-6 peer-focus:scale-75"
               >
                 Mật khẩu
               </label>
