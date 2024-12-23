@@ -55,10 +55,10 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-20 flex h-[90px] items-center justify-between bg-white px-4 py-4 shadow-lg sm:px-8 md:px-16 lg:px-32">
       {/* Brand Name */}
-      <div className="pl-4 text-3xl font-bold sm:pl-0 sm:text-4xl">
+      <a href="/home" className="pl-4 text-3xl font-bold sm:pl-0 sm:text-4xl">
         <span className="text-black">Bamos</span>
         <span className="text-[#c63402]">Coffee</span>
-      </div>
+      </a>
 
       {/* Navbar Links */}
       <div className="hidden space-x-6 sm:flex">
@@ -68,7 +68,7 @@ const Navbar = () => {
       {/* Search, Cart, and Login Icons */}
       <div className="flex items-center space-x-4">
         {/* Search */}
-        <SearchItem/>
+        <SearchItem />
 
         {/* Login */}
         <a

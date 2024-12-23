@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const ChangePasswordCs = ({ onClose }) => {
+const ChangePasswordCs = ({ onClose, onUpdateSuccess }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -34,9 +34,10 @@ const ChangePasswordCs = ({ onClose }) => {
 
       if (response.data.success) {
         toast.success("Đổi mật khẩu thành công!");
+        onUpdateSuccess();
         setTimeout(() => {
           onClose(); // Đóng modal sau khi đổi mật khẩu thành công
-        }, 2000);
+        }, 500);
       } else {
         setError(response.data.message || "Đã xảy ra lỗi!");
       }
