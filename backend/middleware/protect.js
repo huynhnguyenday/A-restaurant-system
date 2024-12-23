@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
 
 export const protect = (req, res, next) => {
-  const token = req.cookies.jwt;
+  const token = req.cookies.jwt || req.headers.authorization?.split(" ")[1];
 
   if (!token) {
+    console.log("Không có token trong request");
     return res.status(401).json({
       success: false,
       message: "No token, authorization denied",

@@ -19,6 +19,7 @@ const accountSchema = new mongoose.Schema(
     gmail: {
       type: String,
       required: true,
+      unique: true,
     },
     isActive: { type: Number, default: 1 },
     role: {

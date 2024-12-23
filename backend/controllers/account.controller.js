@@ -48,7 +48,7 @@ export const createAccount = async (req, res) => {
     });
     const savedAccount = await newAccount.save();
 
-    // Tạo JWT token
+    // Tạo JWT token 
     const token = jwt.sign(
       {
         id: savedAccount._id,
@@ -111,3 +111,39 @@ export const updateAccount = async (req, res) => {
   }
 };
 
+export const getAccountsById = async (req, res) => {
+  const { id } = req.params;
+
+  // Kiểm tra xem ID có hợp lệ không
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Id không hợp lệ",
+    });
+  }
+
+  try {
+    // Tìm tài khoản theo ID
+    const account = await Account.findById(id);
+
+    // Nếu không tìm thấy tài khoản
+    if (!account) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy tài khoản",
+      });
+    }
+
+    // Trả về dữ liệu tài khoản
+    res.status(200).json({
+      success: true,
+      data: account,
+    });
+  } catch (error) {
+    console.error("Lỗi khi tìm tài khoản: ", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Lỗi server",
+    });
+  }
+};
