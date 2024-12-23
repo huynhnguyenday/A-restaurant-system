@@ -34,15 +34,17 @@ const accountSchema = new mongoose.Schema(
 );
 
 accountSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
+  if (!this.isModified("password") || this.password.startsWith("$2b$")) {
+    // Nếu mật khẩu không thay đổi hoặc đã được mã hóa, bỏ qua việc mã hóa lại
     next();
-  }
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
+  } else {
+    try {
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+      next();
+    } catch (error) {
+      next(error);
+    }
   }
 });
 

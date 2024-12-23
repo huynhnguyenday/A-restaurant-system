@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Account from "../models/account.model.js";
 import jwt from "jsonwebtoken";
+import generateToken from "../generateToken.js";
 
 export const getAccounts = async (req, res) => {
   try {
@@ -48,7 +49,7 @@ export const createAccount = async (req, res) => {
     });
     const savedAccount = await newAccount.save();
 
-    // Tạo JWT token 
+    // Tạo JWT token
     const token = jwt.sign(
       {
         id: savedAccount._id,
@@ -70,8 +71,6 @@ export const createAccount = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
-
-import generateToken from "../generateToken.js";
 
 export const updateAccount = async (req, res) => {
   const { id } = req.params;
