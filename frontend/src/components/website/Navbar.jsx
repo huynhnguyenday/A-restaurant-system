@@ -12,11 +12,14 @@ import NavbarLink from "./NavbarLink";
 import SidebarCart from "./SidebarCart";
 import SidebarMenu from "./SidebarMenu";
 import SearchItem from "./SearchItem";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setCartVisible] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const navigate = useNavigate(); // Hook để điều hướng
 
@@ -40,6 +43,34 @@ const Navbar = () => {
       // Nếu không có token, điều hướng đến trang login
       navigate("/login");
     }
+  };
+
+  const handleLogoutClick = async () => {
+    try {
+      // Gửi yêu cầu logout tới backend (xóa JWT cookie ở server)
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/logout",
+        {},
+        { withCredentials: true },
+      );
+
+      if (response.data.success) {
+        // Xóa JWT token từ cookies ở frontend
+        Cookies.remove("jwtToken");
+
+        // Điều hướng đến trang login hoặc trang chính
+        window.location.href = "/login";
+        toast.success("Đăng xuất thành công!");
+      }
+    } catch (error) {
+      toast.error("Lỗi đăng xuất:", error);
+    }
+  };
+
+  const toggleDropdown = () => {
+    console.log("Before toggle:", isDropdownOpen);
+    setDropdownOpen(!isDropdownOpen);
+    console.log("After toggle:", !isDropdownOpen);
   };
 
   const handleCartClick = () => {
@@ -68,13 +99,31 @@ const Navbar = () => {
       </div>
       <div className="flex items-center space-x-4">
         <SearchItem />
-        <a
-          href="/login"
-          onClick={handleLoginClick} // Gắn sự kiện click
-          className="cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-[#d88453] lg:px-4"
+        <div
+          className="relative"
+          onMouseEnter={() => setDropdownOpen(true)}
+          onMouseLeave={() => setDropdownOpen(false)}
         >
-          <FontAwesomeIcon icon={faUser} />
-        </a>
+          <button className="cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-[#d88453] lg:px-4">
+            <FontAwesomeIcon icon={faUser} />
+          </button>
+          {isDropdownOpen && (
+            <div className="dropdown absolute -left-12 w-[160px] rounded-lg border-2 border-gray-300 bg-white shadow-md">
+              <button
+                className="w-full px-4 py-2 text-left text-sm hover:rounded-t-lg hover:bg-gray-200"
+                onClick={handleLoginClick}
+              >
+                Thông tin tài khoản
+              </button>
+              <button
+                className="w-full px-4 py-2 text-left text-sm hover:rounded-b-lg hover:bg-gray-200"
+                onClick={handleLogoutClick}
+              >
+                Đăng xuất
+              </button>
+            </div>
+          )}
+        </div>
         <a
           href="#cart"
           className="relative cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-[#d88453]"

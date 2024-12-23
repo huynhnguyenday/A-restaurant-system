@@ -95,7 +95,7 @@ const LoginPage = () => {
   return (
     <div className="mt-2 flex min-h-[85%] justify-center bg-white">
       <div className="w-full max-w-md rounded-lg bg-white p-8 text-center">
-        <div className="mb-6 flex justify-center">
+        <div className="mb-8 flex justify-center">
           <h2
             className={`w-1/2 cursor-pointer px-4 py-2 font-josefin text-2xl font-bold ${!isRegisterMode ? "border-b-2 border-black" : "text-gray-500"}`}
             onClick={() => setRegisterMode(false)}
@@ -119,7 +119,7 @@ const LoginPage = () => {
             <h4 className="pb-4 font-josefin text-gray-600">
               Vui lòng nhập đầy đủ thông tin!
             </h4>
-            <div className="relative z-0 mb-4">
+            <div className="relative z-0 mb-8">
               <input
                 type="text"
                 id="register_username"
@@ -136,7 +136,7 @@ const LoginPage = () => {
                 Tên đăng nhập
               </label>
             </div>
-            <div className="relative z-0 mb-4">
+            <div className="relative z-0 mb-8">
               <input
                 type="text"
                 id="register_numbers"
@@ -153,7 +153,7 @@ const LoginPage = () => {
                 Nhập số điện thoại
               </label>
             </div>
-            <div className="relative z-0 mb-4">
+            <div className="relative z-0 mb-8">
               <input
                 type="email"
                 id="register_email"
@@ -170,7 +170,7 @@ const LoginPage = () => {
                 Nhập Email
               </label>
             </div>
-            <div className="relative z-0 mb-4">
+            <div className="relative z-0 mb-8">
               <input
                 type="password"
                 id="register_password"
@@ -187,7 +187,7 @@ const LoginPage = () => {
                 Mật khẩu
               </label>
             </div>
-            <div className="relative z-0 mb-4">
+            <div className="relative z-0 mb-8">
               <input
                 type="password"
                 id="register_confirm_password"
@@ -205,7 +205,7 @@ const LoginPage = () => {
               </label>
             </div>
             {errorMessage && (
-              <p className="mb-4 text-red-500">{errorMessage}</p>
+              <p className="mb-8 text-red-500">{errorMessage}</p>
             )}
             <button
               type="submit"
@@ -228,7 +228,7 @@ const LoginPage = () => {
             <h4 className="mb-2 pb-4 font-josefin text-gray-600">
               Đăng nhập bằng tên đăng nhập và mật khẩu
             </h4>
-            <div className="relative z-0 mb-4">
+            <div className="relative z-0 mb-8">
               <input
                 type="text"
                 id="login_username"
@@ -246,7 +246,7 @@ const LoginPage = () => {
               </label>
             </div>
 
-            <div className="relative z-0 mb-4">
+            <div className="relative z-0 mb-8">
               <input
                 type="password"
                 id="login_password"
@@ -264,7 +264,7 @@ const LoginPage = () => {
               </label>
             </div>
             {errorMessage && (
-              <p className="mb-4 text-red-500">{errorMessage}</p>
+              <p className="mb-8 text-red-500">{errorMessage}</p>
             )}
             <button
               type="submit"
