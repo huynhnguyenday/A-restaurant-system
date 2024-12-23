@@ -96,7 +96,9 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block pb-2 text-xl font-medium">Tên sản phẩm</label>
+            <label className="block pb-2 text-xl font-medium">
+              Tên sản phẩm
+            </label>
             <input
               type="text"
               value={newProduct.name}
@@ -108,7 +110,9 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block pb-2 text-xl font-medium">Ảnh sản phẩm</label>
+            <label className="block pb-2 text-xl font-medium">
+              Ảnh sản phẩm
+            </label>
             <input
               type="file"
               onChange={(e) =>
@@ -121,7 +125,9 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
           </div>
           <div className="mb-4 flex space-x-4">
             <div className="w-1/2">
-              <label className="block pb-2 text-xl font-medium">Giá sản phẩm</label>
+              <label className="block pb-2 text-xl font-medium">
+                Giá sản phẩm
+              </label>
               <input
                 type="text"
                 value={newProduct.price}
@@ -131,9 +137,7 @@ const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
               />
             </div>
             <div className="w-1/2">
-              <label className="block pb-2 text-xl font-medium">
-                Giá Giảm
-              </label>
+              <label className="block pb-2 text-xl font-medium">Giá Giảm</label>
               <input
                 type="text"
                 value={newProduct.sell_price}

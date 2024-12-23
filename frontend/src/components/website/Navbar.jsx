@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Để điều hướng
 import Cookies from "js-cookie"; // Import thư viện cookies
 import { decodeJWT } from "../utils/jwtUtils";
@@ -14,64 +14,14 @@ import SidebarMenu from "./SidebarMenu";
 import SearchItem from "./SearchItem";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Login from "./Login";
 
 const Navbar = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setCartVisible] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const navigate = useNavigate(); // Hook để điều hướng
-
-  // Hàm xử lý khi nhấn vào nút Login
-  const handleLoginClick = (e) => {
-    e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
-    const token = Cookies.get("jwtToken"); // Lấy JWT token từ cookies
-    if (token) {
-      try {
-        const decoded = decodeJWT(token); // Giải mã token
-        // Điều hướng dựa trên vai trò người dùng
-        if (decoded.role.includes("admin") || decoded.role.includes("staff")) {
-          navigate("/admin");
-        } else if (decoded.role.includes("customer")) {
-          navigate("/customerprofile");
-        }
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    } else {
-      // Nếu không có token, điều hướng đến trang login
-      navigate("/login");
-    }
-  };
-
-  const handleLogoutClick = async () => {
-    try {
-      // Gửi yêu cầu logout tới backend (xóa JWT cookie ở server)
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/logout",
-        {},
-        { withCredentials: true },
-      );
-
-      if (response.data.success) {
-        // Xóa JWT token từ cookies ở frontend
-        Cookies.remove("jwtToken");
-
-        // Điều hướng đến trang login hoặc trang chính
-        window.location.href = "/login";
-        toast.success("Đăng xuất thành công!");
-      }
-    } catch (error) {
-      toast.error("Lỗi đăng xuất:", error);
-    }
-  };
-
-  const toggleDropdown = () => {
-    console.log("Before toggle:", isDropdownOpen);
-    setDropdownOpen(!isDropdownOpen);
-    console.log("After toggle:", !isDropdownOpen);
-  };
 
   const handleCartClick = () => {
     setCartVisible(!isCartVisible);
@@ -99,31 +49,7 @@ const Navbar = () => {
       </div>
       <div className="flex items-center space-x-4">
         <SearchItem />
-        <div
-          className="relative"
-          onMouseEnter={() => setDropdownOpen(true)}
-          onMouseLeave={() => setDropdownOpen(false)}
-        >
-          <button className="cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-[#d88453] lg:px-4">
-            <FontAwesomeIcon icon={faUser} />
-          </button>
-          {isDropdownOpen && (
-            <div className="dropdown absolute -left-12 w-[160px] rounded-lg border-2 border-gray-300 bg-white shadow-md">
-              <button
-                className="w-full px-4 py-2 text-left text-sm hover:rounded-t-lg hover:bg-gray-200"
-                onClick={handleLoginClick}
-              >
-                Thông tin tài khoản
-              </button>
-              <button
-                className="w-full px-4 py-2 text-left text-sm hover:rounded-b-lg hover:bg-gray-200"
-                onClick={handleLogoutClick}
-              >
-                Đăng xuất
-              </button>
-            </div>
-          )}
-        </div>
+        <Login/>
         <a
           href="#cart"
           className="relative cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-[#d88453]"
