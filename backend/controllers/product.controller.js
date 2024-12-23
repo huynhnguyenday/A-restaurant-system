@@ -2,15 +2,20 @@ import Product from "../models/product.model.js";
 import mongoose from "mongoose";
 import Category from "../models/category.model.js";
 export const getProduct = async (req, res) => {
+  const { searchTerm } = req.query; // Get search term from query parameters
+
   try {
-    const products = await Product.find({}).populate("category", "name");
+    // If there's a search term, filter products by name (case-insensitive search)
+    const products = await Product.find({
+      name: new RegExp(searchTerm, "i"), // 'i' for case-insensitive
+    }).populate("category", "name");
 
     const productsWithFullImagePath = products.map((product) => ({
       ...product.toObject(),
       image: `http://localhost:5000/assets/${product.image}`,
     }));
 
-    // Trả về danh sách sản phẩm
+    // Return filtered products based on search term
     res.status(200).json({
       success: true,
       data: productsWithFullImagePath,
@@ -23,6 +28,7 @@ export const getProduct = async (req, res) => {
     });
   }
 };
+
 
 export const createProduct = async (req, res) => {
   const product = req.body;

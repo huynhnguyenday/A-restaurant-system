@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faSearch,
   faShoppingCart,
   faUser,
   faBars,
@@ -9,11 +8,11 @@ import {
 import NavbarLink from "./NavbarLink";
 import SidebarCart from "./SidebarCart";
 import SidebarMenu from "./SidebarMenu";
+import SearchItem from "./SearchItem";
 
 const Navbar = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setCartVisible] = useState(false);
-  const [isPopoverVisible, setPopoverVisible] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Lấy giỏ hàng từ sessionStorage khi load trang
@@ -35,8 +34,6 @@ const Navbar = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const handlePopoverEnter = () => setPopoverVisible(true);
-  const handlePopoverLeave = () => setPopoverVisible(false);
 
   const handleCartClick = () => {
     setCartVisible(!isCartVisible);
@@ -71,29 +68,7 @@ const Navbar = () => {
       {/* Search, Cart, and Login Icons */}
       <div className="flex items-center space-x-4">
         {/* Search */}
-        <div
-          className="relative"
-          onMouseEnter={handlePopoverEnter}
-          onMouseLeave={handlePopoverLeave}
-        >
-          <button className="cursor-pointer text-2xl text-[#333] transition-all duration-300">
-            <FontAwesomeIcon icon={faSearch} />
-          </button>
-          {isPopoverVisible && (
-            <div className="absolute right-[-7rem] top-[2rem] z-10 w-[260px] bg-white p-2 shadow-lg">
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  className="flex-1 border border-gray-300 p-2"
-                  placeholder="Tìm kiếm..."
-                />
-                <button className="bg-black p-2 text-white transition-all duration-300 hover:bg-gray-300 hover:text-black">
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
+        <SearchItem/>
 
         {/* Login */}
         <a

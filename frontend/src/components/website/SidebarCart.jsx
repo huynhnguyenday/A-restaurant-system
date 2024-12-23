@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 const SidebarCart = ({ handleCartClick }) => {
   const [cartItems, setCartItems] = useState([]);
@@ -38,6 +39,26 @@ const SidebarCart = ({ handleCartClick }) => {
     // In ra thông tin giỏ hàng và tổng giá trị khi nhấn thanh toán
     console.log("Thông tin giỏ hàng:", cartItems);
     console.log("Tổng giá trị giỏ hàng:", totalPrice);
+    toast.info(
+      <div>
+        <strong>Hãy đăng nhập</strong> để có thể xem lại lịch sử đơn hàng
+      </div>,
+      {
+        autoClose: 5000, // Close after 5 seconds
+        hideProgressBar: false, // Show progress bar
+        closeOnClick: true, // Close when clicked
+        pauseOnHover: true, // Pause when hovering
+        draggable: true, // Allow dragging
+        className: "custom-toast", // Custom class for styling
+        style: {
+          color: "black", // Custom text color
+          fontSize: "20px", // Custom font size
+          fontFamily: "Josefin Sans", // Custom font family
+          padding: "12px 20px", // Padding to make the toast look nicer
+          borderRadius: "8px",
+        },
+      },
+    );
   };
 
   return (

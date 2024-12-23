@@ -175,8 +175,8 @@ const Menu = () => {
                 </div>
 
                 <div
-                  className={`absolute left-2 top-2 cursor-pointer text-2xl transition-colors ease-linear ${
-                    favorites[item._id] ? "text-[#d88453]" : "text-black"
+                  className={`absolute left-2 top-2 cursor-pointer text-4xl transition-colors ease-linear ${
+                    favorites[item._id] ? "text-red-500" : "text-black"
                   }`}
                   onClick={() => handleToggleFavorite(item._id)}
                 >
@@ -194,10 +194,10 @@ const Menu = () => {
                     </Link>
                   </h6>
 
-                  <div className="mb-2 font-josefin text-base font-bold text-[#925802]">
+                  <div className="mb-2 font-josefin text-lg font-bold text-[#925802]">
                     <span>{item.sell_price.toLocaleString()} đ</span>
                     {item.price !== item.sell_price && (
-                      <span className="ml-2 text-xs text-gray-500 line-through">
+                      <span className="ml-2 text-base text-gray-500 line-through">
                         {item.price.toLocaleString()} đ
                       </span>
                     )}
