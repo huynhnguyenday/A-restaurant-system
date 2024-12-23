@@ -99,10 +99,6 @@ export const changePassword = async (req, res) => {
     user.password = hashedPassword;
     await user.save();
 
-    console.log("Mật khẩu cũ:", oldPassword);
-    console.log("Mật khẩu mới:", newPassword);
-    console.log("Mật khẩu đã mã hóa:", hashedPassword);
-
     // Trả về thông báo thành công
     return res.status(200).json({
       success: true,

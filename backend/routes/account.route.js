@@ -4,6 +4,7 @@ import {
   getAccounts,
   getAccountsById,
   updateAccount,
+  updateGmailAndNumbers,
 } from "../controllers/account.controller.js";
 import { protect } from "../middleware/protect.js"; // Import middleware protect
 import { checkRoles } from "../middleware/checkRoles.js";
@@ -13,6 +14,7 @@ const router = express.Router();
 router.get("/", protect, checkRoles("admin"), getAccounts); // Chỉ admin hoặc staff đã đăng nhập mới được xem danh sách account
 router.get("/:id", getAccountsById);
 router.post("/", protect, checkRoles("admin"), createAccount); // Chỉ admin mới được tạo account mới
+router.put("/update-gmail-numbers/:id", updateGmailAndNumbers);
 router.put("/:id", protect, checkRoles("admin"), updateAccount); // Chỉ admin hoặc staff mới được cập nhật thông tin account
 
 export default router;

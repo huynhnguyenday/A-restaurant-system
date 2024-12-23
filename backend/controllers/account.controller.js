@@ -146,3 +146,60 @@ export const getAccountsById = async (req, res) => {
     });
   }
 };
+
+export const updateGmailAndNumbers = async (req, res) => {
+  const { id } = req.params; // Lấy ID từ params
+  const { gmail, numbers } = req.body; // Lấy dữ liệu từ body request
+
+  // Kiểm tra ID có hợp lệ không
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Invalid account ID" });
+  }
+
+  // Kiểm tra xem cả hai trường đều được cung cấp
+  if (!gmail || !numbers) {
+    return res.status(400).json({
+      success: false,
+      message: "Both 'gmail' and 'numbers' are required",
+    });
+  }
+
+  try {
+    // Kiểm tra xem gmail mới có trùng không
+    const existingAccount = await Account.findOne({ gmail });
+    if (existingAccount && existingAccount._id.toString() !== id) {
+      return res.status(400).json({
+        success: false,
+        message: "Gmail already in use by another account",
+      });
+    }
+
+    // Cập nhật thông tin
+    const updatedAccount = await Account.findByIdAndUpdate(
+      id,
+      { gmail, numbers },
+      { new: true } // Trả về dữ liệu sau khi cập nhật
+    );
+
+    // Kiểm tra xem tài khoản có tồn tại không
+    if (!updatedAccount) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Account not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: updatedAccount,
+      message: "Account updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating account:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
