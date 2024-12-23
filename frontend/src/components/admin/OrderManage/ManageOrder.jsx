@@ -50,6 +50,24 @@ const ManageOrder = () => {
     setSelectedOrder(null);
   };
 
+  const handleOrderUpdated = () => {
+    const fetchOrders = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get("http://localhost:5000/api/orders");
+        setOrders(response.data.data);
+        setError(null);
+      } catch (err) {
+        console.error("Lỗi khi lấy danh sách đơn hàng:", err);
+        setError("Không thể tải danh sách đơn hàng. Vui lòng thử lại!");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
@@ -118,7 +136,11 @@ const ManageOrder = () => {
 
         {/* Show Order Detail Modal */}
         {showDetailModal && (
-          <DetailOrder order={selectedOrder} onClose={handleCloseDetailModal} />
+          <DetailOrder
+            order={selectedOrder}
+            onClose={handleCloseDetailModal}
+            onOrderUpdated={handleOrderUpdated}
+          />
         )}
       </div>
     </div>

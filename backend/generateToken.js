@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 
-const generateToken = (res, id, username, role) => {
+const generateToken = (res, id, username, role, numbers, gmail) => {
   const token = jwt.sign(
-    { id, username, role }, // Thêm thông tin vào payload
+    { id, username, role, numbers, gmail }, // Thêm thông tin vào payload
     process.env.JWT_SECRET,
     { expiresIn: "7d" } // Thời gian token sống
   );

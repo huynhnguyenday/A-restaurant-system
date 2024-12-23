@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const DetailOrder = ({ order, onClose }) => {
+const DetailOrder = ({ order, onClose, onOrderUpdated }) => {
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
     number: "",
@@ -10,7 +12,7 @@ const DetailOrder = ({ order, onClose }) => {
     email: "",
     paymentMethod: "",
     note: "",
-    discount:"",
+    discount: "",
   });
 
   // Lấy thông tin đơn hàng vào state khi đơn hàng thay đổi
@@ -37,6 +39,28 @@ const DetailOrder = ({ order, onClose }) => {
     }));
   };
 
+  // Xử lý lưu thông tin
+  const handleSave = async () => {
+    try {
+      const { name, number, address, note } = customerInfo;
+      const response = await axios.put(
+        `http://localhost:5000/api/orders/${order._id}`,
+        {
+          name,
+          number,
+          address,
+          note,
+        },
+      );
+      toast.success("Cập nhật thông tin thành công!");
+      onOrderUpdated(); // Gọi callback để reload danh sách đơn hàng trong ManageOrder
+      onClose(); // Đóng modal
+    } catch (error) {
+      console.error("Lỗi khi cập nhật thông tin:", error);
+      toast("Có lỗi xảy ra khi cập nhật thông tin!");
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="relative h-[570px] w-full max-w-7xl rounded-lg bg-white p-6 shadow-lg">
@@ -50,14 +74,14 @@ const DetailOrder = ({ order, onClose }) => {
 
         {/* Order Details */}
         <h2 className="mb-8 text-center text-3xl font-bold">
-          Chi tiết đơn hàng của {order.name}
+          Chi tiết đơn hàng của <span className="text-[#c63c02]">{order.name}</span>
         </h2>
 
         <form>
           <div className="flex space-x-6">
             {/* Left Section - Customer Information */}
             <div className="w-2/5">
-              <label className="mb-2 block text-xl font-medium">
+              <label className="mb-2 block font-josefin text-2xl font-bold">
                 Tên khách hàng
               </label>
               <input
@@ -66,9 +90,10 @@ const DetailOrder = ({ order, onClose }) => {
                 value={customerInfo.name}
                 onChange={handleInputChange}
                 className="mb-4 w-full rounded-md border border-gray-300 p-2"
+                // disabled // Khóa không cho chỉnh sửa
               />
 
-              <label className="mb-2 block text-xl font-medium">
+              <label className="mb-2 block font-josefin text-2xl font-bold">
                 Số điện thoại
               </label>
               <input
@@ -79,7 +104,9 @@ const DetailOrder = ({ order, onClose }) => {
                 className="mb-4 w-full rounded-md border border-gray-300 p-2"
               />
 
-              <label className="mb-2 block text-xl font-medium">Địa chỉ</label>
+              <label className="mb-2 block font-josefin text-2xl font-bold">
+                Địa chỉ
+              </label>
               <input
                 type="text"
                 name="address"
@@ -88,32 +115,37 @@ const DetailOrder = ({ order, onClose }) => {
                 className="mb-4 w-full rounded-md border border-gray-300 p-2"
               />
 
-              <label className="mb-2 block text-xl font-medium">Email</label>
+              <label className="mb-2 block font-josefin text-2xl font-bold">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
                 value={customerInfo.email}
                 onChange={handleInputChange}
                 className="mb-4 w-full rounded-md border border-gray-300 p-2"
+                disabled
               />
             </div>
 
             {/* Center Section - Payment Method and Note */}
             <div className="w-1/3">
-              <label className="mb-2 block text-xl font-medium">
+              <label className="mb-2 block font-josefin text-2xl font-bold">
                 Phương thức thanh toán
               </label>
               <select
                 name="paymentMethod"
                 value={customerInfo.paymentMethod}
-                onChange={handleInputChange}
                 className="mb-4 w-1/2 rounded-md border border-gray-300 p-2"
+                disabled // Khóa không cho chỉnh sửa
               >
                 <option value="Online Payment">Online Payment</option>
                 <option value="COD">COD</option>
               </select>
 
-              <label className="mb-2 block text-xl font-medium">Ghi chú</label>
+              <label className="mb-2 block font-josefin text-2xl font-bold">
+                Ghi chú
+              </label>
               <textarea
                 name="note"
                 value={customerInfo.note}
@@ -121,6 +153,15 @@ const DetailOrder = ({ order, onClose }) => {
                 maxLength={500}
                 className="mb-4 max-h-64 w-full overflow-y-auto rounded-md border border-gray-300 p-2"
               />
+              <div className="mt-48 flex justify-center">
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  className="rounded bg-blue-500 font-josefin text-xl px-5 py-2 text-white transition-transform duration-200 hover:scale-95"
+                >
+                  Lưu thông tin
+                </button>
+              </div>
             </div>
 
             {/* Right Section - Product List */}
