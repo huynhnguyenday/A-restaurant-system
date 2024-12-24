@@ -21,9 +21,3 @@ body, .app-container {
     overflow-y: auto; 
     overflow-x: hidden;
 }
-
-input:-webkit-autofill {
-  background-color: transparent !important;  /* Tắt màu nền khi chọn gợi ý */
-  font-size: 1rem !important; /* Giảm kích thước chữ */
-  padding: 0.5rem;  /* Điều chỉnh padding */
-}

@@ -19,7 +19,7 @@ import Admin from "./components/admin/Admin";
 import "./app.css";
 import OrderSuccess from "./components/website/OrderSuccess";
 import ModalLogin from "./components/website/ModalLogin";
-import ModalForgotPassword from "./components/website/ModalForgotPassword"
+import ModalForgotPassword from "./components/website/ModalForgotPassword";
 import CustomerProfile from "./components/website/ProfileCustomer/CustomerProfile";
 
 // Layout chung có Navbar và Footer
@@ -37,6 +37,28 @@ const MainLayout = ({ children }) => {
 // Layout dành riêng cho Admin không có Navbar và Footer
 const AdminLayout = ({ children }) => {
   return <div className="admin-container">{children}</div>;
+};
+
+const DetailLayout = ({ children }) => {
+  return (
+    <div className="detail-container">
+      <Navbar />
+      {children}
+      <Newsletter />
+      <Footer />
+    </div>
+  );
+};
+
+const DetailBlogLayout = ({ children }) => {
+  return (
+    <div className="detail-container">
+      <Navbar />
+      {children}
+      <Newsletter />
+      <Footer />
+    </div>
+  );
 };
 
 const App = () => {
@@ -87,9 +109,9 @@ const App = () => {
         <Route
           path="/detailfood/:id"
           element={
-            <MainLayout>
+            <DetailLayout>
               <DetailFood />
-            </MainLayout>
+            </DetailLayout>
           }
         />
         <Route
@@ -103,9 +125,9 @@ const App = () => {
         <Route
           path="/blogs/:id"
           element={
-            <MainLayout>
+            <DetailBlogLayout>
               <DetailBlog />
-            </MainLayout>
+            </DetailBlogLayout>
           }
         />
         <Route
@@ -144,7 +166,7 @@ const App = () => {
           path="/customerprofile"
           element={
             <MainLayout>
-              <CustomerProfile/>
+              <CustomerProfile />
             </MainLayout>
           }
         />
