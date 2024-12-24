@@ -135,7 +135,7 @@ const DetailFood = () => {
    <div className="mx-auto w-full max-w-[1200px] pb-16 pt-8">
      <div className="flex flex-col md:flex-row">
        {/* Left Section */}
-       <div className="w-full scale-90 cursor-pointer overflow-hidden rounded-lg md:w-[300px]">
+       <div className="w-full scale-90 cursor-pointer overflow-hidden rounded-lg md:w-[350px]">
          <img
            src={product.image}
            alt={product.name}

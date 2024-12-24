@@ -8,11 +8,13 @@ import { faSliders } from "@fortawesome/free-solid-svg-icons";
 
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("TẤT CẢ");
-  const [categories, setCategories] = useState(["TẤT CẢ"]); // Lưu danh sách danh mục, mặc định có "TẤT CẢ"
+  const [categories, setCategories] = useState(["TẤT CẢ"]); // Lưu danh sách danh mục
   const [products, setProducts] = useState([]); // Lưu danh sách sản phẩm
   const [favorites, setFavorites] = useState({});
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(10); // Số sản phẩm trên mỗi trang
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -23,12 +25,10 @@ const Menu = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/mainPages/activeCategories",
-        ); // Thay URL phù hợp với API backend
-        const categoryData = response.data.data.map(
-          (category) => category.name,
-        ); // Chỉ lấy tên danh mục
-        setCategories(["TẤT CẢ", ...categoryData]); // Thêm "TẤT CẢ" vào đầu danh sách
+          "http://localhost:5000/api/mainPages/activeCategories"
+        );
+        const categoryData = response.data.data.map((category) => category.name);
+        setCategories(["TẤT CẢ", ...categoryData]);
       } catch (error) {
         console.error("Error fetching categories:", error.message);
       }
@@ -37,14 +37,13 @@ const Menu = () => {
     fetchCategories();
   }, []);
 
-  // Fetch sản phẩm từ API
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/mainPages/activeProducts",
-        ); // Thay URL phù hợp
+          "http://localhost:5000/api/mainPages/activeProducts"
+        );
         setProducts(response.data.data);
       } catch (error) {
         console.error("Error fetching products:", error.message);
@@ -62,19 +61,18 @@ const Menu = () => {
     if (category) setActiveCategory(category);
   }, [location.search]);
 
-  // Lọc sản phẩm theo danh mục
-  const filterItems =
-    activeCategory === "TẤT CẢ"
-      ? products.filter((item) => item.category?.isActive === 1)
-      : products.filter((item) => item.category.name === activeCategory);
-
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    handleCategoryClick(category); // Gọi hàm xử lý từ props
-    setIsMenuOpen(false); // Đóng menu sau khi chọn
+    handleCategoryClick(category);
+    setIsMenuOpen(false);
   };
 
-  // Xử lý khi nhấn yêu thích
+  const handleCategoryClick = (category) => {
+    setActiveCategory(category);
+    navigate(`/menu?category=${category}`);
+    setCurrentPage(1); // Reset về trang đầu tiên khi đổi danh mục
+  };
+
   const handleToggleFavorite = (id) => {
     setFavorites((prevFavorites) => ({
       ...prevFavorites,
@@ -82,22 +80,30 @@ const Menu = () => {
     }));
   };
 
-  // Xử lý khi nhấn "Thêm vào giỏ hàng"
   const handleAddToCart = (product) => {
     setSelectedProduct(product);
   };
 
-  // Đóng Modal
   const handleCloseModal = () => {
     setSelectedProduct(null);
     setQuantity(1);
   };
 
-  // Chuyển đổi danh mục
-  const handleCategoryClick = (category) => {
-    setActiveCategory(category);
-    navigate(`/menu?category=${category}`);
-  };
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts =
+    activeCategory === "TẤT CẢ"
+      ? products.filter((item) => item.category?.isActive === 1).slice(indexOfFirstProduct, indexOfLastProduct)
+      : products
+          .filter((item) => item.category.name === activeCategory)
+          .slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const totalPages = Math.ceil(
+    (activeCategory === "TẤT CẢ"
+      ? products.filter((item) => item.category?.isActive === 1)
+      : products.filter((item) => item.category.name === activeCategory)
+    ).length / productsPerPage
+  );
 
   return (
     <div className="p-5 text-center">
@@ -105,7 +111,6 @@ const Menu = () => {
         Thực đơn Bamos<span className="text-[#C63402]">Coffee</span>
       </h1>
       <div className="relative mb-5">
-        {/* Navbar cho Mobile */}
         <div className="flex items-center justify-center px-4 pt-2 md:hidden">
           <button
             onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -116,13 +121,12 @@ const Menu = () => {
           </button>
         </div>
 
-        {/* Menu Dropdown */}
         {isMenuOpen && (
           <div className="absolute left-0 top-full z-10 w-full bg-white shadow-lg">
             {categories.map((category) => (
               <button
                 key={category}
-                className={`w-full px-4 py-2 text-left font-josefin text-xl font-bold transition-all ease-linear border border-b-2 ${
+                className={`w-full border border-b-2 px-4 py-2 text-left font-josefin text-xl font-bold transition-all ease-linear ${
                   activeCategory === category
                     ? "bg-[#633c02] text-white"
                     : "text-gray-800 hover:bg-[#d88453]"
@@ -135,7 +139,6 @@ const Menu = () => {
           </div>
         )}
 
-        {/* Menu cho Desktop */}
         <div className="hidden justify-center font-bold md:flex">
           {categories.map((category) => (
             <button
@@ -154,17 +157,17 @@ const Menu = () => {
       </div>
       {isLoading ? (
         <div className="flex h-[300px] items-center justify-center">
-          <Loading /> {/* Component loading */}
+          <Loading />
         </div>
       ) : (
-        <div className="mx-auto flex max-w-7xl flex-wrap justify-center">
-          <div className="mx-auto flex flex-wrap justify-start gap-0">
-            {filterItems.map((item) => (
+        <div className="mx-auto flex max-w-7xl flex-wrap justify-start">
+          <div className="flex flex-wrap gap-0">
+            {currentProducts.map((item) => (
               <div
                 className="group relative mt-8 flex h-[340px] w-[190px] flex-col justify-between border-l border-r border-gray-300 bg-white p-3 text-center transition-shadow ease-linear lg:h-[340px] lg:w-[250px]"
                 key={item._id}
               >
-                <div className="">
+                <div>
                   <Link to={`/detailfood/${item._id}`}>
                     <img
                       src={item.image}
@@ -217,6 +220,22 @@ const Menu = () => {
           </div>
         </div>
       )}
+
+      <div className="mt-4 flex justify-center">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentPage(index + 1)}
+            className={`mx-1 px-3 py-1 font-bold ${
+              currentPage === index + 1
+                ? "bg-[#633c02] text-white"
+                : "bg-white text-gray-800 hover:bg-[#d88453]"
+            } border border-gray-300`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
 
       {selectedProduct && (
         <ModalProduct
