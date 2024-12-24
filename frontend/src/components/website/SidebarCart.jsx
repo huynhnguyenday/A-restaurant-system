@@ -9,8 +9,8 @@ const SidebarCart = ({ handleCartClick }) => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    // Lấy giỏ hàng từ sessionStorage khi component được mount
-    const tempCart = JSON.parse(sessionStorage.getItem("tempCart")) || [];
+    // Lấy giỏ hàng từ localStorage khi component được mount
+    const tempCart = JSON.parse(localStorage.getItem("tempCart")) || [];
     setCartItems(tempCart);
 
     // Tính toán tổng giá trị giỏ hàng
@@ -25,7 +25,7 @@ const SidebarCart = ({ handleCartClick }) => {
     // Xóa sản phẩm khỏi giỏ hàng tạm thời
     const updatedCart = cartItems.filter((item) => item.productId !== id);
     setCartItems(updatedCart);
-    sessionStorage.setItem("tempCart", JSON.stringify(updatedCart));
+    localStorage.setItem("tempCart", JSON.stringify(updatedCart));
 
     // Cập nhật lại tổng giá trị
     const total = updatedCart.reduce(

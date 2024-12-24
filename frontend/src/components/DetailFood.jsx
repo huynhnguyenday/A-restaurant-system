@@ -102,8 +102,8 @@ const DetailFood = () => {
   };
 
   const handleAddToCart = () => {
-    // Lấy giỏ hàng hiện tại từ sessionStorage
-    const tempCart = JSON.parse(sessionStorage.getItem("tempCart")) || [];
+    // Lấy giỏ hàng hiện tại từ localStorage
+    const tempCart = JSON.parse(localStorage.getItem("tempCart")) || [];
 
     // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
     const existingItemIndex = tempCart.findIndex(
@@ -124,8 +124,8 @@ const DetailFood = () => {
       });
     }
 
-    // Lưu lại giỏ hàng vào sessionStorage
-    sessionStorage.setItem("tempCart", JSON.stringify(tempCart));
+    // Lưu lại giỏ hàng vào localStorage
+    localStorage.setItem("tempCart", JSON.stringify(tempCart));
 
     // Hiển thị thông báo (tuỳ chọn)
     toast.success("Thêm vào giỏ hàng thành công");

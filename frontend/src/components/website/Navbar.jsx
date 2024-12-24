@@ -27,9 +27,9 @@ const Navbar = () => {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
-  // Hàm cập nhật số lượng sản phẩm từ sessionStorage
+  // Hàm cập nhật số lượng sản phẩm từ localStorage
   const updateTotalItems = () => {
-    const tempCart = JSON.parse(sessionStorage.getItem("tempCart")) || [];
+    const tempCart = JSON.parse(localStorage.getItem("tempCart")) || [];
     setTotalItems(tempCart.length); // Đếm số lượng sản phẩm (sử dụng length)
   };
 

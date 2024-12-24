@@ -30,11 +30,11 @@ const PaymentPage = () => {
   }, []);
 
   useEffect(() => {
-    sessionStorage.setItem("tempCart", JSON.stringify(cartItems));
+    localStorage.setItem("tempCart", JSON.stringify(cartItems));
   }, [cartItems]);
 
   useEffect(() => {
-    const savedCart = sessionStorage.getItem("tempCart");
+    const savedCart = localStorage.getItem("tempCart");
     if (savedCart) {
       setCartItems(JSON.parse(savedCart));
     }
@@ -151,7 +151,7 @@ const PaymentPage = () => {
         orderData,
       );
       toast(response.data.message);
-      sessionStorage.removeItem("tempCart"); //làm trống giỏ hàng
+      localStorage.removeItem("tempCart"); //làm trống giỏ hàng
       window.location.href = "/order-success"; // Redirect after successful order
     } catch (error) {
       console.error("Lỗi khi tạo đơn hàng:", error);

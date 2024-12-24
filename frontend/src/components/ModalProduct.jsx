@@ -28,8 +28,8 @@ const ModalProduct = ({
   };
 
   const handleAddToCart = () => {
-    // Lấy giỏ hàng tạm thời từ sessionStorage
-    const tempCart = JSON.parse(sessionStorage.getItem("tempCart")) || [];
+    // Lấy giỏ hàng tạm thời từ localStorage
+    const tempCart = JSON.parse(localStorage.getItem("tempCart")) || [];
 
     // Kiểm tra nếu sản phẩm đã có trong giỏ
     const existingItem = tempCart.find(
@@ -49,8 +49,8 @@ const ModalProduct = ({
       toast.success("Thêm vào giỏ hàng thành công");
     }
 
-    // Lưu giỏ hàng vào sessionStorage
-    sessionStorage.setItem("tempCart", JSON.stringify(tempCart));
+    // Lưu giỏ hàng vào localStorage
+    localStorage.setItem("tempCart", JSON.stringify(tempCart));
 
     // Optional: Gọi hàm refresh giỏ hàng
     if (refreshCart) {
