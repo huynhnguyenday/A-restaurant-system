@@ -29,6 +29,18 @@ const PaymentPage = () => {
     fetchCoupons();
   }, []);
 
+  useEffect(() => {
+    sessionStorage.setItem("tempCart", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  useEffect(() => {
+    const savedCart = sessionStorage.getItem("tempCart");
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+  }, []);
+
+
   if (!cartItems || cartItems.length === 0) {
     return (
       <button
@@ -67,6 +79,29 @@ const PaymentPage = () => {
     );
   };
 
+  const handleQuantityChange = (e, productId) => {
+    const value = e.target.value;
+    const numericValue = parseInt(value, 10);
+
+    if (!value) {
+      // Khi người dùng xóa hết, giữ trống tạm thời
+      setCartItems((prevCartItems) =>
+        prevCartItems.map((item) =>
+          item.productId === productId ? { ...item, quantity: "" } : item,
+        ),
+      );
+    } else if (!isNaN(numericValue) && numericValue >= 1) {
+      // Khi nhập số hợp lệ
+      setCartItems((prevCartItems) =>
+        prevCartItems.map((item) =>
+          item.productId === productId
+            ? { ...item, quantity: numericValue }
+            : item,
+        ),
+      );
+    }
+  };
+
   const removeItem = (productId) => {
     setCartItems(cartItems.filter((item) => item.productId !== productId));
   };
@@ -81,7 +116,7 @@ const PaymentPage = () => {
     if (coupon) {
       setDiscount(coupon.discountValue);
     } else {
-      alert("Mã coupon không hợp lệ");
+      toast.error("Mã coupon không hợp lệ");
       setDiscount(0);
     }
   };
@@ -120,11 +155,12 @@ const PaymentPage = () => {
       window.location.href = "/order-success"; // Redirect after successful order
     } catch (error) {
       console.error("Lỗi khi tạo đơn hàng:", error);
-      alert("Đã có lỗi xảy ra, vui lòng thử lại.");
+      toast.error("Đã có lỗi xảy ra, vui lòng thử lại.");
     }
   };
 
-  const finalPrice = calculatedTotalPrice - discount;
+  const finalPrice = Math.max(calculatedTotalPrice - discount, 0);
+
   return (
     <div className="mx-auto my-10 max-w-[1200px] px-4 pb-20">
       <div className="grid grid-cols-1 gap-6 pt-12 sm:grid-cols-10">
@@ -139,7 +175,7 @@ const PaymentPage = () => {
               <input
                 type="text"
                 name="name"
-                className="h-16 w-full rounded-2xl border border-gray-300 p-2 font-josefin"
+                className="h-16 w-full rounded-2xl border border-gray-300 p-2"
                 placeholder="Họ tên"
                 required
               />
@@ -148,23 +184,23 @@ const PaymentPage = () => {
               <input
                 type="text"
                 name="address"
-                className="h-16 w-full rounded-2xl border border-gray-300 p-2 pt-3 font-josefin"
+                className="h-16 w-full rounded-2xl border border-gray-300 p-2 pt-3"
                 placeholder="Địa chỉ"
                 required
               />
             </div>
-            <div className="flex h-16 justify-center space-x-4 font-josefin">
+            <div className="flex h-16 justify-center space-x-4">
               <input
                 type="tel"
                 name="number"
-                className="w-1/2 rounded-2xl border border-gray-300 p-2 font-josefin"
+                className="w-1/2 rounded-2xl border border-gray-300 p-2"
                 placeholder="Số điện thoại"
                 required
               />
               <input
                 type="email"
                 name="email"
-                className="w-1/2 rounded-2xl border border-gray-300 p-2 font-josefin"
+                className="w-1/2 rounded-2xl border border-gray-300 p-2"
                 placeholder="Email"
                 required
               />
@@ -176,7 +212,7 @@ const PaymentPage = () => {
               <input
                 type="text"
                 name="note"
-                className="h-16 w-full rounded-2xl border border-gray-300 p-2 font-josefin"
+                className="h-16 w-full rounded-2xl border border-gray-300 p-2"
                 placeholder="Ghi chú (vd: giao lúc 10 giờ)"
               />
             </div>
@@ -324,7 +360,16 @@ const PaymentPage = () => {
                     <input
                       type="text"
                       value={item.quantity}
-                      readOnly
+                      onChange={(e) => handleQuantityChange(e, item.productId)}
+                      onBlur={() =>
+                        setCartItems((prevCartItems) =>
+                          prevCartItems.map((item) =>
+                            item.productId === item.productId && item.quantity === ""
+                              ? { ...item, quantity: 1 }
+                              : item,
+                          ),
+                        )
+                      }
                       className="w-12 rounded border text-center"
                     />
                     <button
@@ -352,8 +397,8 @@ const PaymentPage = () => {
           <div className="coupon-section mb-4 flex items-center space-x-2">
             <input
               type="text"
-              className="coupon-input w-2/3 rounded-full border border-black p-3 text-gray-700 placeholder-gray-400"
-              placeholder="Coupon code"
+              className="coupon-input w-2/3 rounded-full border border-black pb-2 pl-5 pt-4 font-josefin text-xl text-gray-700 placeholder-gray-400"
+              placeholder="Mã giảm giá"
               value={couponCode}
               onChange={(e) => setCouponCode(e.target.value)}
             />
