@@ -76,7 +76,7 @@ const CustomerProfile = () => {
             <input
               type="text"
               value={profileData.username}
-              readOnly
+              disabled
               className="peer block w-3/4 border-0 border-b-2 border-gray-300 bg-transparent pl-2 pt-2 font-josefin text-lg text-gray-900"
             />
             <label className="mt-8 block font-josefin text-2xl font-bold">
@@ -85,7 +85,7 @@ const CustomerProfile = () => {
             <input
               type="email"
               value={profileData.gmail}
-              readOnly
+              disabled
               className="peer block w-3/4 border-0 border-b-2 border-gray-300 bg-transparent px-0 pt-2 text-lg text-gray-900"
             />
             <label className="mt-8 block font-josefin text-2xl font-bold">
@@ -94,20 +94,20 @@ const CustomerProfile = () => {
             <input
               type="tel"
               value={profileData.numbers}
-              readOnly
+              disabled
               className="peer block w-3/4 border-0 border-b-2 border-gray-300 bg-transparent px-0 pt-2 text-lg text-gray-900"
             />
           </div>
 
           <div className="flex w-1/2 flex-col items-center justify-center">
             <button
-              className="w-3/4 rounded bg-black px-4 py-2 text-white"
+              className="w-3/4 rounded bg-black px-4 py-2 text-white transition-transform duration-200 hover:scale-95"
               onClick={() => setPasswordModalOpen(true)}
             >
               Đổi mật khẩu
             </button>
             <button
-              className="mt-8 w-3/4 rounded bg-black px-4 py-2 text-white"
+              className="mt-8 w-3/4 rounded bg-black px-4 py-2 text-white transition-transform duration-200 hover:scale-95"
               onClick={() => setInforModalOpen(true)}
             >
               Cập nhật thông tin

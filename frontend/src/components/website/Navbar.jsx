@@ -1,25 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Để điều hướng
-import Cookies from "js-cookie"; // Import thư viện cookies
-import { decodeJWT } from "../utils/jwtUtils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faShoppingCart,
-  faUser,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import NavbarLink from "./NavbarLink";
 import SidebarCart from "./SidebarCart";
 import SidebarMenu from "./SidebarMenu";
 import SearchItem from "./SearchItem";
-import axios from "axios";
-import { toast } from "react-toastify";
 import Login from "./Login";
 
 const Navbar = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setCartVisible] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
 
   const navigate = useNavigate(); // Hook để điều hướng
 
@@ -31,7 +27,21 @@ const Navbar = () => {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
-  const totalItems = cartItems.length;
+  // Hàm cập nhật số lượng sản phẩm từ sessionStorage
+  const updateTotalItems = () => {
+    const tempCart = JSON.parse(sessionStorage.getItem("tempCart")) || [];
+    setTotalItems(tempCart.length); // Đếm số lượng sản phẩm (sử dụng length)
+  };
+
+  // Sử dụng useEffect để cập nhật mỗi giây
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateTotalItems();
+    }, 1000); // Cập nhật mỗi 1 giây
+
+    return () => clearInterval(interval); // Dọn dẹp khi component unmount
+  }, []);
+
   const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
 
   const toggleMobileMenu = () => {
@@ -49,7 +59,7 @@ const Navbar = () => {
       </div>
       <div className="flex items-center space-x-4">
         <SearchItem />
-        <Login/>
+        <Login />
         <a
           href="#cart"
           className="relative cursor-pointer text-2xl text-[#333] transition-all duration-300 hover:text-[#d88453]"
