@@ -52,7 +52,7 @@ const PricingContentNew = ({ closeFlyout }) => {
               >
                 +{" "}
                 {blog.title.length > 50
-                  ? `${blog.title.substring(0, 50)}...`
+                  ? `${blog.title.substring(0, 40)}...`
                   : blog.title}
               </a>
             ))}

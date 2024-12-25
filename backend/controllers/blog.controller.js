@@ -220,7 +220,7 @@ export const getLatestBlogs = async (req, res) => {
     // Lấy 5 blog mới nhất (sắp xếp theo createdAt giảm dần)
     const latestBlogs = await Blog.find()
       .sort({ createdAt: -1 }) // Sắp xếp giảm dần theo createdAt
-      .limit(5) // Lấy tối đa 5 blog
+      .limit(4) // Lấy tối đa 4 blog
       .select("title");
 
     res.status(200).json({

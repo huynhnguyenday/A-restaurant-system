@@ -192,7 +192,7 @@ const DetailFood = () => {
        </div>
 
        {/* Right Section */}
-       <div className="w-[400px] pl-2 pt-14 md:w-[340px]">
+       <div className="w-[400px] pl-2 pt-16 md:w-[290px]">
          <h3 className="text-center font-josefin text-3xl font-bold text-[#663402] md:text-start">
            Danh mục thực đơn
          </h3>
