@@ -1,9 +1,9 @@
 import Account from "../models/account.model.js";
 import generateToken from "../generateToken.js"; // Nhớ import hàm generateToken của bạn
 import bcrypt from "bcrypt";
-import nodemailer from 'nodemailer';
-import crypto from 'crypto'; // Để tạo mã xác thực ngẫu nhiên
-import dotenv from "dotenv"
+import nodemailer from "nodemailer";
+import crypto from "crypto"; // Để tạo mã xác thực ngẫu nhiên
+import dotenv from "dotenv";
 dotenv.config();
 
 export const forgotPassword = async (req, res) => {
@@ -22,20 +22,24 @@ export const forgotPassword = async (req, res) => {
     // Tạo mã OTP ngẫu nhiên
     const otp = crypto.randomInt(100000, 999999); // Mã OTP 6 chữ số
 
-    // Lưu mã OTP vào cơ sở dữ liệu (có thể lưu vào một trường tạm thời trong tài khoản)
+    // Lưu mã OTP vào cơ sở dữ liệu
     user.otp = otp;
     await user.save();
 
-    // Log thông tin user và pass để kiểm tra
-    console.log("GMAIL_USER:", process.env.GMAIL_USER);
-    console.log("GMAIL_PASS:", process.env.GMAIL_PASS);
+    console.log("SMTP_HOST:", process.env.SMTP_HOST);
+    console.log("SMTP_PORT:", process.env.SMTP_PORT);
+    console.log("SMTP_SECURE:", process.env.SMTP_SECURE);
+    console.log("SMTP_USER:", process.env.SMTP_USER);
+    console.log("SMTP_PASS:", process.env.SMTP_PASS);
 
-    // Cấu hình transporter
+    // Cấu hình transporter với SMTP
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: process.env.SMTP_HOST, // SMTP server
+      port: process.env.SMTP_PORT || 587, // Cổng SMTP (587 hoặc 465 nếu dùng SSL)
+      secure: process.env.SMTP_SECURE === "true", // true nếu dùng SSL
       auth: {
-        user: process.env.GMAIL_USER, // Địa chỉ Gmail của bạn
-        pass: process.env.GMAIL_PASS, // Mật khẩu hoặc App Password
+        user: process.env.SMTP_USER, // Tên đăng nhập SMTP
+        pass: process.env.SMTP_PASS, // Mật khẩu SMTP
       },
     });
 
@@ -50,8 +54,8 @@ export const forgotPassword = async (req, res) => {
 
     // Cấu hình email
     const mailOptions = {
-      from: process.env.GMAIL_USER,
-      to: email,
+      from: process.env.SMTP_USER, // Địa chỉ email gửi
+      to: email, // Email người nhận
       subject: "Mã OTP Đặt lại Mật khẩu",
       text: `Mã OTP của bạn là: ${otp}`,
     };
@@ -59,20 +63,20 @@ export const forgotPassword = async (req, res) => {
     // Gửi email
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.error("Email sending error:", error); // Log lỗi gửi email
+        console.error("Email sending error:", error);
         return res.status(500).json({
           success: false,
           message: "Gửi email thất bại. Vui lòng thử lại sau.",
         });
       }
-      console.log("Email sent:", info); // Log thành công gửi email
+      console.log("Email sent:", info);
       res.status(200).json({
         success: true,
         message: "Mã OTP đã được gửi đến email của bạn.",
       });
     });
   } catch (error) {
-    console.error("Error:", error); // Log lỗi tổng quát
+    console.error("Error:", error);
     res.status(500).json({
       success: false,
       message: "Có lỗi xảy ra. Vui lòng thử lại sau.",
