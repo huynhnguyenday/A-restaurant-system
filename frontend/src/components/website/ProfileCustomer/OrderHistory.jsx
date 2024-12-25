@@ -32,7 +32,24 @@ const orderDataPlaceholder = [
           _id: "product002",
           name: "Cà Phê Sữa Đá",
           image: imgfood1,
-          price: 30000,
+        },
+        quantity: 2,
+        totalPrice: 60000,
+      },
+      {
+        product: {
+          _id: "product002",
+          name: "Cà Phê Sữa Đá",
+          image: imgfood1,
+        },
+        quantity: 2,
+        totalPrice: 60000,
+      },
+      {
+        product: {
+          _id: "product002",
+          name: "Cà Phê Sữa Đá",
+          image: imgfood1,
         },
         quantity: 2,
         totalPrice: 60000,
