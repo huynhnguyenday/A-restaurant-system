@@ -186,6 +186,20 @@ const DashBoard = () => {
             />
           )}
           <SidebarItem
+            icon={faChartColumn}
+            label="Thống kê"
+            isSidebarExpanded={isSidebarExpanded}
+            onClick={() => handleSetActiveComponent("Chart")}
+            isActive={activeComponent === "Chart"}
+          />
+          <SidebarItem
+            icon={faReceipt}
+            label="Đơn Hàng"
+            isSidebarExpanded={isSidebarExpanded}
+            onClick={() => handleSetActiveComponent("Order")}
+            isActive={activeComponent === "Order"}
+          />
+          <SidebarItem
             icon={faGlassWater}
             label="Sản phẩm"
             isSidebarExpanded={isSidebarExpanded}
@@ -212,20 +226,6 @@ const DashBoard = () => {
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Coupon")}
             isActive={activeComponent === "Coupon"}
-          />
-          <SidebarItem
-            icon={faReceipt}
-            label="Đơn Hàng"
-            isSidebarExpanded={isSidebarExpanded}
-            onClick={() => handleSetActiveComponent("Order")}
-            isActive={activeComponent === "Order"}
-          />
-          <SidebarItem
-            icon={faChartColumn}
-            label="Thống kê"
-            isSidebarExpanded={isSidebarExpanded}
-            onClick={() => handleSetActiveComponent("Chart")}
-            isActive={activeComponent === "Chart"}
           />
           <SidebarItem
             icon={faComment}

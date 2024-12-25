@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-const AddProduct = ({ showModal, setShowModal, onCreateProduct }) => {
+const AddProduct = ({ showModal, setShowModal }) => {
   const [newProduct, setNewProduct] = useState({
     name: "",
     image: null, // Đặt image là null thay vì chuỗi rỗng

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Loading from "./Loading"
+import { Link } from "react-router-dom"; 
 
 const SearchItem = () => {
   const [searchTerm, setSearchTerm] = useState(""); // State for search term
@@ -80,36 +81,41 @@ const SearchItem = () => {
           {error && <div className="mt-2 text-red-500">{error}</div>}
 
           {products.length > 0 && (
-            <div className="mt-2 bg-white p-4">
+            <div className="mt-2 bg-white">
               <ul className="max-h-96 overflow-y-auto">
                 {products.map((product) => (
                   <li
                     key={product._id}
                     className="border-b border-gray-200 py-2"
                   >
-                    <div className="flex items-center space-x-4">
-                      {/* Image Section */}
-                      <div className="h-24 w-[60px]">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="h-24 w-auto rounded-md object-cover"
-                        />
-                      </div>
-
-                      {/* Product Info Section */}
-                      <div className="flex-1">
-                        {/* Product Name with fixed height and ellipsis for overflow */}
-                        <div className="h-12 font-josefin text-2xl font-bold text-[#00561e]">
-                          {product.name}
+                    <Link
+                      to={`/detailfood/${product._id}`}
+                      className="block hover:bg-gray-100"
+                    >
+                      <div className="flex items-center space-x-4">
+                        {/* Image Section */}
+                        <div className="h-24 w-[60px]">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="h-24 w-auto rounded-md object-cover"
+                          />
                         </div>
 
-                        {/* Product Price */}
-                        <div className="mt-4 font-josefin text-lg font-bold text-[#925802]">
-                          {product.sell_price.toLocaleString()} ₫
+                        {/* Product Info Section */}
+                        <div className="flex-1">
+                          {/* Product Name */}
+                          <div className="h-12 flex items-center font-josefin text-2xl font-bold text-[#00561e]">
+                            {product.name}
+                          </div>
+
+                          {/* Product Price */}
+                          <div className="mt-4 font-josefin text-lg font-bold text-[#925802]">
+                            {product.sell_price.toLocaleString()} ₫
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </li>
                 ))}
               </ul>
