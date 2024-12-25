@@ -6,12 +6,32 @@ const ModalForgotPassword = () => {
   const [email, setEmail] = useState(""); // State lưu email
   const navigate = useNavigate(); // Hook navigate
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
-    // Logic gửi mã xác thực
-    toast.success("Mã xác thực đã được gửi!");
-    navigate("/authenticationcode");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Email submitted:", email);
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/auth/forgot-password",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success(data.message); // Hiển thị thông báo thành công
+        navigate("/authenticationcode"); // Chuyển hướng người dùng đến màn hình nhập mã xác thực
+      } else {
+        toast.error(data.message); // Hiển thị lỗi nếu có
+      }
+    } catch (error) {
+      toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+    }
   };
+
 
   return (
     <div className="mt-10 flex min-h-[65%] justify-center bg-white">
