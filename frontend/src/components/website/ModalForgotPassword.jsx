@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import LoadingWhite from "./LoadingWhite"; // Import component Loading
 
 const ModalForgotPassword = () => {
   const [email, setEmail] = useState(""); // State lưu email
+  const [isLoading, setIsLoading] = useState(false); // State kiểm soát trạng thái loading
   const navigate = useNavigate(); // Hook navigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email submitted:", email);
+    setIsLoading(true); // Bắt đầu loading
     try {
       const response = await fetch(
         "http://localhost:5000/api/auth/forgot-password",
@@ -20,7 +22,6 @@ const ModalForgotPassword = () => {
       );
 
       const data = await response.json();
-
       if (data.success) {
         localStorage.setItem("email", email); // Lưu email vào localStorage
         toast.success(data.message); // Hiển thị thông báo thành công
@@ -30,10 +31,10 @@ const ModalForgotPassword = () => {
       }
     } catch (error) {
       toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+    } finally {
+      setIsLoading(false); // Kết thúc loading
     }
   };
-
-
 
   return (
     <div className="mt-10 flex min-h-[65%] justify-center bg-white">
@@ -64,8 +65,10 @@ const ModalForgotPassword = () => {
           <button
             type="submit"
             className="mb-2 mt-3 w-full rounded-lg bg-black py-3 font-josefin text-xl text-white transition-transform duration-200 hover:scale-90"
+            disabled={isLoading} // Vô hiệu hóa nút khi đang loading
           >
-            Nhận mã xác thực
+            {isLoading ? <LoadingWhite/> : "Nhận mã xác thực"}{" "}
+            {/* Hiển thị Loading hoặc text */}
           </button>
         </form>
         <a href="/login" className="text-lg text-gray-500 hover:text-black">

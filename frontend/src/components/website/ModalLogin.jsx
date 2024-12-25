@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { decodeJWT } from "../utils/jwtUtils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const LoginPage = () => {
   const [isRegisterMode, setRegisterMode] = useState(false);
@@ -14,6 +16,8 @@ const LoginPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -172,7 +176,7 @@ const LoginPage = () => {
             </div>
             <div className="relative z-0 mb-8">
               <input
-                type="password"
+                type={isPasswordVisible ? "text" : "password"}
                 id="register_password"
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
                 placeholder=" "
@@ -186,10 +190,19 @@ const LoginPage = () => {
               >
                 Mật khẩu
               </label>
+              <button
+                type="button"
+                onClick={() => setPasswordVisible(!isPasswordVisible)} // Toggle chế độ hiển thị mật khẩu
+                className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+              >
+                <FontAwesomeIcon
+                  icon={isPasswordVisible ? faEye : faEyeSlash}
+                />
+              </button>
             </div>
             <div className="relative z-0 mb-8">
               <input
-                type="password"
+                type={isConfirmPasswordVisible ? "text" : "password"}
                 id="register_confirm_password"
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
                 placeholder=" "
@@ -203,6 +216,17 @@ const LoginPage = () => {
               >
                 Nhập lại mật khẩu
               </label>
+              <button
+                type="button"
+                onClick={() =>
+                  setConfirmPasswordVisible(!isConfirmPasswordVisible)
+                } // Toggle xác nhận mật khẩu
+                className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+              >
+                <FontAwesomeIcon
+                  icon={isConfirmPasswordVisible ? faEyeSlash : faEye}
+                />
+              </button>
             </div>
             {errorMessage && (
               <p className="mb-8 text-red-500">{errorMessage}</p>
@@ -248,7 +272,7 @@ const LoginPage = () => {
 
             <div className="relative z-0 mb-8">
               <input
-                type="password"
+                type={isPasswordVisible ? "text" : "password"} // Thay đổi loại input
                 id="login_password"
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-lg text-gray-900 focus:border-black focus:outline-none focus:ring-0"
                 placeholder=" "
@@ -262,6 +286,17 @@ const LoginPage = () => {
               >
                 Mật khẩu
               </label>
+
+              {/* Nút bật/tắt hiển thị mật khẩu */}
+              <button
+                type="button"
+                onClick={() => setPasswordVisible(!isPasswordVisible)} // Toggle chế độ hiển thị mật khẩu
+                className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+              >
+                <FontAwesomeIcon
+                  icon={isPasswordVisible ? faEye : faEyeSlash}
+                />
+              </button>
             </div>
             {errorMessage && (
               <p className="mb-8 text-red-500">{errorMessage}</p>
