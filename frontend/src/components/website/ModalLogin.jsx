@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { decodeJWT } from "../utils/jwtUtils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import LoadingWhite from "./LoadingWhite";
 
 const LoginPage = () => {
   const [isRegisterMode, setRegisterMode] = useState(false);
@@ -18,9 +19,11 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when request starts
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/login",
@@ -33,15 +36,11 @@ const LoginPage = () => {
 
       if (response.data.success) {
         toast.success("Đăng nhập thành công!");
-
         const token = response.data.token;
         if (token) {
           Cookies.set("jwtToken", token, { expires: 7, path: "/" });
-
           const decoded = decodeJWT(token);
           console.log("Decoded Token:", decoded);
-
-          // Điều hướng dựa trên role
           if (
             decoded.role.includes("admin") ||
             decoded.role.includes("staff")
@@ -60,6 +59,8 @@ const LoginPage = () => {
       } else {
         setErrorMessage("Đã xảy ra lỗi. Vui lòng thử lại.");
       }
+    } finally {
+      setLoading(false); // Reset loading state after request completes
     }
   };
 
@@ -71,6 +72,7 @@ const LoginPage = () => {
       return;
     }
 
+    setLoading(true); // Set loading to true when request starts
     try {
       const response = await axios.post(
         "http://localhost:5000/api/accounts/register-customer",
@@ -78,13 +80,13 @@ const LoginPage = () => {
           username,
           password,
           gmail: email,
-          numbers, // số điện thoại từ input
+          numbers,
         },
       );
 
       if (response.data.success) {
         toast.success("Đăng ký thành công!");
-        setRegisterMode(false); // Chuyển về chế độ đăng nhập
+        setRegisterMode(false);
       } else {
         setErrorMessage(response.data.message || "Đăng ký thất bại!");
       }
@@ -92,8 +94,11 @@ const LoginPage = () => {
       setErrorMessage(
         error.response?.data?.message || "Có lỗi xảy ra. Vui lòng thử lại.",
       );
+    } finally {
+      setLoading(false); // Reset loading state after request completes
     }
   };
+
 
 
   return (
@@ -224,7 +229,7 @@ const LoginPage = () => {
                 className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
               >
                 <FontAwesomeIcon
-                  icon={isConfirmPasswordVisible ? faEyeSlash : faEye}
+                  icon={isConfirmPasswordVisible ? faEye : faEyeSlash}
                 />
               </button>
             </div>
@@ -234,9 +239,15 @@ const LoginPage = () => {
             <button
               type="submit"
               className="mt-3 w-full rounded bg-black py-3 font-josefin text-white transition-transform duration-200 hover:scale-95"
+              disabled={loading} // Disable button when loading
             >
-              Đăng Ký
+              {loading ? (
+                <LoadingWhite /> // Display loading spinner if loading is true
+              ) : (
+                "Đăng Ký"
+              )}
             </button>
+
             <button
               className="mt-2 text-lg text-gray-500 hover:text-black"
               onClick={() => setRegisterMode(false)}
@@ -304,8 +315,13 @@ const LoginPage = () => {
             <button
               type="submit"
               className="mb-2 mt-3 w-full rounded bg-black py-3 font-josefin text-base text-white transition-transform duration-200 hover:scale-95"
+              disabled={loading} // Disable button when loading
             >
-              Đăng Nhập
+              {loading ? (
+                <LoadingWhite /> // Display loading spinner if loading is true
+              ) : (
+                "Đăng Nhập"
+              )}
             </button>
             <a
               href="/forgotpassword"

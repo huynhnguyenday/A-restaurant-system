@@ -4,9 +4,11 @@ import axios from "axios";
 import imgnews1 from "../../../../backend/assets/imgnews1.png";
 import imgnews2 from "../../../../backend/assets/imgnews2.png";
 import imgnews3 from "../../../../backend/assets/imgnews3.png";
+import Loading from "./Loading"; // Import your loading component
 
 const PricingContentNew = ({ closeFlyout }) => {
   const [latestBlogs, setLatestBlogs] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,9 +19,11 @@ const PricingContentNew = ({ closeFlyout }) => {
         );
         if (response.data.success) {
           setLatestBlogs(response.data.data); // Cập nhật danh sách blogs
+          setLoading(false); // Set loading to false once data is fetched
         }
       } catch (error) {
         console.error("Error fetching latest blogs:", error.message);
+        setLoading(false); // Set loading to false in case of error
       }
     };
 
@@ -44,18 +48,22 @@ const PricingContentNew = ({ closeFlyout }) => {
         <div className="mb-3 space-y-3">
           <h3 className="pb-4 text-3xl font-bold text-white">TIN TỨC</h3>
           <div className="space-y-4 pb-4">
-            {latestBlogs.map((blog) => (
-              <a
-                key={blog._id}
-                onClick={() => handleNavigate(blog)}
-                className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-base !text-white hover:!text-slate-400"
-              >
-                +{" "}
-                {blog.title.length > 50
-                  ? `${blog.title.substring(0, 40)}...`
-                  : blog.title}
-              </a>
-            ))}
+            {loading ? ( // Show loading while fetching blogs
+              <Loading /> // Use your loading component here
+            ) : (
+              latestBlogs.map((blog) => (
+                <a
+                  key={blog._id}
+                  onClick={() => handleNavigate(blog)}
+                  className="mr-4 block cursor-pointer border-b-[1px] border-white border-opacity-30 pl-2 !font-josefin text-base !text-white hover:!text-slate-400"
+                >
+                  +{" "}
+                  {blog.title.length > 50
+                    ? `${blog.title.substring(0, 40)}...`
+                    : blog.title}
+                </a>
+              ))
+            )}
           </div>
         </div>
         <button
