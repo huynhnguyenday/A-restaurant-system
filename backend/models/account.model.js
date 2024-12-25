@@ -6,7 +6,7 @@ const accountSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      unique: true, // Đảm bảo không trùng username
+      unique: true,
     },
     password: {
       type: String,
@@ -15,6 +15,10 @@ const accountSchema = new mongoose.Schema(
     numbers: {
       type: String,
       required: true,
+    },
+    otp: {
+      type: Number, 
+      required: false,
     },
     gmail: {
       type: String,

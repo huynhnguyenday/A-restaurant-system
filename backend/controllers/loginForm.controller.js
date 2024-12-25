@@ -6,6 +6,42 @@ import crypto from "crypto"; // Để tạo mã xác thực ngẫu nhiên
 import dotenv from "dotenv";
 dotenv.config();
 
+export const verifyOTP = async (req, res) => {
+  const { email, otp } = req.body; // Nhận email và OTP từ client
+
+  try {
+    // Tìm người dùng theo email
+    const user = await Account.findOne({ gmail: email });
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Email không tồn tại trong hệ thống",
+      });
+    }
+
+    // Kiểm tra mã OTP có khớp không
+    if (user.otp !== parseInt(otp)) {
+      return res.status(400).json({
+        success: false,
+        message: "Mã OTP không chính xác",
+      });
+    }
+
+    // Nếu OTP đúng, có thể thực hiện các bước tiếp theo (ví dụ: cho phép đổi mật khẩu)
+    res.status(200).json({
+      success: true,
+      message: "Mã OTP hợp lệ. Bạn có thể thay đổi mật khẩu",
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Có lỗi xảy ra. Vui lòng thử lại sau.",
+    });
+  }
+};
+
+
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
@@ -25,6 +61,10 @@ export const forgotPassword = async (req, res) => {
     // Lưu mã OTP vào cơ sở dữ liệu
     user.otp = otp;
     await user.save();
+    console.log("Email:", email);
+    console.log("User OTP in DB:", user.otp);
+    console.log("Entered OTP:", otp);
+
 
     console.log("SMTP_HOST:", process.env.SMTP_HOST);
     console.log("SMTP_PORT:", process.env.SMTP_PORT);

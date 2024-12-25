@@ -1,19 +1,47 @@
-// Authenti
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AuthenticationCode = () => {
   const [code, setCode] = useState(""); // State lưu mã xác thực
   const navigate = useNavigate(); // Hook navigate từ react-router-dom
+  const [email, setEmail] = useState(""); // Lưu email
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    // Kiểm tra xem email đã được lưu trong localStorage hay chưa
+    const savedEmail = localStorage.getItem("email");
+    if (savedEmail) {
+      setEmail(savedEmail); // Gán email đã lưu vào state
+    } else {
+      navigate("/forgot-password"); // Nếu không có email, điều hướng về trang nhập email
+    }
+  }, [navigate]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (code) {
-      // Bạn có thể xử lý mã xác thực ở đây (kiểm tra, gửi yêu cầu API, v.v.)
-      toast.success("Mã xác thực đúng!!");
-      // Chuyển hướng về trang đăng nhập sau khi nhập mã xác thực thành công
-      navigate("/resetpassword");
+      try {
+        // Gửi yêu cầu xác thực mã OTP
+        const response = await fetch(
+          "http://localhost:5000/api/auth/verify-otp",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, otp: code }), // Gửi email và mã OTP
+          },
+        );
+
+        const data = await response.json();
+
+        if (data.success) {
+          toast.success(data.message); // Hiển thị thông báo thành công
+          navigate("/resetpassword"); // Chuyển hướng về trang reset password
+        } else {
+          toast.error(data.message); // Hiển thị lỗi nếu mã OTP không đúng
+        }
+      } catch (error) {
+        toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+      }
     }
   };
 

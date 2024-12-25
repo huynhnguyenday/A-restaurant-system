@@ -22,6 +22,7 @@ const ModalForgotPassword = () => {
       const data = await response.json();
 
       if (data.success) {
+        localStorage.setItem("email", email); // Lưu email vào localStorage
         toast.success(data.message); // Hiển thị thông báo thành công
         navigate("/authenticationcode"); // Chuyển hướng người dùng đến màn hình nhập mã xác thực
       } else {
@@ -31,6 +32,7 @@ const ModalForgotPassword = () => {
       toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
     }
   };
+
 
 
   return (

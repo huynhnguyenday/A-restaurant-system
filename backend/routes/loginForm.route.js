@@ -5,6 +5,7 @@ import {
   logout,
   resetPassword,
   forgotPassword,
+  verifyOTP,
 } from "../controllers/loginForm.controller.js";
 import { protect } from "../middleware/protect.js";
 
@@ -15,5 +16,6 @@ router.post("/logout", logout);
 router.post("/reset-password", resetPassword);
 router.post("/change-password", protect, changePassword);
 router.post("/forgot-password", forgotPassword);
+router.post("/verify-otp", verifyOTP);
 
 export default router;
