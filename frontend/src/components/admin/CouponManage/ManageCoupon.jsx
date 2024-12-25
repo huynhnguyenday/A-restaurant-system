@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faPen } from "@fortawesome/free-solid-svg-icons";
 import UpdateCoupon from "./UpdateCoupon";
 import AddCoupon from "./AddCoupon";
 import Loading from "../../website/Loading";
@@ -83,6 +83,9 @@ const ManageCoupon = () => {
             >
               <FontAwesomeIcon icon={faPlus} />
             </button>
+            <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-base text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+              Tạo mã giảm giá
+            </span>
           </div>
         </div>
 
@@ -106,21 +109,28 @@ const ManageCoupon = () => {
               <tbody>
                 {filteredCoupons.map((coupon) => (
                   <tr key={coupon._id} className="bg-white">
-                    <td className="px-4 py-6 text-center">{coupon.code}</td>
+                    <td className="px-4 py-6 text-center font-bold">
+                      {coupon.code}
+                    </td>
                     <td className="px-4 py-6 text-center">
-                      {coupon.discountValue}
+                      {coupon.discountValue.toLocaleString()}
                     </td>
                     <td className="px-4 py-6 text-center">{coupon.maxUsage}</td>
                     <td className="px-4 py-6 text-center">
                       {coupon.maxUsage - coupon.currentUsage}
                     </td>
                     <td className="px-4 py-6 text-center text-xl">
-                      <button
-                        onClick={() => handleShowCouponDetail(coupon)}
-                        className="px-3 py-1 text-blue-400 hover:rounded-full hover:bg-slate-300"
-                      >
-                        <FontAwesomeIcon icon={faEye} />
-                      </button>
+                      <div className="group relative">
+                        <button
+                          onClick={() => handleShowCouponDetail(coupon)}
+                          className="px-3 py-1 text-blue-400 hover:rounded-full hover:bg-slate-300"
+                        >
+                          <FontAwesomeIcon icon={faPen} />
+                        </button>
+                        <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 transform whitespace-nowrap rounded-md bg-gray-800 px-2 py-2 text-base text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                          Xem chi tiết
+                        </span>
+                      </div>
                     </td>
                   </tr>
                 ))}

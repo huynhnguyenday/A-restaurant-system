@@ -74,7 +74,8 @@ const DetailOrder = ({ order, onClose, onOrderUpdated }) => {
 
         {/* Order Details */}
         <h2 className="mb-8 text-center text-3xl font-bold">
-          Chi tiết đơn hàng của <span className="text-[#c63c02]">{order.name}</span>
+          Chi tiết đơn hàng của{" "}
+          <span className="text-[#c63c02]">{order.name}</span>
         </h2>
 
         <form>
@@ -126,6 +127,16 @@ const DetailOrder = ({ order, onClose, onOrderUpdated }) => {
                 className="mb-4 w-full rounded-md border border-gray-300 p-2"
                 disabled
               />
+
+              <div className="mt-8 flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  className="rounded bg-blue-500 px-5 py-2 font-josefin text-xl text-white transition-transform duration-200 hover:scale-95"
+                >
+                  Lưu thông tin
+                </button>
+              </div>
             </div>
 
             {/* Center Section - Payment Method and Note */}
@@ -153,15 +164,6 @@ const DetailOrder = ({ order, onClose, onOrderUpdated }) => {
                 maxLength={500}
                 className="mb-4 max-h-64 w-full overflow-y-auto rounded-md border border-gray-300 p-2"
               />
-              <div className="mt-48 flex justify-center">
-                <button
-                  type="button"
-                  onClick={handleSave}
-                  className="rounded bg-blue-500 font-josefin text-xl px-5 py-2 text-white transition-transform duration-200 hover:scale-95"
-                >
-                  Lưu thông tin
-                </button>
-              </div>
             </div>
 
             {/* Right Section - Product List */}

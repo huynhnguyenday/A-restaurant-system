@@ -10,6 +10,7 @@ import {
   faClipboardList,
   faReceipt,
   faTicket,
+  faComment
 } from "@fortawesome/free-solid-svg-icons";
 import ManageProduct from "./ProductManage/ManageProduct";
 import ManageBlog from "./BlogManage/ManageBlog";
@@ -25,6 +26,7 @@ import ProfileAdmin from "./ManageProfile/ProfileAdmin";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { decodeJWT } from "../utils/jwtUtils";
+import ManageReview from "./ReviewManage/ManageReview";
 
 const SidebarItem = ({ icon, label, isSidebarExpanded, onClick, isActive }) => (
   <li
@@ -134,6 +136,8 @@ const DashBoard = () => {
         return <ManageCoupon />;
       case "ProfileAdmin":
         return <ProfileAdmin />;
+      case "Review":
+        return <ManageReview />;
       default:
         return (
           <div className="p-6">
@@ -222,6 +226,13 @@ const DashBoard = () => {
             isSidebarExpanded={isSidebarExpanded}
             onClick={() => handleSetActiveComponent("Chart")}
             isActive={activeComponent === "Chart"}
+          />
+          <SidebarItem
+            icon={faComment}
+            label="Đánh giá"
+            isSidebarExpanded={isSidebarExpanded}
+            onClick={() => handleSetActiveComponent("Review")}
+            isActive={activeComponent === "Review"}
           />
         </ul>
       </div>

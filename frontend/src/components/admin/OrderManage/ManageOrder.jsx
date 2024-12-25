@@ -101,6 +101,7 @@ const ManageOrder = () => {
                   <th className="px-4 py-3 text-center">
                     Phương thức thanh toán
                   </th>
+                  <th className="px-4 py-3 text-center">Ngày tạo đơn</th>
                   <th className="px-4 py-3 text-center">Xem</th>
                 </tr>
               </thead>
@@ -113,6 +114,9 @@ const ManageOrder = () => {
                     <td className="px-4 py-6 text-center">{order.email}</td>
                     <td className="px-4 py-6 text-center">
                       {order.paymentMethod}
+                    </td>
+                    <td className="px-4 py-6 text-center">
+                      {new Date(order.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-6 text-center text-xl">
                       <div className="group relative">
