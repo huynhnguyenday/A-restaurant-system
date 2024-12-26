@@ -63,6 +63,17 @@ const DetailBlogLayout = ({ children }) => {
   );
 };
 
+const PaymentLayout = ({ children }) => {
+  return (
+    <div className="payment-container">
+      <Navbar />
+      {children}
+      <Newsletter />
+      <Footer />
+    </div>
+  );
+};
+
 const App = () => {
   return (
     <Router>
@@ -135,9 +146,9 @@ const App = () => {
         <Route
           path="/payment"
           element={
-            <MainLayout>
+            <PaymentLayout>
               <PaymentPage />
-            </MainLayout>
+            </PaymentLayout>
           }
         />
         <Route

@@ -103,6 +103,7 @@ const ManageCoupon = () => {
                   <th className="px-4 py-3 text-center">Giá trị giảm</th>
                   <th className="px-4 py-3 text-center">Tổng số lượng</th>
                   <th className="px-4 py-3 text-center">Còn lại</th>
+                  <th className="px-4 py-3 text-center">Ngày tạo</th>
                   <th className="px-4 py-3 text-center">Chỉnh sửa</th>
                 </tr>
               </thead>
@@ -118,6 +119,9 @@ const ManageCoupon = () => {
                     <td className="px-4 py-6 text-center">{coupon.maxUsage}</td>
                     <td className="px-4 py-6 text-center">
                       {coupon.maxUsage - coupon.currentUsage}
+                    </td>
+                    <td className="px-4 py-6 text-center">
+                      {new Date(coupon.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-6 text-center text-xl">
                       <div className="group relative">

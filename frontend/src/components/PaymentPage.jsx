@@ -111,7 +111,27 @@ const PaymentPage = () => {
     0,
   );
 
+  useEffect(() => {
+    // Kiểm tra mã giảm giá mỗi khi couponCode thay đổi
+    if (couponCode.trim() === "") {
+      setDiscount(0); // Nếu không có mã, giảm giá là 0
+    } else {
+      const coupon = validCoupons.find((c) => c.code === couponCode);
+      if (coupon) {
+        setDiscount(coupon.discountValue); // Nếu mã hợp lệ, áp dụng giảm giá
+      } else {
+        setDiscount(0); // Nếu mã không hợp lệ, giảm giá là 0
+      }
+    }
+  }, [couponCode, validCoupons]); // Chạy lại khi couponCode hoặc validCoupons thay đổi
+
   const handleApplyCoupon = () => {
+    if (couponCode.trim() === "") {
+      setDiscount(0); // Nếu không có mã giảm giá nhập vào, đặt discount về 0
+      toast.error("Vui lòng nhập mã giảm giá");
+      return;
+    }
+
     const coupon = validCoupons.find((c) => c.code === couponCode);
     if (coupon) {
       setDiscount(coupon.discountValue);
@@ -162,7 +182,7 @@ const PaymentPage = () => {
   const finalPrice = Math.max(calculatedTotalPrice - discount, 0);
 
   return (
-    <div className="mx-auto my-10 max-w-[1200px] px-4 pb-20">
+    <div className="mx-auto mb-20 max-w-[1200px] px-4">
       <div className="grid grid-cols-1 gap-6 pt-12 sm:grid-cols-10">
         {/* Phần thông tin khách hàng chiếm 6 cột */}
         <div className="payment-left order-2 col-span-10 sm:order-1 sm:col-span-6">
@@ -330,10 +350,10 @@ const PaymentPage = () => {
         </div>
         {/* Phần thông tin giỏ hàng chiếm 4 cột */}
         <div className="order-1 col-span-10 sm:order-2 sm:col-span-4">
-          <h3 className="name-option-payment mb-4 pt-4 font-josefin text-[32px] text-xl font-bold">
+          <h3 className="name-option-payment mb-2 pt-4 font-josefin text-[32px] text-xl font-bold">
             Thông tin sản phẩm
           </h3>
-          <div className="rounded-lg bg-white p-4">
+          <div className="mb-4 max-h-[620px] overflow-y-auto rounded-lg bg-white p-4">
             {cartItems.map((item) => (
               <div
                 key={item.productId}
@@ -346,8 +366,8 @@ const PaymentPage = () => {
                     className="h-20% w-20% rounded-lg object-cover"
                   />
                 </div>
-                <div className="w-6/12 px-4">
-                  <span className="block truncate font-medium">
+                <div className="w-3/5 px-4">
+                  <span className="block truncate font-josefin text-2xl font-bold text-[#00561e]">
                     {item.name}
                   </span>
                   <div className="mt-2 flex items-center space-x-2 pt-6">
@@ -364,7 +384,8 @@ const PaymentPage = () => {
                       onBlur={() =>
                         setCartItems((prevCartItems) =>
                           prevCartItems.map((item) =>
-                            item.productId === item.productId && item.quantity === ""
+                            item.productId === item.productId &&
+                            item.quantity === ""
                               ? { ...item, quantity: 1 }
                               : item,
                           ),
@@ -394,6 +415,7 @@ const PaymentPage = () => {
               </div>
             ))}
           </div>
+
           <div className="coupon-section mb-4 flex items-center space-x-2">
             <input
               type="text"
