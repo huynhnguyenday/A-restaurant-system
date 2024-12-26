@@ -75,7 +75,7 @@ const Review = ({ productId }) => {
       email: formData.email,
       content: formData.content,
       rate: formData.rate,
-      date: new Date().toISOString().split("T")[0],
+      createdAt: new Date().toISOString(),
       activeReview: 1,
     };
 
@@ -85,7 +85,7 @@ const Review = ({ productId }) => {
         newReview,
       );
       if (response.data.success) {
-        setReviews([newReview, ...reviews]);
+        setReviews([response.data.data, ...reviews]); // Backend trả về dữ liệu review đã thêm
         setFormData({ name: "", email: "", content: "", rate: 0 });
         setShowForm(false);
       } else {
@@ -126,7 +126,6 @@ const Review = ({ productId }) => {
             <div className="max-h-[550px] overflow-y-auto">
               {reviews
                 .filter((review) => review.activeReview === 1)
-                .slice(0, 5)
                 .map((review) => (
                   <div
                     key={review._id}
