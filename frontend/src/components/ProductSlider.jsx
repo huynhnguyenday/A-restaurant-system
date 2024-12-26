@@ -125,13 +125,6 @@ const ProductSlider = () => {
                     />
                   </Link>
                 </div>
-                <div
-                  className={`favorite absolute left-4 top-2 cursor-pointer text-4xl transition-colors duration-300 ease-in-out ${favorites[product._id] ? "text-red-500" : "text-black"}`}
-                  onClick={() => handleToggleFavorite(product._id)}
-                >
-                  {favorites[product._id] ? "♥" : "♡"}
-                </div>
-
                 <div className="product-bubble absolute right-4 top-2 rounded-full bg-[#ff4d4f] px-2 py-1 font-josefin text-sm text-white">
                   HOT
                 </div>

@@ -177,15 +177,6 @@ const Menu = () => {
                   </Link>
                 </div>
 
-                <div
-                  className={`absolute left-2 top-2 cursor-pointer text-4xl transition-colors ease-linear ${
-                    favorites[item._id] ? "text-red-500" : "text-black"
-                  }`}
-                  onClick={() => handleToggleFavorite(item._id)}
-                >
-                  {favorites[item._id] ? "♥" : "♡"}
-                </div>
-
                 <div className="mb-12 mt-4">
                   <h6 className="text-sm font-bold text-[#333]">
                     <Link

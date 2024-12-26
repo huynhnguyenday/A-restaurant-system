@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faShop } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 
 const PaymentPage = () => {
@@ -40,18 +40,50 @@ const PaymentPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    // Kiểm tra mã giảm giá mỗi khi couponCode thay đổi
+    if (couponCode.trim() === "") {
+      setDiscount(0); // Nếu không có mã, giảm giá là 0
+    } else {
+      const coupon = validCoupons.find((c) => c.code === couponCode);
+      if (coupon) {
+        if (
+          coupon.discountValue === 0 ||
+          coupon.currentUsage >= coupon.maxUsage
+        ) {
+          toast.error(
+            "Mã giảm giá đã hết số lượng sử dụng, vui lòng thử mã khác.",
+          );
+          setDiscount(0); // Không áp dụng mã giảm giá
+        } else {
+          setDiscount(coupon.discountValue); // Nếu mã hợp lệ và còn số lần sử dụng, áp dụng giảm giá
+        }
+      } else {
+        setDiscount(0); // Nếu mã không hợp lệ, giảm giá là 0
+      }
+    }
+  }, [couponCode, validCoupons]); // Chạy lại khi couponCode hoặc validCoupons thay đổi
 
   if (!cartItems || cartItems.length === 0) {
     return (
-      <button
-        type="button"
-        className="mx-auto mb-20 mt-20 flex h-24 w-1/3 items-center justify-center rounded-full bg-black text-2xl text-white"
-      >
-        <a href="/menu" className="flex items-center space-x-2">
-          <FontAwesomeIcon icon={faShop} className="text-4xl" />
-          <span className="text-xl">QUAY TRỞ LẠI TRANG MUA SẮM</span>
+      <div className="success-container mb-28 mt-20 flex flex-col place-content-center items-center sm:mb-32 sm:mt-32">
+        <FontAwesomeIcon
+          icon={faCartPlus}
+          className="text-7xl text-black"
+        />
+        <h1 className="mt-4 text-center font-josefin text-3xl font-bold">
+          Giỏ hàng của bạn hiện đang không có sản phẩm nào!!!
+        </h1>
+        <p className="mt-2 text-center font-josefin text-lg font-bold">
+          Vui lòng quay trở lại trang chủ để lựa chọn mặt hàng mà bạn yêu thích trước khi vào trang thanh toán.
+        </p>
+        <a
+          href="/menu"
+          className="mt-8 rounded-lg bg-[#d88453] px-6 pt-4 pb-2 font-josefin text-2xl text-white hover:rounded-3xl hover:bg-[#633c02]"
+        >
+          Quay trở lại trang mua sắm
         </a>
-      </button>
+      </div>
     );
   }
 
@@ -111,32 +143,23 @@ const PaymentPage = () => {
     0,
   );
 
-  useEffect(() => {
-    // Kiểm tra mã giảm giá mỗi khi couponCode thay đổi
-    if (couponCode.trim() === "") {
-      setDiscount(0); // Nếu không có mã, giảm giá là 0
-    } else {
-      const coupon = validCoupons.find((c) => c.code === couponCode);
-      if (coupon) {
-        setDiscount(coupon.discountValue); // Nếu mã hợp lệ, áp dụng giảm giá
-      } else {
-        setDiscount(0); // Nếu mã không hợp lệ, giảm giá là 0
-      }
-    }
-  }, [couponCode, validCoupons]); // Chạy lại khi couponCode hoặc validCoupons thay đổi
-
   const handleApplyCoupon = () => {
-    if (couponCode.trim() === "") {
-      setDiscount(0); // Nếu không có mã giảm giá nhập vào, đặt discount về 0
-      toast.error("Vui lòng nhập mã giảm giá");
-      return;
-    }
-
     const coupon = validCoupons.find((c) => c.code === couponCode);
     if (coupon) {
-      setDiscount(coupon.discountValue);
+      if (
+        coupon.discountValue === 0 ||
+        coupon.currentUsage >= coupon.maxUsage
+      ) {
+        toast.error(
+          "Mã giảm giá đã hết số lượng sử dụng, vui lòng thử mã khác.",
+        );
+        setDiscount(0); // Không áp dụng mã giảm giá
+      } else {
+        setDiscount(coupon.discountValue);
+        toast.success("Mã giảm giá đã được áp dụng thành công!");
+      }
     } else {
-      toast.error("Mã coupon không hợp lệ");
+      toast.error("Mã giảm giá không hợp lệ.");
       setDiscount(0);
     }
   };
