@@ -49,15 +49,7 @@ export const createOrder = async (req, res) => {
       couponCode, // Thêm couponCode từ body
     } = req.body;
 
-    if (
-      !name ||
-      !address ||
-      !number ||
-      !email ||
-      !paymentMethod ||
-      !finalPrice ||
-      !cart
-    ) {
+    if (!name || !address || !number || !email || !paymentMethod || !cart) {
       return res.status(400).json({ message: "Thiếu thông tin cần thiết!" });
     }
 
@@ -89,7 +81,13 @@ export const createOrder = async (req, res) => {
           return res.status(404).json({ message: "Coupon không tồn tại!" });
         }
 
-        if (coupon.currentUsage >= coupon.maxUsage) {
+        console.log(`Coupon found:`, {
+          code: coupon.code,
+          currentUsage: coupon.currentUsage,
+          maxUsage: coupon.maxUsage,
+        });
+
+        if (coupon.currentUsage + 1 > coupon.maxUsage) {
           return res
             .status(400)
             .json({ message: "Coupon đã hết lượt sử dụng!" });
@@ -98,7 +96,10 @@ export const createOrder = async (req, res) => {
         coupon.currentUsage += 1;
         await coupon.save();
 
-        console.log(`Coupon ${couponCode} đã được sử dụng.`);
+        console.log(`Updated coupon usage:`, {
+          currentUsage: coupon.currentUsage,
+          maxUsage: coupon.maxUsage,
+        });
       } catch (error) {
         console.error("Lỗi khi xử lý coupon:", error);
         return res.status(500).json({ message: "Lỗi khi xử lý coupon!" });

@@ -79,7 +79,7 @@ export const updateCoupon = async (req, res) => {
   }
 
   // Kiểm tra giá trị hợp lệ của currentUsage và maxUsage
-  if (currentUsage < 0 || maxUsage < 1 || currentUsage > maxUsage) {
+  if (currentUsage < 0 || maxUsage < 0 || currentUsage > maxUsage) {
     return res.status(400).json({
       success: false,
       message: "Giá trị currentUsage hoặc maxUsage không hợp lệ!",

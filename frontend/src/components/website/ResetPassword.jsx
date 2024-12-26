@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios"; // Import Axios
 
 const ResetPassword = () => {
   const [password, setPassword] = useState(""); // State lưu mật khẩu mới
   const [confirmPassword, setConfirmPassword] = useState(""); // State lưu xác nhận mật khẩu
   const navigate = useNavigate(); // Hook navigate
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Ngăn hành vi mặc định của form
 
     if (!password.trim() || !confirmPassword.trim()) {
@@ -20,9 +21,32 @@ const ResetPassword = () => {
       return;
     }
 
-    // Logic đặt lại mật khẩu (API call)
-    toast.success("Mật khẩu đã được đặt lại thành công!");
-    navigate("/login"); // Chuyển về trang đăng nhập
+    try {
+      const email = localStorage.getItem("email"); // Lấy email đã lưu từ quá trình verify OTP
+      if (!email) {
+        toast.error("Không tìm thấy thông tin email. Vui lòng thử lại!");
+        return;
+      }
+
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/reset-password",
+        {
+          email,
+          newPassword: password,
+          confirmNewPassword: confirmPassword,
+        },
+      );
+
+      if (response.data.success) {
+        toast.success("Mật khẩu đã được đặt lại thành công!");
+        navigate("/login"); // Chuyển về trang đăng nhập
+      } else {
+        toast.error(response.data.message || "Đặt lại mật khẩu thất bại!");
+      }
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      toast.error("Có lỗi xảy ra. Vui lòng thử lại sau!");
+    }
   };
 
   return (

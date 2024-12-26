@@ -15,7 +15,7 @@ export const verifyOTP = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Email không tồn tại trong hệ thống",
+        message: "Email chưa được đăng ký",
       });
     }
 
@@ -41,7 +41,6 @@ export const verifyOTP = async (req, res) => {
   }
 };
 
-
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
@@ -64,7 +63,6 @@ export const forgotPassword = async (req, res) => {
     console.log("Email:", email);
     console.log("User OTP in DB:", user.otp);
     console.log("Entered OTP:", otp);
-
 
     console.log("SMTP_HOST:", process.env.SMTP_HOST);
     console.log("SMTP_PORT:", process.env.SMTP_PORT);
@@ -167,7 +165,46 @@ export const login = async (req, res) => {
 };
 
 export const resetPassword = async (req, res) => {
-  res.status(200).json({ success: true, message: "Register user" });
+  const { email, newPassword, confirmNewPassword } = req.body;
+
+  try {
+    // Kiểm tra xem mật khẩu mới và xác nhận mật khẩu có khớp không
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Mật khẩu mới và xác nhận mật khẩu không khớp",
+      });
+    }
+
+    // Tìm tài khoản người dùng qua email
+    const user = await Account.findOne({ gmail: email });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy tài khoản với email này",
+      });
+    }
+
+    // Mã hóa mật khẩu mới
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Cập nhật mật khẩu mới vào cơ sở dữ liệu
+    user.password = hashedPassword;
+    user.otp = null; // Xóa OTP sau khi đặt lại mật khẩu
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Đặt lại mật khẩu thành công",
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Không thể đặt lại mật khẩu. Vui lòng thử lại sau.",
+    });
+  }
 };
 
 export const changePassword = async (req, res) => {

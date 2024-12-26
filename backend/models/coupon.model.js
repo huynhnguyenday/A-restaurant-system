@@ -20,7 +20,7 @@ const couponSchema = new mongoose.Schema(
     maxUsage: {
       type: Number,
       required: true, // Số lần tối đa coupon có thể sử dụng
-      min: 1,
+      min: 0,
     },
   },
   { timestamps: true } // Tự động tạo `createdAt` và `updatedAt`
