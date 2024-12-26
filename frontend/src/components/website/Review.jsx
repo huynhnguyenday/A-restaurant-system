@@ -1,66 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 
-const Review = () => {
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      name: "Nguyen Van A",
-      date: "2024-12-23",
-      content: "Sản phẩm rất tốt, đáng mua!",
-      rate: 5,
-      activeReview: 1,
-    },
-    {
-      id: 2,
-      name: "Tran Thi B",
-      date: "2024-12-20",
-      content: "Hàng nhận được đúng như mô tả, rất hài lòng.",
-      rate: 4,
-      activeReview: 2,
-    },
-    {
-      id: 3,
-      name: "Tran Thi C",
-      date: "2024-12-20",
-      content: "Sản phẩm phù hợp với giá tiền.",
-      rate: 2,
-      activeReview: 1,
-    },
-    {
-      id: 4,
-      name: "Tran Thi D",
-      date: "2024-12-19",
-      content: "Chất lượng vừa phải, không xuất sắc.",
-      rate: 3,
-      activeReview: 1,
-    },
-    {
-      id: 5,
-      name: "Tran Thi E",
-      date: "2024-12-18",
-      content: "Đóng gói cẩn thận, thời gian giao hàng nhanh.",
-      rate: 4,
-      activeReview: 1,
-    },
-    {
-      id: 6,
-      name: "Tran Thi F",
-      date: "2024-12-17",
-      content: "Hài lòng với sản phẩm.",
-      rate: 5,
-      activeReview: 1,
-    },
-  ]);
-
+const Review = ({ productId }) => {
+  const [reviews, setReviews] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     content: "",
     rate: 0,
   });
+  const [showForm, setShowForm] = useState(false);
 
-  const [showForm, setShowForm] = useState(reviews.length === 0);
+  // Fetch reviews from API
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (!productId) {
+        toast.error("ID sản phẩm không hợp lệ!");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/reviews/${productId}`,
+        );
+        if (response.data.success) {
+          setReviews(response.data.data || []);
+          setShowForm(response.data.data.length === 0);
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error("Có lỗi xảy ra khi tải đánh giá.");
+      }
+    };
+
+    fetchReviews();
+  }, [productId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -71,7 +47,7 @@ const Review = () => {
     setFormData({ ...formData, rate });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.name.trim()) {
@@ -95,24 +71,48 @@ const Review = () => {
     }
 
     const newReview = {
-      id: reviews.length + 1, // Tạo id tự động
-      ...formData,
+      name: formData.name,
+      email: formData.email,
+      content: formData.content,
+      rate: formData.rate,
       date: new Date().toISOString().split("T")[0],
       activeReview: 1,
     };
 
-    setReviews([newReview, ...reviews]);
-    setFormData({ name: "", email: "", content: "", rate: 0 });
-    setShowForm(false);
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/reviews/${productId}`,
+        newReview,
+      );
+      if (response.data.success) {
+        setReviews([newReview, ...reviews]);
+        setFormData({ name: "", email: "", content: "", rate: 0 });
+        setShowForm(false);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Có lỗi xảy ra khi gửi đánh giá.");
+    }
   };
 
   const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return new Intl.DateTimeFormat("vi-VN", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }).format(date);
+    try {
+      console.log("Date before: ", dateStr);
+      const date = new Date(dateStr); // Chuyển chuỗi ISO thành Date object
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date");
+      }
+      // Định dạng ngày theo "dd tháng MM, yyyy"
+      return new Intl.DateTimeFormat("vi-VN", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }).format(date);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Ngày không hợp lệ"; // Giá trị mặc định nếu có lỗi
+    }
   };
 
   return (
@@ -123,15 +123,13 @@ const Review = () => {
       <div className="flex w-full max-w-6xl flex-col md:flex-row">
         {reviews.length > 0 && (
           <div className="w-full md:w-1/2">
-            <div
-              className="max-h-[550px] overflow-y-auto"
-            >
+            <div className="max-h-[550px] overflow-y-auto">
               {reviews
                 .filter((review) => review.activeReview === 1)
                 .slice(0, 5)
                 .map((review) => (
                   <div
-                    key={review.id}
+                    key={review._id}
                     className="mb-4 rounded-xl border-2 bg-white p-4 shadow-sm"
                   >
                     <div className="mb-2 text-2xl text-yellow-500">
@@ -142,7 +140,7 @@ const Review = () => {
                       <span className="text-xl font-bold text-black">
                         {review.name} -{" "}
                         <span className="text-lg text-gray-600">
-                          {formatDate(review.date)}
+                          {formatDate(review.createdAt)}
                         </span>
                       </span>
                     </div>

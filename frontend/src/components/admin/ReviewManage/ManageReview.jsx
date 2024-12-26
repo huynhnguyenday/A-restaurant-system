@@ -6,6 +6,7 @@ import {
   faPen,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 import Loading from "../../../components/website/Loading";
 
 const ManageReview = () => {
@@ -14,53 +15,14 @@ const ManageReview = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Dữ liệu tĩnh
+  // Fetch dữ liệu từ API
   useEffect(() => {
     const fetchReviews = async () => {
       setLoading(true);
       try {
-        const fetchedReviews = [
-          {
-            id: 2,
-            productName: "Trà sữa olong",
-            review: [
-              {
-                id: "r001",
-                name: "Nguyễn Hữu Huỳnh",
-                email: "nguyenhuuhuynh27022003@example.com",
-                createdAt: "2024-12-23",
-                content: "Sản phẩm rất tốt, đáng mua!",
-                rate: 5,
-                activeReview: 1,
-              },
-              {
-                id: "r002",
-                name: "Nguyễn Thị Lan",
-                email: "nguyenthilan@example.com",
-                createdAt: "2024-12-22",
-                content: "Thiết kế đẹp, nhưng pin hơi yếu.",
-                rate: 3,
-                activeReview: 1,
-              },
-            ],
-          },
-          {
-            id: 1,
-            productName: "Matcha đá xay",
-            review: [
-              {
-                id: "r003",
-                name: "Nguyễn Lê Minh Hùng",
-                email: "nguyenleminhhung2087@example.com",
-                createdAt: "2024-12-20",
-                content: "Hàng nhận được đúng như mô tả, rất hài lòng.",
-                rate: 4,
-                activeReview: 2,
-              },
-            ],
-          },
-        ];
-        setReviews(fetchedReviews);
+        const response = await axios.get("http://localhost:5000/api/reviews");
+        console.log("Reviews data:", response.data.data);
+        setReviews(response.data.data); // Gán dữ liệu từ API
         setLoading(false);
       } catch (error) {
         console.error("Error fetching reviews:", error.message);
@@ -72,35 +34,32 @@ const ManageReview = () => {
   }, []);
 
   // Toggle trạng thái đánh giá (hiển thị hoặc ẩn)
-  const toggleActiveReview = (productId, reviewId) => {
-    setReviews((prevReviews) =>
-      prevReviews.map((product) =>
-        product.id === productId
-          ? {
-              ...product,
-              review: product.review.map((review) =>
-                review.id === reviewId
-                  ? {
-                      ...review,
-                      activeReview: review.activeReview === 1 ? 2 : 1,
-                    }
-                  : review,
-              ),
-            }
-          : product,
-      ),
-    );
+  const toggleActiveReview = async (reviewId) => {
+    try {
+      // Cập nhật trạng thái activeReview cho mỗi review
+      const updatedReviews = reviews.map((review) =>
+        review._id === reviewId
+          ? { ...review, activeReview: review.activeReview === 1 ? 2 : 1 }
+          : review,
+      );
+      setReviews(updatedReviews); // Cập nhật lại state reviews
+
+      // Gửi yêu cầu cập nhật trạng thái đến API
+      await axios.put(`http://localhost:5000/api/reviews/${reviewId}`, {
+        activeReview: updatedReviews.find((r) => r._id === reviewId)
+          .activeReview,
+      });
+    } catch (error) {
+      console.error("Error updating active review:", error);
+    }
   };
 
-  // Lọc sản phẩm và đánh giá
+  // Lọc đánh giá theo từ khóa
   const filteredReviews = reviews.filter(
-    (product) =>
-      product.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.review.some(
-        (review) =>
-          review.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          review.email.toLowerCase().includes(searchTerm.toLowerCase()),
-      ),
+    (review) =>
+      review.product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.email.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -136,43 +95,39 @@ const ManageReview = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredReviews.map((product) =>
-                  product.review.map((review) => (
-                    <tr key={review.id} className="border-b">
-                      <td className="px-4 py-8 text-left font-bold">
-                        {product.productName}
-                      </td>
-                      <td className="px-4 py-8 text-left font-bold">
-                        {review.name}
-                      </td>
-                      <td className="px-4 py-8 text-left">
-                        {new Date(review.createdAt).toLocaleDateString()}
-                      </td>
-                      <td className="px-4 py-8 text-center">{review.rate}⭐</td>
-                      <td className="px-4 py-8 text-center">
-                        <FontAwesomeIcon
-                          icon={review.activeReview === 1 ? faEye : faEyeSlash}
-                          className={
-                            review.activeReview === 1
-                              ? "cursor-pointer text-2xl text-blue-500"
-                              : "cursor-pointer text-xl text-gray-400"
-                          }
-                          onClick={() =>
-                            toggleActiveReview(product.id, review.id)
-                          }
-                        />
-                      </td>
-                      <td className="px-4 py-2 text-center">
-                        <button
-                          onClick={() => setSelectedReview(review)}
-                          className="rounded-full px-3 py-1 text-2xl text-blue-500 hover:bg-gray-200"
-                        >
-                          <FontAwesomeIcon icon={faPen} />
-                        </button>
-                      </td>
-                    </tr>
-                  )),
-                )}
+                {filteredReviews.map((review) => (
+                  <tr key={review._id} className="border-b">
+                    <td className="px-4 py-8 text-left font-bold">
+                      {review.product.name}
+                    </td>
+                    <td className="px-4 py-8 text-left font-bold">
+                      {review.name}
+                    </td>
+                    <td className="px-4 py-8 text-left">
+                      {new Date(review.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-8 text-center">{review.rate}⭐</td>
+                    <td className="px-4 py-8 text-center">
+                      <FontAwesomeIcon
+                        icon={review.activeReview === 1 ? faEye : faEyeSlash}
+                        className={
+                          review.activeReview === 1
+                            ? "cursor-pointer text-2xl text-blue-500"
+                            : "cursor-pointer text-xl text-gray-400"
+                        }
+                        onClick={() => toggleActiveReview(review._id)}
+                      />
+                    </td>
+                    <td className="px-4 py-2 text-center">
+                      <button
+                        onClick={() => setSelectedReview(review)}
+                        className="rounded-full px-3 py-1 text-2xl text-blue-500 hover:bg-gray-200"
+                      >
+                        <FontAwesomeIcon icon={faPen} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           )}
@@ -212,7 +167,6 @@ const ManageReview = () => {
                       {new Date(selectedReview.createdAt).toLocaleDateString()}
                     </p>
                   </div>
-                  {/* Right Section */}
                   <div className="w-2/3 pl-10">
                     <label className="mb-2 block font-josefin text-2xl font-bold">
                       Đánh giá
@@ -221,7 +175,11 @@ const ManageReview = () => {
                       {[1, 2, 3, 4, 5].map((num) => (
                         <span
                           key={num}
-                          className={`cursor-pointer text-4xl ${num <= selectedReview.rate ? "text-yellow-500" : "text-black"}`}
+                          className={`cursor-pointer text-4xl ${
+                            num <= selectedReview.rate
+                              ? "text-yellow-500"
+                              : "text-black"
+                          }`}
                         >
                           ★
                         </span>

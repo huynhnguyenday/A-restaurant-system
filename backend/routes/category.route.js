@@ -4,7 +4,6 @@ import {
   getCategory,
   updateCategory,
 } from "../controllers/category.controller.js";
-import { protect } from "../middleware/protect.js";
 const router = express.Router();
 
 router.get("/", getCategory);
