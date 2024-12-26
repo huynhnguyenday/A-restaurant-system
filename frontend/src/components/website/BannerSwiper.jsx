@@ -76,13 +76,13 @@ const BannerSwiper = () => {
           {blogs.map((blog) => (
             <SwiperSlide key={blog._id}>
               <div
-                className="relative h-[255px] w-full cursor-pointer overflow-hidden shadow-lg lg:h-[600px]"
+                className="relative h-[255px] w-full cursor-pointer overflow-hidden shadow-lg lg:h-[460px]"
                 onClick={() => navigate(`/blogs/${blog._id}`)}
               >
                 <img
                   src={blog.image}
                   alt={blog.title}
-                  className="h-full w-full object-cover"
+                  className="h-full lg:h-[460px] w-full object-cover lg:object-contain"
                 />
               </div>
             </SwiperSlide>

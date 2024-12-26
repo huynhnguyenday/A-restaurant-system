@@ -19,7 +19,9 @@ const BlogMain = () => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:5000/api/blogs"); // Đường dẫn đến API
+        const response = await axios.get(
+          "http://localhost:5000/api/blogs/hotBlogs",
+        ); // Đường dẫn đến API
         if (response.data.success) {
           setBlogs(response.data.data); // Lưu data vào state
         }
