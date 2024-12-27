@@ -10,7 +10,6 @@ const Menu = () => {
   const [activeCategory, setActiveCategory] = useState("TẤT CẢ");
   const [categories, setCategories] = useState(["TẤT CẢ"]); // Lưu danh sách danh mục
   const [products, setProducts] = useState([]); // Lưu danh sách sản phẩm
-  const [favorites, setFavorites] = useState({});
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -71,13 +70,6 @@ const Menu = () => {
     setActiveCategory(category);
     navigate(`/menu?category=${category}`);
     setCurrentPage(1); // Reset về trang đầu tiên khi đổi danh mục
-  };
-
-  const handleToggleFavorite = (id) => {
-    setFavorites((prevFavorites) => ({
-      ...prevFavorites,
-      [id]: !prevFavorites[id],
-    }));
   };
 
   const handleAddToCart = (product) => {
