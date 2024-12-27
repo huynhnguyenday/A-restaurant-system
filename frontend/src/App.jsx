@@ -5,15 +5,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import Navbar from "./components/website/Navbar";
-import Footer from "./components/Footer";
-import Home from "./components/Home";
-import Menu from "./components/Menu";
-import Address from "./components/Address";
-import DetailFood from "./components/DetailFood";
-import Newsletter from "./components/Newsletter";
-import DetailBlog from "./components/DetailBlog";
-import BlogMain from "./components/BlogMain";
-import News from "./components/News";
 import PaymentPage from "./components/PaymentPage";
 import Admin from "./components/admin/Admin";
 import "./app.css";
@@ -23,6 +14,7 @@ import ModalForgotPassword from "./components/website/ModalForgotPassword";
 import CustomerProfile from "./components/website/ProfileCustomer/CustomerProfile";
 import AuthenticationCode from "./components/website/AuthenticationCode";
 import ResetPassword from "./components/website/ResetPassword";
+import OrderTable from "./components/website/ManageOrder/OrderTable"
 
 // Layout chung có Navbar và Footer
 const MainLayout = ({ children }) => {
@@ -30,8 +22,6 @@ const MainLayout = ({ children }) => {
     <div className="app-container">
       <Navbar />
       {children}
-      <Newsletter />
-      <Footer />
     </div>
   );
 };
@@ -41,35 +31,12 @@ const AdminLayout = ({ children }) => {
   return <div className="admin-container">{children}</div>;
 };
 
-const DetailLayout = ({ children }) => {
-  return (
-    <div className="detail-container">
-      <Navbar />
-      {children}
-      <Newsletter />
-      <Footer />
-    </div>
-  );
-};
-
-const DetailBlogLayout = ({ children }) => {
-  return (
-    <div className="detail-container">
-      <Navbar />
-      {children}
-      <Newsletter />
-      <Footer />
-    </div>
-  );
-};
 
 const PaymentLayout = ({ children }) => {
   return (
     <div className="payment-container">
       <Navbar />
       {children}
-      <Newsletter />
-      <Footer />
     </div>
   );
 };
@@ -83,7 +50,7 @@ const App = () => {
           path="/"
           element={
             <MainLayout>
-              <Home />
+              <OrderTable/>
             </MainLayout>
           }
         />
@@ -91,56 +58,8 @@ const App = () => {
           path="/home"
           element={
             <MainLayout>
-              <Home />
+              <OrderTable />
             </MainLayout>
-          }
-        />
-        <Route
-          path="/menu"
-          element={
-            <MainLayout>
-              <Menu />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/news"
-          element={
-            <MainLayout>
-              <News />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/address"
-          element={
-            <MainLayout>
-              <Address />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/detailfood/:id"
-          element={
-            <DetailLayout>
-              <DetailFood />
-            </DetailLayout>
-          }
-        />
-        <Route
-          path="/blogs"
-          element={
-            <MainLayout>
-              <BlogMain />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/blogs/:id"
-          element={
-            <DetailBlogLayout>
-              <DetailBlog />
-            </DetailBlogLayout>
           }
         />
         <Route
@@ -187,7 +106,7 @@ const App = () => {
           path="/resetpassword"
           element={
             <MainLayout>
-              <ResetPassword/>
+              <ResetPassword />
             </MainLayout>
           }
         />
