@@ -67,19 +67,17 @@ const PaymentPage = () => {
   if (!cartItems || cartItems.length === 0) {
     return (
       <div className="success-container mb-28 mt-20 flex flex-col place-content-center items-center sm:mb-32 sm:mt-32">
-        <FontAwesomeIcon
-          icon={faCartPlus}
-          className="text-7xl text-black"
-        />
+        <FontAwesomeIcon icon={faCartPlus} className="text-7xl text-black" />
         <h1 className="mt-4 text-center font-josefin text-3xl font-bold">
           Giỏ hàng của bạn hiện đang không có sản phẩm nào!!!
         </h1>
         <p className="mt-2 text-center font-josefin text-lg font-bold">
-          Vui lòng quay trở lại trang chủ để lựa chọn mặt hàng mà bạn yêu thích trước khi vào trang thanh toán.
+          Vui lòng quay trở lại trang chủ để lựa chọn mặt hàng mà bạn yêu thích
+          trước khi vào trang thanh toán.
         </p>
         <a
           href="/menu"
-          className="mt-8 rounded-lg bg-[#d88453] px-6 pt-4 pb-2 font-josefin text-2xl text-white hover:rounded-3xl hover:bg-[#633c02]"
+          className="mt-8 rounded-lg bg-[#d88453] px-6 pb-2 pt-4 font-josefin text-2xl text-white hover:rounded-3xl hover:bg-[#633c02]"
         >
           Quay trở lại trang mua sắm
         </a>

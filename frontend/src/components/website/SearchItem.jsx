@@ -32,7 +32,7 @@ const SearchItem = () => {
           `http://localhost:5000/api/products?searchTerm=${searchTerm}`,
         );
         setProducts(response.data.data); // Update products state
-      } catch (err) {
+      } catch (error) {
         setError("Error fetching products.");
       } finally {
         setLoading(false);
@@ -58,7 +58,7 @@ const SearchItem = () => {
       </button>
 
       {isPopoverVisible && (
-        <div className="absolute right-[-12rem] top-[2rem] z-10 w-[300px] bg-white p-2 shadow-lg">
+        <div className="absolute right-[-8rem] top-[2rem] z-10 w-[300px] bg-white p-2 shadow-lg">
           <div className="flex items-center">
             <input
               type="text"
